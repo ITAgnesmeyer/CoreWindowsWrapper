@@ -31,6 +31,7 @@ namespace ConsleCaller
             this.Width = 600;
             this.Height = 400;
             //this.BackColor = ColorTool.LightGray;
+            this.BackColor = ColorTool.RGB(125,125,125);
             this._Button = new NativeButton
             {
                 Left = 10,
@@ -39,6 +40,7 @@ namespace ConsleCaller
                 Height = 30,
                 Text = "Test",
                 Name = "bnTest",
+                BackColor=ColorTool.Blue,
                 ControlId = 501
             };
 
@@ -89,6 +91,7 @@ namespace ConsleCaller
                 Width = 100,
                 Height = 30,
                 Text = "Dies ist ein Label",
+                BackColor=ColorTool.Read,
                 ControlId = 504
                 
             };
