@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using CoreWindowsWrapper;
 using CoreWindowsWrapper.Win32ApiForm;
 
