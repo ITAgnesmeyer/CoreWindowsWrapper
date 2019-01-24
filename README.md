@@ -11,7 +11,7 @@ If You want to use this with NETCore 2.X you can Publish the native app.
 Go into the Publish-Folder and modify the EXE SUBSYSTEM. This changes the Comsole-Application to a Windows-Application:)
 
 ```batch
- link.exe ConsleCaller.exe /SUBSYSTEM:WINDOWS
+ editbin.exe ConsleCaller.exe /SUBSYSTEM:WINDOWS
 ```
 
 #### Create a Native Window
