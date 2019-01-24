@@ -26,7 +26,7 @@ namespace ConsleCaller
 
         private void Window2_DblClick(object sender, MouseClickEventArgs e)
         {
-            MessageBox.Show("Click auf dem 2. Fenster");
+            this.Close();
         }
 
         private void Window2_Click(object sender, MouseClickEventArgs e)

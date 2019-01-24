@@ -43,13 +43,18 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 this.Width, this.Height, this.ParentHandle,
                 (IntPtr) this.ControlId, IntPtr.Zero, IntPtr.Zero);
 
+            
             if (this.BackColor != 0)
             {
                 //IntPtr hDc = Win32Api.GetDC(this.Handle);
                 //Win32Api.SetBkColor(hDc, this.BackColor);
-                //Win32Api.ReleaseDC(this.Handle,hDc);
+                //Win32Api.ReleaseDC(this.Handle, hDc);
+                
+               
 
             }
+
+            //Win32Api.ShowWindow(this.Handle,(int)ShowWindowCommands.Show);
             return true;
 
         }

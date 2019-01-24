@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.Design;
 using CoreWindowsWrapper.Api.Win32;
 
 namespace CoreWindowsWrapper
@@ -14,6 +13,7 @@ namespace CoreWindowsWrapper
             base.Initialize();
             this.TypeBezeichner = "msctls_progress32";
             this.CommonControlType = CommonControls.ICC_PROGRESS_CLASS;
+            this.Style = this.Style | ProgressBarStyles.PBS_SMOOTH;
           
         }
 
@@ -79,6 +79,7 @@ namespace CoreWindowsWrapper
         {
             base.Initialize();
             this.TypeBezeichner = "button";
+            this.Style = this.Style |  ButtonStyples.BS_PUSHBUTTON | ButtonStyples.BS_FLAT;
             
 
         }

@@ -1,5 +1,8 @@
-﻿namespace CoreWindowsWrapper.Api.Win32
+﻿using System;
+
+namespace CoreWindowsWrapper.Api.Win32
 {
+    [Flags]
     internal  enum ShowWindowCommands:int
     {
         /// <summary>

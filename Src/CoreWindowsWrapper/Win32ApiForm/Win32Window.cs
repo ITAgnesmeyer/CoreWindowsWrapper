@@ -33,8 +33,9 @@ namespace CoreWindowsWrapper.Win32ApiForm
         public int Top { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
+        private static IntPtr _LastMessageReturn = IntPtr.Zero;
         private readonly WndProc _DelegWndProc = MyWndProc;
-
+        public uint Styple{get;set;} = WindowStylesConst.WS_OVERLAPPEDWINDOW | WindowStylesConst.WS_VISIBLE;
         public Win32Window()
         {
             this.Name = "Win32WindowClass";
@@ -42,13 +43,17 @@ namespace CoreWindowsWrapper.Win32ApiForm
             this.Color = Win32Api.RGB(238,238,238);
         }
 
+        internal void Close()
+        {
+            Win32Api.SendMessage(this.Handle,WindowsMessages.WM_CLOSE);
+        }
         internal bool Create()
         {
            
             Wndclassex windClass = new Wndclassex
             {
                 cbSize = Marshal.SizeOf(typeof(Wndclassex)),
-                style = (int) (ClassStyles.CS_HREDRAW | ClassStyles.CS_VREDRAW | ClassStyles.CS_DBLCLKS),
+                style =(int)(ClassStyles.CS_HREDRAW | ClassStyles.CS_VREDRAW | ClassStyles.CS_DBLCLKS ),
                 hbrBackground = Win32Api.GetStockObject(StockObjects.WHITE_BRUSH),
                 cbClsExtra = 0,
                 cbWndExtra = 0,
@@ -80,9 +85,9 @@ namespace CoreWindowsWrapper.Win32ApiForm
             //IntPtr hWnd = CreateWindowEx(0, wind_class.lpszClassName, "MyWnd", WS_OVERLAPPEDWINDOW | WS_VISIBLE, 0, 0, 30, 40, IntPtr.Zero, IntPtr.Zero, wind_class.hInstance, IntPtr.Zero);
 
             //This version worked and resulted in a non-zero hWnd
-            IntPtr hWnd = Win32Api.CreateWindowEx(0,
+            IntPtr hWnd = Win32Api.CreateWindowEx((int)WindowStylesConst.WS_EX_APPWINDOW,
                 wndClass,
-                this.Text, WindowStylesConst.WS_OVERLAPPEDWINDOW | WindowStylesConst.WS_VISIBLE
+                this.Text, this.Styple
                 , this.Left, this.Top, this.Width, this.Height, IntPtr.Zero, IntPtr.Zero
                 , windClass.hInstance, IntPtr.Zero);
 
@@ -93,14 +98,15 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 return false;
             }
 
-            Win32Api.ShowWindowAsync(hWnd, (int) ShowWindowCommands.Show);
-            Win32Api.UpdateWindow(hWnd);
+          
 
             if (WindowList.ContainsKey(this.Handle))
                 WindowList.Remove(this.Handle);
 
             WindowList.Add(this.Handle, this);
 
+            Win32Api.ShowWindowAsync(hWnd, (int) ShowWindowCommands.Show);
+            Win32Api.UpdateWindow(hWnd);
             if (!this.IsMainWindow)
             {
                 //The explicit message pump is not necessary, messages are obviously dispatched by the framework.
@@ -145,7 +151,11 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
                 default:
                     if (!InvokeEvent(msg, hWnd,wParam , lParam))
-                        return Win32Api.DefWindowProc(hWnd, msg, wParam, lParam);
+                            return Win32Api.DefWindowProc(hWnd, msg, wParam, lParam);
+                    else
+                        if(_LastMessageReturn != IntPtr.Zero)
+                            return _LastMessageReturn;
+                        else
                     break;
             }
 
@@ -184,6 +194,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
         private static bool InvokeEvent(uint eventType, IntPtr hWnd,IntPtr wParam, IntPtr lParam)
         {
             bool handled = true;
+            _LastMessageReturn = IntPtr.Zero;
             Win32Window window;
             if (eventType == WindowsMessages.WM_CREATE)
             {
@@ -206,7 +217,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
                     }
 
                     window.OnCreate();
-
+                    _LastMessageReturn = new IntPtr(0);
                     break;
                 case WindowsMessages.WM_PAINT:
                     Paintstruct ps;
@@ -248,7 +259,35 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 case WindowsMessages.WM_HANDHELDFIRST:
                     window.OnCreate();
                     break;
+                case WindowsMessages.WM_CTLCOLORSTATIC:
+                    IntPtr staticCtlHdc = wParam;
+                    int staticControlId = Win32Api.GetDlgCtrlID(lParam);
+                    _LastMessageReturn = Win32Api.CreateSolidBrush(Tools.ColorTool.Yellow);
+                    if(window.Controls.ContainsKey(staticControlId))
+                    {
+                        IControl control = window.Controls[staticControlId];
+                        Win32Api.SetBkColor(staticCtlHdc, control.BackColor);
+                        IntPtr brush = Win32Api.CreateSolidBrush(control.BackColor);    
+                        _LastMessageReturn = brush;
+                    }
+                    
+                    handled = true;
+                    break;
 
+                case WindowsMessages.WM_CTLCOLORBTN:
+                    IntPtr btnCtlHdc = wParam;
+                    int btnControlId = Win32Api.GetDlgCtrlID(lParam);
+                    _LastMessageReturn = Win32Api.CreateSolidBrush(Tools.ColorTool.Yellow);
+                    if(window.Controls.ContainsKey(btnControlId))
+                    {
+                        IControl control = window.Controls[btnControlId];
+                        Win32Api.SetBkColor(btnCtlHdc, control.BackColor);
+                        IntPtr brush = Win32Api.CreateSolidBrush(control.BackColor);    
+                        _LastMessageReturn = brush;
+                    }
+                    
+                    handled = true;
+                    break;
                 case WindowsMessages.WM_COMMAND:
                     int controlId = Win32Api.LoWord(wParam.ToInt32());
                     uint command = (uint)Win32Api.HiWord(wParam.ToInt32());

@@ -83,15 +83,17 @@ namespace CoreWindowsWrapper.Api.Win32
         public static extern IntPtr CreateSolidBrush( int crColor );
 
 
-        [DllImport ("coredll.dll", EntryPoint="SetBkColor", SetLastError=true)]
+        [DllImport ("gdi32.dll", EntryPoint="SetBkColor", SetLastError=true)]
         public static extern uint SetBkColor(IntPtr hdc, int crColor);
 
-        [DllImport("coredll", EntryPoint="GetDC", SetLastError=true)]
+        [DllImport("user32.dll", EntryPoint="GetDC", SetLastError=true)]
         public static extern IntPtr GetDC(IntPtr hWnd);
 
-        [DllImport("coredll.dll", EntryPoint="ReleaseDC", SetLastError=true)]
+        [DllImport("user32.dll", EntryPoint="ReleaseDC", SetLastError=true)]
         public static extern int ReleaseDC(IntPtr hWnd, IntPtr hDC);
 
+        [DllImport("user32.dll")]
+        public static extern int GetDlgCtrlID(IntPtr hwndCtl);
 
         // ReSharper disable once InconsistentNaming
 
@@ -152,6 +154,9 @@ namespace CoreWindowsWrapper.Api.Win32
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         public static extern IntPtr SendMessage(IntPtr hWnd, int msg, int wParam, IntPtr lParam);
 
+         [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public static extern IntPtr SendMessage(IntPtr hWnd, uint msg, uint wParam = 0, uint lParam=0);
+
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         public static extern IntPtr SendMessage(IntPtr hWnd, int msg, int wParam,out HighLow lParam);
 
@@ -187,4 +192,35 @@ namespace CoreWindowsWrapper.Api.Win32
             return (IntPtr)((hiWord << 16) | (loWord & 0xffff));
         }
     }
+
+    internal static class ButtonStyples
+    {
+	    public const int BS_3STATE = 5;
+	    public const int BS_AUTO3STATE = 6;
+	    public const int BS_AUTOCHECKBOX = 3;
+	    public const int BS_AUTORADIOBUTTON = 9;
+	    public const int BS_BITMAP = 128;
+	    public const int BS_BOTTOM = 0x800;
+	    public const int BS_CENTER = 0x300;
+	    public const int BS_CHECKBOX = 2;
+	    public const int BS_DEFPUSHBUTTON = 1;
+	    public const int BS_GROUPBOX = 7;
+	    public const int BS_ICON = 64;
+	    public const int BS_LEFT = 256;
+	    public const int BS_LEFTTEXT = 32;
+	    public const int BS_MULTILINE = 0x2000;
+	    public const int BS_NOTIFY = 0x4000;
+	    public const int BS_OWNERDRAW = 0xB;
+	    public const int BS_PUSHBUTTON = 0;
+	    public const int BS_PUSHLIKE = 4096;
+	    public const int BS_RADIOBUTTON = 4;
+	    public const int BS_RIGHT = 512;
+	    public const int BS_RIGHTBUTTON = 32;
+	    public const int BS_TEXT = 0;
+	    public const int BS_TOP = 0x400;
+	    public const int BS_USERBUTTON = 8;
+	    public const int BS_VCENTER = 0xC00;
+	    public const int BS_FLAT = 0x8000;
+    }
+
 }

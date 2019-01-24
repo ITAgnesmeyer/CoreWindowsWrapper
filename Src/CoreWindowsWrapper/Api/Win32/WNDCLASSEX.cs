@@ -9,7 +9,7 @@ namespace CoreWindowsWrapper.Api.Win32
         [MarshalAs(UnmanagedType.U4)]
         public int cbSize;
         [MarshalAs(UnmanagedType.U4)]
-        public int style;
+        public uint style;
         public IntPtr lpfnWndProc;
         public int cbClsExtra;
         public int cbWndExtra;

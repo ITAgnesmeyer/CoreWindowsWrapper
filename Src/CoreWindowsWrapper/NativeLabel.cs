@@ -11,6 +11,7 @@ namespace CoreWindowsWrapper
         {
             base.Initialize();
             this.TypeBezeichner = "static";
+            this.BackColor = Tools.ColorTool.White;
         }
 
         public override string Text

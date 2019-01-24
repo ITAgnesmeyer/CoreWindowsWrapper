@@ -156,7 +156,7 @@ namespace ConsleCaller
         private void Window1_Create(object sender, CreateEventArgs e)
         {
             this._Button.Text = "halllo";
-            MessageBox.Show("OnCreate");
+            //MessageBox.Show("OnCreate");
         }
 
         private void Window1_DblClick(object sender, MouseClickEventArgs e)

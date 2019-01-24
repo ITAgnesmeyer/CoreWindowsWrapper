@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
 using CoreWindowsWrapper.Api.Win32;
 using CoreWindowsWrapper.Win32ApiForm;
 
@@ -31,6 +28,11 @@ namespace CoreWindowsWrapper
         protected NativeWindow()
         {
             Initialize();
+        }
+        
+        public void Close()
+        {
+             this._Window.Close();
         }
 
         public IntPtr ParentHandle { get; set; }
@@ -92,7 +94,7 @@ namespace CoreWindowsWrapper
         private void Initialize()
         {
             this._Window = new Win32Window();
-            
+            this._Window.Styple =   WindowStylesConst.WS_CAPTION | WindowStylesConst.WS_SYSMENU | WindowStylesConst.WS_EX_STATICEDGE;
 
             this._Window.CreateForm += OnCreateForm;
             this._Window.DoubleClick += OnFormDoubleClick;
