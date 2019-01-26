@@ -13,6 +13,13 @@ Go into the Publish-Folder and modify the EXE SUBSYSTEM. This changes the Comsol
 ```batch
  editbin.exe ConsleCaller.exe /SUBSYSTEM:WINDOWS
 ```
+If you want to enable vusual Styles you can use MT.EXE
+
+```batch
+ mt.exe -manifest app.manifest -outputresource:ConsoleCaller.exe;#1
+ ```
+
+
 
 #### Create a Native Window
 Create a new Class derive from NativeWindow
