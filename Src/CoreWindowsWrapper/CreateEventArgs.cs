@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CoreWindowsWrapper.Win32ApiForm
+namespace CoreWindowsWrapper
 {
     [Serializable]
     public class CreateEventArgs: EventArgs

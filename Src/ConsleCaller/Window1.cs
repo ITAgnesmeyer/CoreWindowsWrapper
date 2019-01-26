@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Drawing;
 using CoreWindowsWrapper;
 using CoreWindowsWrapper.Tools;
-using CoreWindowsWrapper.Win32ApiForm;
 
 
 namespace ConsleCaller
@@ -31,7 +30,7 @@ namespace ConsleCaller
             this.Width = 600;
             this.Height = 400;
             //this.BackColor = ColorTool.LightGray;
-            this.BackColor = ColorTool.RGB(125,125,125);
+            this.BackColor = ColorTool.Rgb(125,125,125);
             this._Button = new NativeButton
             {
                 Left = 10,

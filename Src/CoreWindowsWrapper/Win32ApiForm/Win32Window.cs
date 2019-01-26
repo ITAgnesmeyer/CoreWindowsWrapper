@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel.Design;
 using System.Diagnostics;
-using System.Drawing;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using CoreWindowsWrapper.Api.Win32;
 using Point = CoreWindowsWrapper.Api.Win32.Point;
@@ -33,9 +29,9 @@ namespace CoreWindowsWrapper.Win32ApiForm
         public int Top { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
-        private static IntPtr _LastMessageReturn = IntPtr.Zero;
-        private readonly WndProc _DelegWndProc = MyWndProc;
-        public uint Styple{get;set;} = WindowStylesConst.WS_OVERLAPPEDWINDOW | WindowStylesConst.WS_VISIBLE;
+        private static IntPtr _lastMessageReturn = IntPtr.Zero;
+        private readonly WndProc _DelegateWndProc = MyWndProc;
+        public uint Style{get;set;} = WindowStylesConst.WS_OVERLAPPEDWINDOW | WindowStylesConst.WS_VISIBLE;
         public Win32Window()
         {
             this.Name = "Win32WindowClass";
@@ -61,12 +57,12 @@ namespace CoreWindowsWrapper.Win32ApiForm
             };
             //Doubleclicks are active
             //Black background, +1 is necessary
-            ; // alternative: Process.GetCurrentProcess().Handle;
+            // alternative: Process.GetCurrentProcess().Handle;
             windClass.hIcon = IntPtr.Zero;
             windClass.hCursor = Win32Api.LoadCursor(IntPtr.Zero, (int) Win32ApiCursors.IDC_ARROW); // Crosshair cursor;
             windClass.lpszMenuName = null;
             windClass.lpszClassName = this.Name;
-            windClass.lpfnWndProc = Marshal.GetFunctionPointerForDelegate(this._DelegWndProc);
+            windClass.lpfnWndProc = Marshal.GetFunctionPointerForDelegate(this._DelegateWndProc);
             windClass.hIconSm = IntPtr.Zero;
             windClass.hbrBackground = Win32Api.CreateSolidBrush(this.Color);
             this.WindowClass = windClass;
@@ -87,7 +83,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
             //This version worked and resulted in a non-zero hWnd
             IntPtr hWnd = Win32Api.CreateWindowEx((int)WindowStylesConst.WS_EX_APPWINDOW,
                 wndClass,
-                this.Text, this.Styple
+                this.Text, this.Style
                 , this.Left, this.Top, this.Width, this.Height, IntPtr.Zero, IntPtr.Zero
                 , windClass.hInstance, IntPtr.Zero);
 
@@ -153,8 +149,8 @@ namespace CoreWindowsWrapper.Win32ApiForm
                     if (!InvokeEvent(msg, hWnd,wParam , lParam))
                             return Win32Api.DefWindowProc(hWnd, msg, wParam, lParam);
                     else
-                        if(_LastMessageReturn != IntPtr.Zero)
-                            return _LastMessageReturn;
+                        if(_lastMessageReturn != IntPtr.Zero)
+                            return _lastMessageReturn;
                         else
                     break;
             }
@@ -194,7 +190,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
         private static bool InvokeEvent(uint eventType, IntPtr hWnd,IntPtr wParam, IntPtr lParam)
         {
             bool handled = true;
-            _LastMessageReturn = IntPtr.Zero;
+            _lastMessageReturn = IntPtr.Zero;
             Win32Window window;
             if (eventType == WindowsMessages.WM_CREATE)
             {
@@ -217,7 +213,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
                     }
 
                     window.OnCreate();
-                    _LastMessageReturn = new IntPtr(0);
+                    _lastMessageReturn = new IntPtr(0);
                     break;
                 case WindowsMessages.WM_PAINT:
                     Paintstruct ps;
@@ -262,13 +258,13 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 case WindowsMessages.WM_CTLCOLORSTATIC:
                     IntPtr staticCtlHdc = wParam;
                     int staticControlId = Win32Api.GetDlgCtrlID(lParam);
-                    _LastMessageReturn = Win32Api.CreateSolidBrush(Tools.ColorTool.Yellow);
+                    _lastMessageReturn = Win32Api.CreateSolidBrush(Tools.ColorTool.Yellow);
                     if(window.Controls.ContainsKey(staticControlId))
                     {
                         IControl control = window.Controls[staticControlId];
                         Win32Api.SetBkColor(staticCtlHdc, control.BackColor);
                         IntPtr brush = Win32Api.CreateSolidBrush(control.BackColor);    
-                        _LastMessageReturn = brush;
+                        _lastMessageReturn = brush;
                     }
                     
                     handled = true;
@@ -277,13 +273,13 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 case WindowsMessages.WM_CTLCOLORBTN:
                     IntPtr btnCtlHdc = wParam;
                     int btnControlId = Win32Api.GetDlgCtrlID(lParam);
-                    _LastMessageReturn = Win32Api.CreateSolidBrush(Tools.ColorTool.Yellow);
+                    _lastMessageReturn = Win32Api.CreateSolidBrush(Tools.ColorTool.Yellow);
                     if(window.Controls.ContainsKey(btnControlId))
                     {
                         IControl control = window.Controls[btnControlId];
                         Win32Api.SetBkColor(btnCtlHdc, control.BackColor);
                         IntPtr brush = Win32Api.CreateSolidBrush(control.BackColor);    
-                        _LastMessageReturn = brush;
+                        _lastMessageReturn = brush;
                     }
                     
                     handled = true;

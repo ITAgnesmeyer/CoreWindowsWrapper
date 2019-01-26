@@ -1,9 +1,10 @@
 ﻿using System;
+// ReSharper disable InconsistentNaming
 
 namespace CoreWindowsWrapper.Api.Win32
 {
     [Flags]
-    enum WindowStyles : uint
+    internal enum WindowStyles : uint
     {
         WS_OVERLAPPED = 0x00000000,
         WS_POPUP = 0x80000000,

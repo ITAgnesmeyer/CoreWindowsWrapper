@@ -10,13 +10,13 @@ namespace CoreWindowsWrapper
         protected override void Initialize()
         {
             base.Initialize();
-            this.TypeBezeichner = "static";
+            this.TypeIdentifier = "static";
             this.BackColor = Tools.ColorTool.White;
         }
 
         public override string Text
         {
-            get { return Win32Api.GetWindowTextRaw(this.Handle); }
+            get => Win32Api.GetWindowTextRaw(this.Handle);
             set
             {
                 base.Text = value;

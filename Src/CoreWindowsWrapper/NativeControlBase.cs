@@ -31,10 +31,10 @@ namespace CoreWindowsWrapper
             this._Control.Create(parentHandle);
         }
 
-        internal string TypeBezeichner
+        internal string TypeIdentifier
         {
-            get => this._Control.TypeBezeichner;
-            set => this._Control.TypeBezeichner = value;
+            get => this._Control.TypeIdentifyer;
+            set => this._Control.TypeIdentifyer = value;
         }
 
         internal CommonControls CommonControlType
@@ -76,8 +76,8 @@ namespace CoreWindowsWrapper
 
         public int BackColor
         {
-            get { return this._Control.BackColor; }
-            set { this._Control.BackColor = value; }
+            get => this._Control.BackColor;
+            set => this._Control.BackColor = value;
         }
 
         public int Left

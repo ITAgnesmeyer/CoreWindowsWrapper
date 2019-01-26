@@ -34,6 +34,6 @@ namespace CoreWindowsWrapper
         DefaultDesktopOnly = 0x020000,
         Topmost = 0x040000,
         Right = 0x080000,
-        RTLReading = 0x100000
+        RtlReading = 0x100000
     }
 }

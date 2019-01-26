@@ -1,4 +1,5 @@
-﻿namespace CoreWindowsWrapper.Api.Win32
+﻿// ReSharper disable InconsistentNaming
+namespace CoreWindowsWrapper.Api.Win32
 {
     public static class ButtonMessages
     {

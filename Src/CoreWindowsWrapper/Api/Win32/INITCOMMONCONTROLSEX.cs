@@ -8,6 +8,7 @@ namespace CoreWindowsWrapper.Api.Win32
     [StructLayout(LayoutKind.Sequential)]
     public struct INITCOMMONCONTROLSEX
     {
+        // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
         private int dwSize;
         public uint dwICC;
 

@@ -4,43 +4,43 @@ namespace CoreWindowsWrapper.Tools
 {
     public static class ColorTool
     {
-        public static  int White => RGB(255, 255, 255);
-        public static int Black=>RGB(0,0,0);
-        public static int Read=>RGB(255,0,0);
-        public static int Green=>RGB(0,255,0);
-        public static int Blue=>RGB(0,0,255);
-        public static int Yellow=>RGB(255,255,0);
-        public static int LightGray=>RGB(224,224,224);
-        public static int Gray=>RGB(128,128,128);
+        public static  int White => Rgb(255, 255, 255);
+        public static int Black=>Rgb(0,0,0);
+        public static int Read=>Rgb(255,0,0);
+        public static int Green=>Rgb(0,255,0);
+        public static int Blue=>Rgb(0,0,255);
+        public static int Yellow=>Rgb(255,255,0);
+        public static int LightGray=>Rgb(224,224,224);
+        public static int Gray=>Rgb(128,128,128);
 
 
-         public static int RGB(int Red, int Green, int Blue)
+         public static int Rgb(int red, int green, int blue)
         {
-            if ((Red & -2147483648) != 0)
+            if ((red & -2147483648) != 0)
             {
                 throw new ArgumentException("invalid Read Value");
             }
-            if ((Green & -2147483648) != 0)
+            if ((green & -2147483648) != 0)
             {
                 throw new ArgumentException("Invalid Green Value" );
             }
-            if ((Blue & -2147483648) != 0)
+            if ((blue & -2147483648) != 0)
             {
                 throw new ArgumentException("Invalid Blue Value" );
             }
-            if (Red > 255)
+            if (red > 255)
             {
-                Red = 255;
+                red = 255;
             }
-            if (Green > 255)
+            if (green > 255)
             {
-                Green = 255;
+                green = 255;
             }
-            if (Blue > 255)
+            if (blue > 255)
             {
-                Blue = 255;
+                blue = 255;
             }
-            return Api.Win32.Win32Api.RGB(Red,Green,Blue);
+            return Api.Win32.Win32Api.RGB(red,green,blue);
         }
 
     }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net.Mime;
 using CoreWindowsWrapper.Api.Win32;
 
 namespace CoreWindowsWrapper
@@ -10,13 +9,13 @@ namespace CoreWindowsWrapper
         protected override void Initialize()
         {
             base.Initialize();
-            this.TypeBezeichner = "edit";
+            this.TypeIdentifier = "edit";
             
         }
 
         public override  string Text
         {
-            get { return Win32Api.GetWindowTextRaw(this.Handle); }
+            get => Win32Api.GetWindowTextRaw(this.Handle);
             set
             {
                 base.Text = value;
@@ -28,18 +27,18 @@ namespace CoreWindowsWrapper
 
         protected override bool ControlProc(IntPtr hWndParent, IntPtr hWndControl, int controlId, uint command, IntPtr wParam, IntPtr lParam)
         {
-            bool handeld = false;
+            bool handled = false;
             switch (command)
             {
                 case EditBoxMessaes.EN_CHANGE:
                     OnChange();
-                    handeld = true;
+                    handled = true;
                     break;
                
 
             }
 
-            return handeld;
+            return handled;
 
         }
 

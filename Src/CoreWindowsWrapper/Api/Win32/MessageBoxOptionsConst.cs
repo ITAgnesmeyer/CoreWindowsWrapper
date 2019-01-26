@@ -1,4 +1,5 @@
-﻿namespace CoreWindowsWrapper.Api.Win32
+﻿// ReSharper disable InconsistentNaming
+namespace CoreWindowsWrapper.Api.Win32
 {
     ///<summary>
     /// Flags that define appearance and behaviour of a standard message box displayed by a call to the MessageBox function.

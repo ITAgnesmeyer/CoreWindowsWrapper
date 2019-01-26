@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Text;
 using CoreWindowsWrapper.Api.Win32;
-using CoreWindowsWrapper.Win32ApiForm;
 
 namespace CoreWindowsWrapper
 {

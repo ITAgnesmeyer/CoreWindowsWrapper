@@ -1,10 +1,9 @@
 ﻿using System;
 using CoreWindowsWrapper;
-using CoreWindowsWrapper.Win32ApiForm;
 
 namespace DIGAAppSetup
 {
-    internal partial class MainForm:NativeWindow
+    internal partial class MainForm : NativeWindow
     {
         public MainForm()
         {
@@ -71,7 +70,7 @@ namespace DIGAAppSetup
             this._LabelDescription.Text = "Do you want to start the Installation?";
             this._LabelDescription.Name = "LabelDescription";
             this._LabelDescription.ControlId = 502;
-            
+
 
             this._MainProgress.Left = 12;
             this._MainProgress.Top = 161;
@@ -79,7 +78,7 @@ namespace DIGAAppSetup
             this._MainProgress.Height = 14;
             this._MainProgress.ControlId = 503;
             this._MainProgress.Name = "MainProgress";
-            
+
             this._SecondProgress.Left = 12;
             this._SecondProgress.Top = 191;
             this._SecondProgress.Width = 498;
@@ -94,9 +93,9 @@ namespace DIGAAppSetup
             this._CancelButton.Text = "Cancel";
             this._CancelButton.ControlId = 505;
             this._CancelButton.Name = "CancelButton";
-           
+
             this._CancelButton.Clicked += CancelButton_Clicked;
-            this._OkButton.Left= 418;
+            this._OkButton.Left = 418;
             this._OkButton.Top = 220;
             this._OkButton.Width = 92;
             this._OkButton.Height = 29;
@@ -110,13 +109,8 @@ namespace DIGAAppSetup
             this.Controls.Add(this._MainProgress);
             this.Controls.Add(this._SecondProgress);
             this.Controls.Add(this._CancelButton);
-            
+
             this.Controls.Add(this._OkButton);
-            
-            
-
         }
-
-      
     }
 }

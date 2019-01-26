@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+// ReSharper disable IdentifierTypo
 
 namespace CoreWindowsWrapper.Api.Win32
 {

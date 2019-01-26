@@ -93,8 +93,11 @@ namespace CoreWindowsWrapper
 
         private void Initialize()
         {
-            this._Window = new Win32Window();
-            this._Window.Styple =   WindowStylesConst.WS_CAPTION | WindowStylesConst.WS_SYSMENU | WindowStylesConst.WS_EX_STATICEDGE;
+            this._Window = new Win32Window
+            {
+                Style = WindowStylesConst.WS_CAPTION | WindowStylesConst.WS_SYSMENU |
+                        WindowStylesConst.WS_EX_STATICEDGE
+            };
 
             this._Window.CreateForm += OnCreateForm;
             this._Window.DoubleClick += OnFormDoubleClick;

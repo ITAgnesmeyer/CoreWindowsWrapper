@@ -9,10 +9,10 @@ namespace CoreWindowsWrapper.Api.Win32
 
       public Rect(int left, int top, int right, int bottom)
       {
-        Left = left;
-        Top = top;
-        Right = right;
-        Bottom = bottom;
+        this.Left = left;
+        this.Top = top;
+        this.Right = right;
+        this.Bottom = bottom;
       }
 
       public Rect(System.Drawing.Rectangle r) : this(r.Left, r.Top, r.Right, r.Bottom)
@@ -21,53 +21,53 @@ namespace CoreWindowsWrapper.Api.Win32
 
       public int X
       {
-        get { return Left; }
+        get { return this.Left; }
         set
         {
-          Right -= (Left - value);
-          Left = value;
+          this.Right -= (this.Left - value);
+          this.Left = value;
         }
       }
 
       public int Y
       {
-        get { return Top; }
+        get { return this.Top; }
         set
         {
-          Bottom -= (Top - value);
-          Top = value;
+          this.Bottom -= (this.Top - value);
+          this.Top = value;
         }
       }
 
       public int Height
       {
-        get { return Bottom - Top; }
-        set { Bottom = value + Top; }
+        get { return this.Bottom - this.Top; }
+        set { this.Bottom = value + this.Top; }
       }
 
       public int Width
       {
-        get { return Right - Left; }
-        set { Right = value + Left; }
+        get { return this.Right - this.Left; }
+        set { this.Right = value + this.Left; }
       }
 
       public System.Drawing.Point Location
       {
-        get { return new System.Drawing.Point(Left, Top); }
+        get { return new System.Drawing.Point(this.Left, this.Top); }
         set
         {
-          X = value.X;
-          Y = value.Y;
+          this.X = value.X;
+          this.Y = value.Y;
         }
       }
 
       public System.Drawing.Size Size
       {
-        get { return new System.Drawing.Size(Width, Height); }
+        get { return new System.Drawing.Size(this.Width, this.Height); }
         set
         {
-          Width = value.Width;
-          Height = value.Height;
+          this.Width = value.Width;
+          this.Height = value.Height;
         }
       }
 
@@ -93,7 +93,7 @@ namespace CoreWindowsWrapper.Api.Win32
 
       public bool Equals(Rect r)
       {
-        return r.Left == Left && r.Top == Top && r.Right == Right && r.Bottom == Bottom;
+        return r.Left == this.Left && r.Top == this.Top && r.Right == this.Right && r.Bottom == this.Bottom;
       }
 
       public override bool Equals(object obj)
@@ -113,7 +113,7 @@ namespace CoreWindowsWrapper.Api.Win32
       public override string ToString()
       {
         return string.Format(System.Globalization.CultureInfo.CurrentCulture,
-          "{{Left={0},Top={1},Right={2},Bottom={3}}}", Left, Top, Right, Bottom);
+          "{{Left={0},Top={1},Right={2},Bottom={3}}}", this.Left, this.Top, this.Right, this.Bottom);
       }
     }
 
