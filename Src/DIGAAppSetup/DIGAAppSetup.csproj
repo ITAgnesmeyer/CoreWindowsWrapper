@@ -6,6 +6,10 @@
     <ApplicationIcon>Firmen_Emblem.ico</ApplicationIcon>
     <StartupObject>DIGAAppSetup.Program</StartupObject>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>guido.agnesmeyer.com.pfx</AssemblyOriginatorKeyFile>
+    <DelaySign>false</DelaySign>
   </PropertyGroup>
 
   <ItemGroup>
