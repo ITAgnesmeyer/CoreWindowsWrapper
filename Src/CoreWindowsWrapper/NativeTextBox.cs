@@ -10,6 +10,8 @@ namespace CoreWindowsWrapper
         {
             base.Initialize();
             this.TypeIdentifier = "edit";
+            this.BackColor = Tools.ColorTool.White;
+            this.ForeColor = Tools.ColorTool.Black;
             
         }
 

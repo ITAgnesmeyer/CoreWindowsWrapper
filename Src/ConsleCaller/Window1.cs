@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Drawing;
 using CoreWindowsWrapper;
 using CoreWindowsWrapper.Tools;
 
@@ -21,7 +20,7 @@ namespace ConsleCaller
 
         protected override  void InitControls()
         {
-            ColorConverter c = new ColorConverter();
+           
             
             this.Text = "Dies ist meine Anwnedung";
             this.Name = "Window1";
@@ -67,7 +66,6 @@ namespace ConsleCaller
                 Height = 30,
                 Text = "ATEST",
                 Name = "txtTest",
-                ForeColor = ColorTool.White,
                 ControlId = 502
             };
             this._TextBox.Change += TextBox_Change;
@@ -92,8 +90,8 @@ namespace ConsleCaller
                 Width = 100,
                 Height = 30,
                 Text = "Dies ist ein Label",
-                BackColor=ColorTool.Read,
-                ForeColor = ColorTool.Green,
+                //BackColor=ColorTool.Read,
+                //ForeColor = ColorTool.Green,
                 ControlId = 504
                 
             };
