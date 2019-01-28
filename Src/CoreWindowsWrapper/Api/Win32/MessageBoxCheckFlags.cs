@@ -3,7 +3,7 @@ namespace CoreWindowsWrapper.Api.Win32
 {
     public static class MessageBoxCheckFlags 
     {
-        public const uint MB_OK             = 0x00000000,
+        internal const uint MB_OK             = 0x00000000,
             MB_OKCANCEL           = 0x00000001,
             MB_YESNO          = 0x00000004,
             MB_ICONHAND           = 0x00000010,

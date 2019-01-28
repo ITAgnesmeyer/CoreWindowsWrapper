@@ -60,7 +60,8 @@ namespace DIGAAppSetup
             this._LabelCaption.Width = 498;
             this._LabelCaption.Height = 49;
             this._LabelCaption.Text = "Welcome to the Setup &s";
-            this.Name = "LabelCaption";
+            this._LabelCaption.Name = "LabelCaption";
+            this._LabelCaption.ForeColor = CoreWindowsWrapper.Tools.ColorTool.Blue;
             this._LabelCaption.ControlId = 501;
 
             this._LabelDescription.Left = 12;
@@ -93,6 +94,8 @@ namespace DIGAAppSetup
             this._CancelButton.Text = "Cancel";
             this._CancelButton.ControlId = 505;
             this._CancelButton.Name = "CancelButton";
+            this._CancelButton.BackColor = CoreWindowsWrapper.Tools.ColorTool.Green;
+            this._CancelButton.ForeColor = CoreWindowsWrapper.Tools.ColorTool.Read;
 
             this._CancelButton.Clicked += CancelButton_Clicked;
             this._OkButton.Left = 418;

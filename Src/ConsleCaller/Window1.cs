@@ -40,6 +40,7 @@ namespace ConsleCaller
                 Text = "Test",
                 Name = "bnTest",
                 BackColor=ColorTool.Blue,
+                ForeColor = ColorTool.Green,
                 ControlId = 501
             };
 
@@ -66,6 +67,7 @@ namespace ConsleCaller
                 Height = 30,
                 Text = "ATEST",
                 Name = "txtTest",
+                ForeColor = ColorTool.White,
                 ControlId = 502
             };
             this._TextBox.Change += TextBox_Change;
@@ -91,6 +93,7 @@ namespace ConsleCaller
                 Height = 30,
                 Text = "Dies ist ein Label",
                 BackColor=ColorTool.Read,
+                ForeColor = ColorTool.Green,
                 ControlId = 504
                 
             };

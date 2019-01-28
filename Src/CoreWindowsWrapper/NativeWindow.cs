@@ -81,6 +81,8 @@ namespace CoreWindowsWrapper
 
         public Point Location { get; set; }
         public int ControlId { get; set; } = -1;
+        public int ForeColor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         bool IControl.Create(IntPtr parentId)
         {
             throw new NotImplementedException();

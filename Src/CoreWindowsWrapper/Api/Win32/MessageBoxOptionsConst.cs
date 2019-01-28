@@ -7,7 +7,7 @@ namespace CoreWindowsWrapper.Api.Win32
    
     public static class MessageBoxOptionsConst
     {
-        public const uint 
+        internal const uint 
             OkOnly = 0x000000,
             OkCancel = 0x000001,
             AbortRetryIgnore = 0x000002,

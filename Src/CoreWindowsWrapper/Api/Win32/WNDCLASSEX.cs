@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 namespace CoreWindowsWrapper.Api.Win32
 {
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-    public struct Wndclassex
+    internal struct Wndclassex
     {
         [MarshalAs(UnmanagedType.U4)]
         public int cbSize;

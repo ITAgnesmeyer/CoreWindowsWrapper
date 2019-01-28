@@ -17,6 +17,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
         public string TypeIdentifyer { get; set; }
         public int ControlId { get; set; }
         public int BackColor { get; set; }
+        public int ForeColor{get;set;}
         public CommonControls CommonControType { get; set; } = CommonControls.ICC_UNDEFINED;
         public uint Style { get; set; } =
             (WindowStylesConst.WS_VISIBLE | WindowStylesConst.WS_CHILD | WindowStylesConst.WS_TABSTOP);
@@ -43,18 +44,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 this.Width, this.Height, this.ParentHandle,
                 (IntPtr) this.ControlId, IntPtr.Zero, IntPtr.Zero);
 
-            
-            if (this.BackColor != 0)
-            {
-                //IntPtr hDc = Win32Api.GetDC(this.Handle);
-                //Win32Api.SetBkColor(hDc, this.BackColor);
-                //Win32Api.ReleaseDC(this.Handle, hDc);
-                
-               
-
-            }
-
-            //Win32Api.ShowWindow(this.Handle,(int)ShowWindowCommands.Show);
+     
             return true;
 
         }

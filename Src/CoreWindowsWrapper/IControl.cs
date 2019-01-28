@@ -9,6 +9,7 @@ namespace CoreWindowsWrapper
         string Name { get; set; }
         string Text { get; set; }
         int BackColor { get; set; }
+        int ForeColor{get;set;}
         int Left { get; set; }
         int Top { get; set; }
         int Width { get; set; }

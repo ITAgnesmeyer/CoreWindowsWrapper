@@ -88,6 +88,9 @@ namespace CoreWindowsWrapper.Api.Win32
         [DllImport ("gdi32.dll", EntryPoint="SetBkColor", SetLastError=true)]
         public static extern uint SetBkColor(IntPtr hdc, int crColor);
 
+        [DllImport("gdi32.dll")]
+        public static extern uint SetTextColor(IntPtr hdc, int crColor);
+
         [DllImport("user32.dll", EntryPoint="GetDC", SetLastError=true)]
         public static extern IntPtr GetDC(IntPtr hWnd);
 
@@ -128,11 +131,29 @@ namespace CoreWindowsWrapper.Api.Win32
         [DllImport("kernel32.dll")]
         public static extern ushort GetSystemDefaultLangID();
 
+        [DllImport("user32.dll", SetLastError=true)]
+        public static extern bool GetWindowRect(IntPtr hwnd, out Rect lpRect);
+
         [DllImport("gdi32.dll")]
         public static extern IntPtr GetStockObject(StockObjects fnObject);
 
         [DllImport("user32.dll")]
         public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
+        
+        [DllImport("User32.dll", SetLastError=true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, uint uFlags);
+
+        [DllImport("User32.dll", SetLastError=true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, SetWindowPosFlags uFlags);
+
+
+        [DllImport("user32.dll")]
+        public static extern int GetSystemMetrics(SystemMetric smIndex);
+
+        [DllImport("user32.dll")]
+        public static extern int GetSystemMetrics(int smIndex);
 
 
         [DllImport("user32.dll")]
@@ -194,4 +215,6 @@ namespace CoreWindowsWrapper.Api.Win32
             return (IntPtr)((hiWord << 16) | (loWord & 0xffff));
         }
     }
+
+
 }

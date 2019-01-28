@@ -102,7 +102,13 @@ namespace CoreWindowsWrapper.Win32ApiForm
             WindowList.Add(this.Handle, this);
 
             Win32Api.ShowWindowAsync(hWnd, (int) ShowWindowCommands.Show);
+            Rect rect;
+            Win32Api.GetWindowRect(hWnd, out rect);
+            int xPos = (Win32Api.GetSystemMetrics(SystemMetric.SM_CXSCREEN) - rect.Right)/2;
+            int yPos = (Win32Api.GetSystemMetrics(SystemMetric.SM_CYSCREEN) - rect.Bottom)/2;
+            
             Win32Api.UpdateWindow(hWnd);
+            Win32Api.SetWindowPos(this.Handle, (IntPtr) 0,xPos,yPos,0,0,(uint)(SetWindowPosFlags.IgnoreResize | SetWindowPosFlags.IgnoreZOrder));
             if (!this.IsMainWindow)
             {
                 //The explicit message pump is not necessary, messages are obviously dispatched by the framework.
@@ -134,7 +140,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 case WindowsMessages.WM_CLOSE:
                     InvokeEvent(msg, hWnd,wParam , lParam );
                     SetWindowDestroyed(hWnd);
-
+                    
 
                     break;
 
@@ -255,13 +261,28 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 case WindowsMessages.WM_HANDHELDFIRST:
                     window.OnCreate();
                     break;
+                case WindowsMessages.WM_CTLCOLOREDIT:
+                    IntPtr editCtlHdc = wParam;
+                    int editControlId = Win32Api.GetDlgCtrlID(lParam);
+                    _lastMessageReturn = Win32Api.CreateSolidBrush(Tools.ColorTool.White);
+                     if(window.Controls.ContainsKey(editControlId))
+                    {
+                        IControl control = window.Controls[editControlId];
+                        Win32Api.SetTextColor(editCtlHdc, control.ForeColor);
+                        Win32Api.SetBkColor(editCtlHdc, control.BackColor);
+                        IntPtr brush = Win32Api.CreateSolidBrush(control.BackColor);    
+                        _lastMessageReturn = brush;
+                    }
+                    handled = true;
+                    break;
                 case WindowsMessages.WM_CTLCOLORSTATIC:
                     IntPtr staticCtlHdc = wParam;
                     int staticControlId = Win32Api.GetDlgCtrlID(lParam);
-                    _lastMessageReturn = Win32Api.CreateSolidBrush(Tools.ColorTool.Yellow);
+                    _lastMessageReturn = Win32Api.CreateSolidBrush(Tools.ColorTool.White);
                     if(window.Controls.ContainsKey(staticControlId))
                     {
                         IControl control = window.Controls[staticControlId];
+                        Win32Api.SetTextColor(staticCtlHdc, control.ForeColor);
                         Win32Api.SetBkColor(staticCtlHdc, control.BackColor);
                         IntPtr brush = Win32Api.CreateSolidBrush(control.BackColor);    
                         _lastMessageReturn = brush;
@@ -273,10 +294,11 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 case WindowsMessages.WM_CTLCOLORBTN:
                     IntPtr btnCtlHdc = wParam;
                     int btnControlId = Win32Api.GetDlgCtrlID(lParam);
-                    _lastMessageReturn = Win32Api.CreateSolidBrush(Tools.ColorTool.Yellow);
+                    _lastMessageReturn = Win32Api.CreateSolidBrush(Tools.ColorTool.White);
                     if(window.Controls.ContainsKey(btnControlId))
                     {
                         IControl control = window.Controls[btnControlId];
+                        Win32Api.SetTextColor(btnCtlHdc, control.ForeColor);
                         Win32Api.SetBkColor(btnCtlHdc, control.BackColor);
                         IntPtr brush = Win32Api.CreateSolidBrush(control.BackColor);    
                         _lastMessageReturn = brush;

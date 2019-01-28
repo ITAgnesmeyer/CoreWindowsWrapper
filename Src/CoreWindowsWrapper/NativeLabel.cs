@@ -12,6 +12,7 @@ namespace CoreWindowsWrapper
             base.Initialize();
             this.TypeIdentifier = "static";
             this.BackColor = Tools.ColorTool.White;
+            this.ForeColor = Tools.ColorTool.Black;
         }
 
         public override string Text

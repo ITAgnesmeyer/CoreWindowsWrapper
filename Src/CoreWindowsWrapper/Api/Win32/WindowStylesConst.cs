@@ -2,7 +2,7 @@
 // ReSharper disable InconsistentNaming
 namespace CoreWindowsWrapper.Api.Win32
 {
-    public abstract class WindowStylesConst
+    internal abstract class WindowStylesConst
     {
         public const uint WS_OVERLAPPED = 0x00000000;
         public const uint WS_POPUP = 0x80000000;

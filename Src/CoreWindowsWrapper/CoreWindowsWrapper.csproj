@@ -9,7 +9,21 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Dipl.-Ing.(FH) Guido Agnesmeyer</Authors>
+    <RepositoryUrl>https://github.com/ITAgnesmeyer/CoreWindowsWrapper.git</RepositoryUrl>
+    <PackageTags>dotnet-core</PackageTags>
+    <Description>CoreWindowsWrapper is a DLL you can use to create Core Applications showing Dialogs without using System.Windows.Forms. The Project uses the Windows - API to create Native Windows.</Description>
+    <Copyright>2019 Dipl.-Ing.(FH) Guido Agnesmeyer</Copyright>
+    <PackageLicenseUrl>https://github.com/ITAgnesmeyer/CoreWindowsWrapper/blob/master/LICENSE</PackageLicenseUrl>
+    <RepositoryType>GitHub</RepositoryType>
+    <PackageProjectUrl>https://github.com/ITAgnesmeyer/CoreWindowsWrapper</PackageProjectUrl>
+    <PackageIconUrl>https://github.com/ITAgnesmeyer/CoreWindowsWrapper/blob/master/Src/DIGAAppSetup/Firmen_Emblem.ico</PackageIconUrl>
+    <PackageReleaseNotes>First implementation.
+</PackageReleaseNotes>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

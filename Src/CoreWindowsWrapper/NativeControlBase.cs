@@ -116,6 +116,12 @@ namespace CoreWindowsWrapper
             set => this._Control.ControlId = value;
         }
 
+        public int ForeColor 
+        { 
+            get => this._Control.ForeColor; 
+            set => this._Control.ForeColor = value; 
+        }
+
         public bool Create(IntPtr parentId)
         {
             return this._Control.Create(parentId);

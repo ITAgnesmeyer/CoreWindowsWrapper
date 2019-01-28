@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace CoreWindowsWrapper.Api.Win32
 {
     [StructLayout(LayoutKind.Sequential)]
-    struct Paintstruct {
+    internal struct Paintstruct {
         public IntPtr hdc;
         public bool fErase;
         public Rect rcPaint;

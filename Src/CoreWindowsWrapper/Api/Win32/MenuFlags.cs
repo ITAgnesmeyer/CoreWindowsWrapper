@@ -4,7 +4,7 @@
 namespace CoreWindowsWrapper.Api.Win32
 {
     [Flags]
-    public enum MenuFlags : uint
+    internal enum MenuFlags : uint
     {
         MF_STRING = 0,
         MF_BYPOSITION = 0x400,
