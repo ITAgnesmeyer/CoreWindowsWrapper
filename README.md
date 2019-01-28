@@ -13,6 +13,25 @@ Go into the Publish-Folder and modify the EXE SUBSYSTEM. This changes the Comsol
 ```batch
  editbin.exe ConsleCaller.exe /SUBSYSTEM:WINDOWS
 ```
+If you want to enable vusual Styles you can use MT.EXE
+
+```batch
+ mt.exe -manifest app.manifest -outputresource:ConsoleCaller.exe;#1
+ ```
+#### Application with Styling enabled.
+If the application contains the Manifest it looks like this.
+
+![Application with Style](https://github.com/ITAgnesmeyer/CoreWindowsWrapper/blob/master/Pitures/Visual_Style_Styled.JPG)
+
+#### Application with Styling disabled.
+If you do not use MT.exe or do not include app.manifest in your Project. The application looks like this.
+
+![Application with Style](https://github.com/ITAgnesmeyer/CoreWindowsWrapper/blob/master/Pitures/Visual_Style_no_Style.JPG)
+
+
+
+
+
 
 #### Create a Native Window
 Create a new Class derive from NativeWindow
