@@ -29,6 +29,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
         public int Top { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
+        public string IconFile{get;set;}
         private static IntPtr _lastMessageReturn = IntPtr.Zero;
         private readonly WndProc _DelegateWndProc = MyWndProc;
         public uint Style{get;set;} = WindowStylesConst.WS_OVERLAPPEDWINDOW | WindowStylesConst.WS_VISIBLE;
@@ -58,7 +59,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
             //Doubleclicks are active
             //Black background, +1 is necessary
             // alternative: Process.GetCurrentProcess().Handle;
-            windClass.hIcon = IntPtr.Zero;
+            windClass.hIcon = Tools.ImageTool.SaveLoadImageFromFile(this.IconFile);
             windClass.hCursor = Win32Api.LoadCursor(IntPtr.Zero, (int) Win32ApiCursors.IDC_ARROW); // Crosshair cursor;
             windClass.lpszMenuName = null;
             windClass.lpszClassName = this.Name;

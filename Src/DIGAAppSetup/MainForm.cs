@@ -44,8 +44,8 @@ namespace DIGAAppSetup
             this._LabelDescription = new NativeLabel();
             this._MainProgress = new NativeProgress();
             this._SecondProgress = new NativeProgress();
-            this.Left = 100;
-            this.Top = 100;
+            //this.Left = 100;
+            //this.Top = 100;
 
             this.Width = 542;
             this.Height = 300;
@@ -53,6 +53,7 @@ namespace DIGAAppSetup
             this.ControlId = 500;
             this.Name = "MainForm";
             this.Text = "Welcome to the Setup";
+            this.IconFile = "app.ico";
             this.Create += MainFrom_Create;
             //_LabelCaption
             this._LabelCaption.Left = 12;
@@ -94,8 +95,8 @@ namespace DIGAAppSetup
             this._CancelButton.Text = "Cancel";
             this._CancelButton.ControlId = 505;
             this._CancelButton.Name = "CancelButton";
-            this._CancelButton.BackColor = CoreWindowsWrapper.Tools.ColorTool.Green;
-            this._CancelButton.ForeColor = CoreWindowsWrapper.Tools.ColorTool.Read;
+            //this._CancelButton.BackColor = CoreWindowsWrapper.Tools.ColorTool.Green;
+            //this._CancelButton.ForeColor = CoreWindowsWrapper.Tools.ColorTool.Read;
 
             this._CancelButton.Clicked += CancelButton_Clicked;
             this._OkButton.Left = 418;

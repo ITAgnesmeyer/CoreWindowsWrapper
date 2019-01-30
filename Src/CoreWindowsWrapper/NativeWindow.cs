@@ -81,12 +81,18 @@ namespace CoreWindowsWrapper
 
         public Point Location { get; set; }
         public int ControlId { get; set; } = -1;
+        public string IconFile
+        {
+            get => this._Window.IconFile;
+            set=> this._Window.IconFile = value;
+        }
         public int ForeColor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         bool IControl.Create(IntPtr parentId)
         {
             throw new NotImplementedException();
         }
+
 
         public bool HandleEvents(IntPtr hWndParent, IntPtr hWndControl, int controlId, uint command, IntPtr wParam, IntPtr lParam)
         {
@@ -95,11 +101,11 @@ namespace CoreWindowsWrapper
 
         private void Initialize()
         {
-            this._Window = new Win32Window
-            {
-                Style = WindowStylesConst.WS_CAPTION | WindowStylesConst.WS_SYSMENU |
-                        WindowStylesConst.WS_EX_STATICEDGE
-            };
+            this._Window = new Win32Window();
+            //{
+            //    Style = WindowStylesConst.WS_CAPTION | WindowStylesConst.WS_SYSMENU |
+            //            WindowStylesConst.WS_EX_STATICEDGE
+            //};
 
             this._Window.CreateForm += OnCreateForm;
             this._Window.DoubleClick += OnFormDoubleClick;

@@ -61,6 +61,18 @@ namespace CoreWindowsWrapper.Api.Win32
         [DllImport("user32.dll")]
         public static extern IntPtr LoadCursor(IntPtr hInstance, int lpCursorName);
 
+        /// Return Type: HANDLE->void*
+        ///hInst: HINSTANCE->HINSTANCE__*
+        ///name: LPCWSTR->WCHAR*
+        ///type: UINT->unsigned int
+        ///cx: int
+        ///cy: int
+        ///fuLoad: UINT->unsigned int
+        [DllImport("user32.dll", EntryPoint="LoadImageW")]
+        public static extern IntPtr LoadImage([In()] IntPtr hInst, [In()] [MarshalAs(UnmanagedType.LPWStr)] string name, uint type, int cx, int cy, uint fuLoad) ;
+
+
+
         [DllImport("user32.dll")]
         public static extern bool TranslateMessage([In] ref MSG lpMsg);
 
