@@ -21,7 +21,7 @@ If you want to enable vusual Styles you can use MT.EXE
 #### Application with Styling enabled.
 If the application contains the Manifest it looks like this.
 
-![Application with Style](https://github.com/ITAgnesmeyer/CoreWindowsWrapper/blob/master/Pitures/Visual_Style_Styled.JPG)
+![Application with Style](https://github.com/ITAgnesmeyer/CoreWindowsWrapper/blob/master/Pitures/windows_icon.JPG)
 
 #### Application with Styling disabled.
 If you do not use MT.exe or do not include app.manifest in your Project. The application looks like this.
