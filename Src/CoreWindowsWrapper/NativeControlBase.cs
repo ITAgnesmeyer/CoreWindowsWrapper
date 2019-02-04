@@ -4,9 +4,11 @@ using CoreWindowsWrapper.Win32ApiForm;
 
 namespace CoreWindowsWrapper
 {
+
     public class NativeControlBase : IControl
     {
         private Win32Control _Control;
+        internal virtual Win32Control Control { get => this._Control; set => this._Control = value; }
         public virtual  event EventHandler Clicked;
         public virtual  event EventHandler DblClicked;
         public NativeControlBase()
@@ -17,39 +19,39 @@ namespace CoreWindowsWrapper
 
         protected virtual  void Initialize()
         {
-            this._Control = new Win32Control();
+            this.Control = new Win32Control();
 
         }
 
         internal uint Style
         {
-            get => this._Control.Style;
-            set => this._Control.Style = value;
+            get => this.Control.Style;
+            set => this.Control.Style = value;
         }
         internal virtual void Show(IntPtr parentHandle)
         {
-            this._Control.Create(parentHandle);
+            this.Control.Create(parentHandle);
         }
 
         internal string TypeIdentifier
         {
-            get => this._Control.TypeIdentifyer;
-            set => this._Control.TypeIdentifyer = value;
+            get => this.Control.TypeIdentifyer;
+            set => this.Control.TypeIdentifyer = value;
         }
 
         internal CommonControls CommonControlType
         {
-            get => this._Control.CommonControType;
-            set => this._Control.CommonControType = value;
+            get => this.Control.CommonControType;
+            set => this.Control.CommonControType = value;
         }
 
         public IntPtr Handle
         {
             get
             {
-                if (this._Control != null)
+                if (this.Control != null)
                 {
-                    return this._Control.Handle;
+                    return this.Control.Handle;
                 }
 
                 return IntPtr.Zero;
@@ -58,73 +60,73 @@ namespace CoreWindowsWrapper
 
         public IntPtr ParentHandle
         {
-            get => this._Control.ParentHandle;
-            set => this._Control.ParentHandle = value;
+            get => this.Control.ParentHandle;
+            set => this.Control.ParentHandle = value;
         }
 
         public string Name
         {
-            get => this._Control.Name;
-            set => this._Control.Name = value;
+            get => this.Control.Name;
+            set => this.Control.Name = value;
         }
 
         public virtual  string Text
         {
-            get => this._Control.Text;
-            set => this._Control.Text = value;
+            get => this.Control.Text;
+            set => this.Control.Text = value;
         }
 
         public int BackColor
         {
-            get => this._Control.BackColor;
-            set => this._Control.BackColor = value;
+            get => this.Control.BackColor;
+            set => this.Control.BackColor = value;
         }
 
         public int Left
         {
-            get => this._Control.Left;
-            set => this._Control.Left = value;
+            get => this.Control.Left;
+            set => this.Control.Left = value;
         }
 
         public int Top
         {
-            get => this._Control.Top;
-            set => this._Control.Top = value;
+            get => this.Control.Top;
+            set => this.Control.Top = value;
         }
 
         public int Width
         {
-            get => this._Control.Width;
-            set => this._Control.Width = value;
+            get => this.Control.Width;
+            set => this.Control.Width = value;
         }
 
         public int Height
         {
-            get => this._Control.Height;
-            set => this._Control.Height = value;
+            get => this.Control.Height;
+            set => this.Control.Height = value;
         }
 
         public Point Location
         {
-            get => this._Control.Location;
-            set => this._Control.Location = value;
+            get => this.Control.Location;
+            set => this.Control.Location = value;
         }
 
         public int ControlId
         {
-            get => this._Control.ControlId;
-            set => this._Control.ControlId = value;
+            get => this.Control.ControlId;
+            set => this.Control.ControlId = value;
         }
 
         public int ForeColor 
         { 
-            get => this._Control.ForeColor; 
-            set => this._Control.ForeColor = value; 
+            get => this.Control.ForeColor; 
+            set => this.Control.ForeColor = value; 
         }
 
         public bool Create(IntPtr parentId)
         {
-            return this._Control.Create(parentId);
+            return this.Control.Create(parentId);
         }
 
         protected virtual bool ControlProc(IntPtr hWndParent, IntPtr hWndControl, int controlId, uint command,

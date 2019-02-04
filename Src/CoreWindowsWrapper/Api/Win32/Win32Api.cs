@@ -199,10 +199,20 @@ namespace CoreWindowsWrapper.Api.Win32
         public static extern IntPtr SendMessage(IntPtr hWnd, int msg, int wParam, HighLow lParam);
 
       
+            ///pvReserved: LPVOID->void*
+        [DllImport("ole32.dll", EntryPoint="OleInitialize", CallingConvention= CallingConvention.StdCall)]
+        public static extern  int OleInitialize(IntPtr pvReserved) ;
+
+            /// Return Type: void
+        [DllImport("ole32.dll", EntryPoint="OleUninitialize", CallingConvention= CallingConvention.StdCall)]
+        public static extern  void OleUninitialize() ;
+
 
 
         [DllImport( "comctl32.dll", EntryPoint = "InitCommonControlsEx", CallingConvention = CallingConvention.StdCall)] 
         public static extern bool InitCommonControlsEx (ref INITCOMMONCONTROLSEX iccex); 
+
+
 
         public static int HiWord(int number)
         {
@@ -227,6 +237,5 @@ namespace CoreWindowsWrapper.Api.Win32
             return (IntPtr)((hiWord << 16) | (loWord & 0xffff));
         }
     }
-
 
 }

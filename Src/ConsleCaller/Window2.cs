@@ -4,6 +4,7 @@ namespace ConsleCaller
 {
     public class Window2 : NativeWindow
     {
+        private NativeWebBrowser _WebBrowser;
         protected override void InitControls()
         {
             this.Text = "Dies ist ein 2. Fenster";
@@ -16,6 +17,14 @@ namespace ConsleCaller
             this.Click += Window2_Click;
             this.DoubleClick += Window2_DblClick;
             this.Create += Window2_Create;
+            this._WebBrowser = new NativeWebBrowser();
+            this._WebBrowser.Location = new CoreWindowsWrapper.Api.Win32.Point(100,100);
+            this._WebBrowser.Width = 200;
+            this._WebBrowser.Height = 200;
+            this._WebBrowser.ControlId = 600;
+            this.Controls.Add(this._WebBrowser);
+           
+           
         }
 
         private void Window2_Create(object sender, CreateEventArgs e)
@@ -25,6 +34,7 @@ namespace ConsleCaller
 
         private void Window2_DblClick(object sender, MouseClickEventArgs e)
         {
+            MessageBox.Show("BrowserID:" + this._WebBrowser.Handle.ToInt32());
             this.Close();
         }
 

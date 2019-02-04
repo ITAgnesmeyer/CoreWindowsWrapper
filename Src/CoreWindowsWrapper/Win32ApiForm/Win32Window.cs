@@ -59,7 +59,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
             //Doubleclicks are active
             //Black background, +1 is necessary
             // alternative: Process.GetCurrentProcess().Handle;
-            windClass.hIcon = Tools.ImageTool.SaveLoadImageFromFile(this.IconFile);
+            windClass.hIcon = Tools.ImageTool.SaveLoadIconFromFile(this.IconFile);
             windClass.hCursor = Win32Api.LoadCursor(IntPtr.Zero, (int) Win32ApiCursors.IDC_ARROW); // Crosshair cursor;
             windClass.lpszMenuName = null;
             windClass.lpszClassName = this.Name;
@@ -212,6 +212,22 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
             switch (eventType)
             {
+                  case WindowsMessages.WM_COMMAND:
+                    int controlId = Win32Api.LoWord(wParam.ToInt32());
+                    uint command = (uint)Win32Api.HiWord(wParam.ToInt32());
+                    IntPtr hWndControl = lParam;
+                    if (window.Controls.ContainsKey(controlId))
+                    {
+                        IControl control = window.Controls[controlId];
+                        handled = control.HandleEvents(hWnd, hWndControl, controlId, command, wParam, lParam);
+                    }
+                    else
+                    {
+                        handled = false;    
+                    }
+                    
+                    
+                    break;
                 case WindowsMessages.WM_CREATE:
                     
                     foreach (IControl windowControl in window.Controls.Values)
@@ -307,22 +323,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
                     
                     handled = true;
                     break;
-                case WindowsMessages.WM_COMMAND:
-                    int controlId = Win32Api.LoWord(wParam.ToInt32());
-                    uint command = (uint)Win32Api.HiWord(wParam.ToInt32());
-                    IntPtr hWndControl = lParam;
-                    if (window.Controls.ContainsKey(controlId))
-                    {
-                        IControl control = window.Controls[controlId];
-                        handled = control.HandleEvents(hWnd, hWndControl, controlId, command, wParam, lParam);
-                    }
-                    else
-                    {
-                        handled = false;    
-                    }
-                    
-                    
-                    break;
+              
                 case WindowsMessages.WM_SIZE:
 
                     handled = false;

@@ -24,6 +24,9 @@
     <PackageReleaseNotes>First implementation.
 </PackageReleaseNotes>
     <Version>1.0.1</Version>
+    <SignAssembly>true</SignAssembly>
+    <DelaySign>false</DelaySign>
+    <AssemblyOriginatorKeyFile>guido.agnesmeyer.de.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

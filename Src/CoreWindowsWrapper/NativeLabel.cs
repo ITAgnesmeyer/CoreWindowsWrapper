@@ -11,8 +11,10 @@ namespace CoreWindowsWrapper
         {
             base.Initialize();
             this.TypeIdentifier = "static";
+            this.Style = WindowStylesConst.WS_VISIBLE | WindowStylesConst.WS_CHILD | StaticControlStyles.SS_NOTIFY;
             this.BackColor = Tools.ColorTool.White;
             this.ForeColor = Tools.ColorTool.Black;
+            
         }
 
         public override string Text
@@ -28,10 +30,23 @@ namespace CoreWindowsWrapper
 
         protected override bool ControlProc(IntPtr hWndParent, IntPtr hWndControl, int controlId, uint command, IntPtr wParam, IntPtr lParam)
         {
-           
-           
+           bool handled = false;
+            switch(command)
+            {
+                case StaticControlMessages.STN_DBLCLK:
 
-            return false;
+                    OnDblClicked();
+                    handled = true;
+                    break;
+                case StaticControlMessages.STN_CLICKED:
+                    OnClicked();
+                    handled = true;
+                    break;
+                
+                
+            }
+
+            return handled;
         }
 
        

@@ -3,9 +3,9 @@ using CoreWindowsWrapper.Api.Win32;
 
 namespace CoreWindowsWrapper.Win32ApiForm
 {
-    internal sealed class Win32Control : IWindowClass
+    internal class Win32Control : IWindowClass
     {
-        public IntPtr Handle { get; private set; }
+        public IntPtr Handle { get; protected set; }
         public IntPtr ParentHandle { get; internal set; }
         public string Text { get; set; }
         public string Name { get; set; }
@@ -29,7 +29,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
             return Win32Api.DefWindowProc(hwnd, msg, wparam, lparam);
         }
 
-        internal bool Create(IntPtr parentHandle)
+        internal virtual bool Create(IntPtr parentHandle)
         {
             if (this.CommonControType != CommonControls.ICC_UNDEFINED)
             {

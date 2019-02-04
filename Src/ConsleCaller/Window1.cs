@@ -17,6 +17,7 @@ namespace ConsleCaller
         private NativeTextBox _TextBox2;
         private NativeLabel _Label1;
         private NativeProgress _ProgressBar;
+        private NativeBitmap _Bitmap;
 
         protected override  void InitControls()
         {
@@ -95,6 +96,18 @@ namespace ConsleCaller
                 ControlId = 504
                 
             };
+            this._Label1.Clicked += Label1_Click; 
+            this._Label1.DblClicked += Label1_DblClick;
+
+            this._Bitmap = new NativeBitmap();
+            this._Bitmap.BitMap = "Skype.bmp";
+            this._Bitmap.Left = 150;
+            this._Bitmap.Top = 50;
+            this._Bitmap.Width = 50;
+            this._Bitmap.Height = 50;
+
+
+            
 
             this._ProgressBar = new NativeProgress
             {
@@ -105,17 +118,28 @@ namespace ConsleCaller
                 ControlId = 507
             };
 
-            this._TextBox.Clicked += Label1_DblClick;
+            this._TextBox.Clicked += TextBox_Click;
             
             this.Controls.Add(this._Button);
             this.Controls.Add(this._Button1);
             this.Controls.Add(this._TextBox);
             this.Controls.Add(this._TextBox2);
             this.Controls.Add(this._Label1);
+            this.Controls.Add(this._Bitmap);
             this.Controls.Add(this._ProgressBar);
             Click += Window1_Click;
             DoubleClick += Window1_DblClick;
             Create += Window1_Create;
+        }
+
+        private void Label1_Click(object sender, EventArgs e)
+        {
+            Debug.Print("Label1_Clicked");
+        }
+
+        private void TextBox_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("TextBox_Clicked");
         }
 
         private void button1_OnDblClicked(object sender, EventArgs e)
@@ -134,7 +158,7 @@ namespace ConsleCaller
 
         private void Label1_DblClick(object sender, EventArgs eventArgs)
         {
-            Debug.Print("label DblClicked!");
+            MessageBox.Show("label DblClicked!");
         }
 
         private void TextBox_Change(object sender, EventArgs e)
@@ -156,6 +180,7 @@ namespace ConsleCaller
         private void Window1_Create(object sender, CreateEventArgs e)
         {
             this._Button.Text = "halllo";
+            this._Bitmap.Refresh();
             //MessageBox.Show("OnCreate");
         }
 
