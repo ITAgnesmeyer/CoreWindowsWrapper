@@ -3,6 +3,7 @@ using CoreWindowsWrapper.Api.Win32;
 
 namespace CoreWindowsWrapper.Win32ApiForm
 {
+
     internal class Win32AxControl:Win32Control
     {
         internal override bool Create(IntPtr parentHandle)

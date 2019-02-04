@@ -18,6 +18,7 @@ namespace ConsleCaller
         private NativeLabel _Label1;
         private NativeProgress _ProgressBar;
         private NativeBitmap _Bitmap;
+        private NativeTimer _Timer;
 
         protected override  void InitControls()
         {
@@ -31,6 +32,10 @@ namespace ConsleCaller
             this.Height = 400;
             //this.BackColor = ColorTool.LightGray;
             this.BackColor = ColorTool.Rgb(125,125,125);
+            this._Timer = new NativeTimer();
+            this._Timer.Interval = 100;
+            this._Timer.ControlId = 700;
+            this._Timer.Tick += Timer_OnTick;
             this._Button = new NativeButton
             {
                 Left = 10,
@@ -127,9 +132,20 @@ namespace ConsleCaller
             this.Controls.Add(this._Label1);
             this.Controls.Add(this._Bitmap);
             this.Controls.Add(this._ProgressBar);
+            this.Controls.Add(this._Timer);
             Click += Window1_Click;
             DoubleClick += Window1_DblClick;
             Create += Window1_Create;
+        }
+
+        private void Timer_OnTick(object sender, EventArgs e)
+        {
+            this._Label1.Text = DateTime.Now.ToString();
+            int value = this._ProgressBar.Value;
+            value += 1;
+            if(value > 100)
+                value = 1;
+            this._ProgressBar.Value = value;
         }
 
         private void Label1_Click(object sender, EventArgs e)
@@ -182,6 +198,8 @@ namespace ConsleCaller
             this._Button.Text = "halllo";
             this._Bitmap.Refresh();
             //MessageBox.Show("OnCreate");
+            this._Timer.ParentHandle = this.Handle;
+            this._Timer.StartTimer();
         }
 
         private void Window1_DblClick(object sender, MouseClickEventArgs e)

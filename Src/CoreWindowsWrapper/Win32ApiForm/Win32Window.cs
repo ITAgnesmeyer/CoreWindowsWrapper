@@ -149,6 +149,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 case WindowsMessages.WM_DESTROY:
 
                     //If you want to shutdown the application, call the next function instead of DestroyWindow
+
                     Win32Api.PostQuitMessage(0);
                     break;
 
@@ -167,6 +168,12 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
         private void Destroy()
         {
+
+            foreach (var item in this.Controls)
+            {
+               item.Value.Destroy();
+            }
+
             Win32Api.DestroyWindow(this.Handle);
             if (Win32Api.UnregisterClass(this.Name, Process.GetCurrentProcess().Handle))
                 Debug.WriteLine("Windows unreigistered!:" + this.Name);

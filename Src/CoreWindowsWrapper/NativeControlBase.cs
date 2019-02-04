@@ -148,5 +148,10 @@ namespace CoreWindowsWrapper
         {
             DblClicked?.Invoke(this, EventArgs.Empty);
         }
+
+        public virtual void Destroy()
+        {
+            Console.Write("on Destroy");
+        }
     }
 }

@@ -8,6 +8,36 @@ namespace CoreWindowsWrapper.Api.Win32
 {
     internal static class Win32Api
     {
+
+
+        /// Return Type: void
+        ///param0: HWND->HWND__*
+        ///param1: UINT->unsigned int
+        ///param2: UINT_PTR->unsigned int
+        ///param3: DWORD->unsigned int
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        public delegate void TIMERPROC(IntPtr param0, uint param1, IntPtr param2, uint param3);
+
+
+        /// Return Type: UINT_PTR->unsigned int
+        ///hWnd: HWND->HWND__*
+        ///nIDEvent: UINT_PTR->unsigned int
+        ///uElapse: UINT->unsigned int
+        ///lpTimerFunc: TIMERPROC
+        [DllImport("user32.dll", EntryPoint = "SetTimer")]
+        public static extern UIntPtr SetTimer([In()] IntPtr hWnd, UIntPtr nIDEvent, uint uElapse, TIMERPROC lpTimerFunc);
+
+
+        /// Return Type: BOOL->int
+        ///hWnd: HWND->HWND__*
+        ///uIDEvent: UINT_PTR->unsigned int
+        [DllImport("user32.dll", EntryPoint = "KillTimer")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool KillTimer([In()] IntPtr hWnd, UIntPtr uIDEvent);
+
+
+
+
         [DllImport("user32.dll")]
         public static extern bool UpdateWindow(IntPtr hWnd);
 
@@ -68,8 +98,8 @@ namespace CoreWindowsWrapper.Api.Win32
         ///cx: int
         ///cy: int
         ///fuLoad: UINT->unsigned int
-        [DllImport("user32.dll", EntryPoint="LoadImageW")]
-        public static extern IntPtr LoadImage([In()] IntPtr hInst, [In()] [MarshalAs(UnmanagedType.LPWStr)] string name, uint type, int cx, int cy, uint fuLoad) ;
+        [DllImport("user32.dll", EntryPoint = "LoadImageW")]
+        public static extern IntPtr LoadImage([In()] IntPtr hInst, [In()] [MarshalAs(UnmanagedType.LPWStr)] string name, uint type, int cx, int cy, uint fuLoad);
 
 
 
@@ -93,20 +123,20 @@ namespace CoreWindowsWrapper.Api.Win32
             uint type);
 
 
-        [DllImport("gdi32.dll", EntryPoint="CreateSolidBrush", SetLastError=true)]
-        public static extern IntPtr CreateSolidBrush( int crColor );
+        [DllImport("gdi32.dll", EntryPoint = "CreateSolidBrush", SetLastError = true)]
+        public static extern IntPtr CreateSolidBrush(int crColor);
 
 
-        [DllImport ("gdi32.dll", EntryPoint="SetBkColor", SetLastError=true)]
+        [DllImport("gdi32.dll", EntryPoint = "SetBkColor", SetLastError = true)]
         public static extern uint SetBkColor(IntPtr hdc, int crColor);
 
         [DllImport("gdi32.dll")]
         public static extern uint SetTextColor(IntPtr hdc, int crColor);
 
-        [DllImport("user32.dll", EntryPoint="GetDC", SetLastError=true)]
+        [DllImport("user32.dll", EntryPoint = "GetDC", SetLastError = true)]
         public static extern IntPtr GetDC(IntPtr hWnd);
 
-        [DllImport("user32.dll", EntryPoint="ReleaseDC", SetLastError=true)]
+        [DllImport("user32.dll", EntryPoint = "ReleaseDC", SetLastError = true)]
         public static extern int ReleaseDC(IntPtr hWnd, IntPtr hDC);
 
         [DllImport("user32.dll")]
@@ -120,7 +150,7 @@ namespace CoreWindowsWrapper.Api.Win32
         public static void SetWindowTextsRaw(IntPtr hWnd, string text)
         {
             IntPtr txt = Marshal.StringToCoTaskMemUni(text);
-            SendMessage(hWnd, (int)WindowsMessages.WM_SETTEXT, (int) IntPtr.Zero, txt);
+            SendMessage(hWnd, (int)WindowsMessages.WM_SETTEXT, (int)IntPtr.Zero, txt);
             Marshal.FreeCoTaskMem(txt);
 
         }
@@ -128,9 +158,9 @@ namespace CoreWindowsWrapper.Api.Win32
         public static string GetWindowTextRaw(IntPtr hwnd)
         {
             // Allocate correct string length first
-            int length = (int)SendMessage(hwnd,(int) WindowsMessages.WM_GETTEXTLENGTH, (int) IntPtr.Zero, IntPtr.Zero);
+            int length = (int)SendMessage(hwnd, (int)WindowsMessages.WM_GETTEXTLENGTH, (int)IntPtr.Zero, IntPtr.Zero);
             StringBuilder sb = new StringBuilder(length + 1);
-            SendMessage(hwnd, (int) WindowsMessages.WM_GETTEXT, (IntPtr)sb.Capacity, sb);
+            SendMessage(hwnd, (int)WindowsMessages.WM_GETTEXT, (IntPtr)sb.Capacity, sb);
             return sb.ToString();
         }
 
@@ -143,7 +173,7 @@ namespace CoreWindowsWrapper.Api.Win32
         [DllImport("kernel32.dll")]
         public static extern ushort GetSystemDefaultLangID();
 
-        [DllImport("user32.dll", SetLastError=true)]
+        [DllImport("user32.dll", SetLastError = true)]
         public static extern bool GetWindowRect(IntPtr hwnd, out Rect lpRect);
 
         [DllImport("gdi32.dll")]
@@ -151,12 +181,12 @@ namespace CoreWindowsWrapper.Api.Win32
 
         [DllImport("user32.dll")]
         public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
-        
-        [DllImport("User32.dll", SetLastError=true)]
+
+        [DllImport("User32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, uint uFlags);
 
-        [DllImport("User32.dll", SetLastError=true)]
+        [DllImport("User32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, SetWindowPosFlags uFlags);
 
@@ -189,28 +219,28 @@ namespace CoreWindowsWrapper.Api.Win32
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         public static extern IntPtr SendMessage(IntPtr hWnd, int msg, int wParam, IntPtr lParam);
 
-         [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        public static extern IntPtr SendMessage(IntPtr hWnd, uint msg, uint wParam = 0, uint lParam=0);
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public static extern IntPtr SendMessage(IntPtr hWnd, uint msg, uint wParam = 0, uint lParam = 0);
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        public static extern IntPtr SendMessage(IntPtr hWnd, int msg, int wParam,out HighLow lParam);
+        public static extern IntPtr SendMessage(IntPtr hWnd, int msg, int wParam, out HighLow lParam);
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         public static extern IntPtr SendMessage(IntPtr hWnd, int msg, int wParam, HighLow lParam);
 
-      
-            ///pvReserved: LPVOID->void*
-        [DllImport("ole32.dll", EntryPoint="OleInitialize", CallingConvention= CallingConvention.StdCall)]
-        public static extern  int OleInitialize(IntPtr pvReserved) ;
 
-            /// Return Type: void
-        [DllImport("ole32.dll", EntryPoint="OleUninitialize", CallingConvention= CallingConvention.StdCall)]
-        public static extern  void OleUninitialize() ;
+        ///pvReserved: LPVOID->void*
+        [DllImport("ole32.dll", EntryPoint = "OleInitialize", CallingConvention = CallingConvention.StdCall)]
+        public static extern int OleInitialize(IntPtr pvReserved);
+
+        /// Return Type: void
+        [DllImport("ole32.dll", EntryPoint = "OleUninitialize", CallingConvention = CallingConvention.StdCall)]
+        public static extern void OleUninitialize();
 
 
 
-        [DllImport( "comctl32.dll", EntryPoint = "InitCommonControlsEx", CallingConvention = CallingConvention.StdCall)] 
-        public static extern bool InitCommonControlsEx (ref INITCOMMONCONTROLSEX iccex); 
+        [DllImport("comctl32.dll", EntryPoint = "InitCommonControlsEx", CallingConvention = CallingConvention.StdCall)]
+        public static extern bool InitCommonControlsEx(ref INITCOMMONCONTROLSEX iccex);
 
 
 

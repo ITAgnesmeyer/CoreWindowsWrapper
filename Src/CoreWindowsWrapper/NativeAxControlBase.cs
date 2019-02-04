@@ -2,6 +2,7 @@
 
 namespace CoreWindowsWrapper
 {
+
     public class NativeAxControlBase: NativeControlBase
     {
        

@@ -158,5 +158,10 @@ namespace CoreWindowsWrapper
         {
             Click?.Invoke(this, e);
         }
+
+        public void Destroy()
+        {
+            Console.Write("On Window Destroy");
+        }
     }
 }
