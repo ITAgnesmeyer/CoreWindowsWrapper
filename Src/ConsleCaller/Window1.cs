@@ -72,7 +72,9 @@ namespace ConsleCaller
                 Width = 100,
                 Height = 30,
                 Text = "ATEST",
-                Name = "txtTest"//,
+                Name = "txtTest",
+                Font = new Font(){Name="Arial",Size=14},
+                ForeColor = ColorTool.Read
                 //ControlId = 502
             };
             this._TextBox.Change += TextBox_Change;
@@ -86,7 +88,8 @@ namespace ConsleCaller
                 Text = "",
                 Name = "txt2Test",
                 //ControlId = 503,
-                BackColor = ColorTool.Yellow
+                BackColor = ColorTool.Black,
+                ForeColor= ColorTool.White
                 
             };
 
