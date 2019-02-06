@@ -5,6 +5,8 @@ namespace CoreWindowsWrapper.Win32ApiForm
 {
     internal class Win32Control : IWindowClass
     {
+        
+        public static int LastControlId{get;set;} = 500;
         public IntPtr Handle { get; protected set; }
         public IntPtr ParentHandle { get; internal set; }
         public string Text { get; set; }
@@ -31,6 +33,11 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
         internal virtual bool Create(IntPtr parentHandle)
         {
+            //if(this.ControlId == 0)
+            //{
+            //    LastControlId += 1;
+            //    this.ControlId = LastControlId;
+            //}
             if (this.CommonControType != CommonControls.ICC_UNDEFINED)
             {
                 INITCOMMONCONTROLSEX ccInit = new INITCOMMONCONTROLSEX(this.CommonControType);

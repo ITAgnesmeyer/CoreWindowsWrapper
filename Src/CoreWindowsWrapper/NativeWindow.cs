@@ -9,7 +9,7 @@ namespace CoreWindowsWrapper
         private Win32Window _Window;
         internal bool IsMainWindow { get; set; }
         public ControlCollection Controls => this._Window.Controls;
-
+        private WindowsStartupPosition _StartUpPostion;
         public IntPtr Handle
         {
             get
@@ -79,8 +79,44 @@ namespace CoreWindowsWrapper
             set => this._Window.Height = value;
         }
 
+        public WindowsStartupPosition StartUpPosition
+        {
+            get
+            {
+                return _StartUpPostion;
+            }
+            set
+            {
+                this._StartUpPostion = value;
+                switch(this._StartUpPostion)
+                {
+                    case WindowsStartupPosition.Normal:
+                        this._Window.CenterForm = false;
+                        this._Window.MinimizeForm = false;
+                        this._Window.MaximizeForm = false;
+
+                        break;
+                    case WindowsStartupPosition.CenterScreen:
+                        this._Window.CenterForm = true;
+                        this._Window.MinimizeForm = false;
+                        this._Window.MaximizeForm = false;
+                        break;
+                    case WindowsStartupPosition.Maximized:
+                        this._Window.CenterForm = false;
+                        this._Window.MinimizeForm = false;
+                        this._Window.MaximizeForm = true;
+                        break;
+                    case WindowsStartupPosition.Minimized:
+                        this._Window.CenterForm = false;
+                        this._Window.MaximizeForm = false;
+                        this._Window.MinimizeForm = true;
+                        break;
+                }
+            }
+        }
+
         public Point Location { get; set; }
-        public int ControlId { get; set; } = -1;
+        int IControl.ControlId { get; set; } = -1;
         public string IconFile
         {
             get => this._Window.IconFile;
@@ -106,7 +142,7 @@ namespace CoreWindowsWrapper
             //    Style = WindowStylesConst.WS_CAPTION | WindowStylesConst.WS_SYSMENU |
             //            WindowStylesConst.WS_EX_STATICEDGE
             //};
-
+            this.StartUpPosition = WindowsStartupPosition.Normal;
             this._Window.CreateForm += OnCreateForm;
             this._Window.DoubleClick += OnFormDoubleClick;
             this._Window.Click += OnFormClick;

@@ -8,6 +8,11 @@ namespace CoreWindowsWrapper.Win32ApiForm
     {
         internal override bool Create(IntPtr parentHandle)
         {
+            //if(this.ControlId == 0)
+            //{
+            //    LastControlId +=1;
+            //    this.ControlId = LastControlId;
+            //}
             if (this.CommonControType != CommonControls.ICC_UNDEFINED)
             {
                 INITCOMMONCONTROLSEX ccInit = new INITCOMMONCONTROLSEX(this.CommonControType);

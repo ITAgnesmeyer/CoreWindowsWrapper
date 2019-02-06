@@ -26,15 +26,16 @@ namespace ConsleCaller
             
             this.Text = "Dies ist meine Anwnedung";
             this.Name = "Window1";
-            this.Left = 100;
-            this.Top = 100;
+           // this.Left = 100;
+           //this.Top = 100;
             this.Width = 600;
             this.Height = 400;
             //this.BackColor = ColorTool.LightGray;
-            this.BackColor = ColorTool.Rgb(125,125,125);
+            this.StartUpPosition = WindowsStartupPosition.CenterScreen;
+            this.BackColor = ColorTool.White;
             this._Timer = new NativeTimer();
             this._Timer.Interval = 100;
-            this._Timer.ControlId = 700;
+            //this._Timer.ControlId = 700;
             this._Timer.Tick += Timer_OnTick;
             this._Button = new NativeButton
             {
@@ -45,8 +46,8 @@ namespace ConsleCaller
                 Text = "Test",
                 Name = "bnTest",
                 BackColor=ColorTool.Blue,
-                ForeColor = ColorTool.Green,
-                ControlId = 501
+                ForeColor = ColorTool.Green
+               
             };
 
             this._Button1 = new NativeButton
@@ -56,8 +57,8 @@ namespace ConsleCaller
                 Width = 100,
                 Height = 30,
                 Text = "Test",
-                Name = "bnTest",
-                ControlId = 505
+                Name = "bnTest"//,
+                //ControlId = 505
             };
             this._Button.Clicked += button_OnClicked;
             this._Button.DblClicked += button_OnDblClicked;
@@ -71,8 +72,8 @@ namespace ConsleCaller
                 Width = 100,
                 Height = 30,
                 Text = "ATEST",
-                Name = "txtTest",
-                ControlId = 502
+                Name = "txtTest"//,
+                //ControlId = 502
             };
             this._TextBox.Change += TextBox_Change;
 
@@ -84,7 +85,7 @@ namespace ConsleCaller
                 Height = 30,
                 Text = "",
                 Name = "txt2Test",
-                ControlId = 503,
+                //ControlId = 503,
                 BackColor = ColorTool.Yellow
                 
             };
@@ -95,10 +96,10 @@ namespace ConsleCaller
                 Top = 200,
                 Width = 100,
                 Height = 30,
-                Text = "Dies ist ein Label",
+                Text = "Dies ist ein Label"//,
                 //BackColor=ColorTool.Read,
                 //ForeColor = ColorTool.Green,
-                ControlId = 504
+                //ControlId = 504
                 
             };
             this._Label1.Clicked += Label1_Click; 
@@ -108,8 +109,8 @@ namespace ConsleCaller
             this._Bitmap.BitMap = "Skype.bmp";
             this._Bitmap.Left = 150;
             this._Bitmap.Top = 50;
-            this._Bitmap.Width = 50;
-            this._Bitmap.Height = 50;
+            this._Bitmap.Width = 100;
+            this._Bitmap.Height = 100;
 
 
             
@@ -119,8 +120,8 @@ namespace ConsleCaller
                 Left = 10,
                 Top = 250,
                 Width = 150,
-                Height = 30,
-                ControlId = 507
+                Height = 30//,
+                //ControlId = 507
             };
 
             this._TextBox.Clicked += TextBox_Click;
@@ -198,7 +199,7 @@ namespace ConsleCaller
             this._Button.Text = "halllo";
             this._Bitmap.Refresh();
             //MessageBox.Show("OnCreate");
-            this._Timer.ParentHandle = this.Handle;
+           //this._Timer.ParentHandle = this.Handle;
             this._Timer.StartTimer();
         }
 

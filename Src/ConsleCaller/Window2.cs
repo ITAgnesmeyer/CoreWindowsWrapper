@@ -21,7 +21,7 @@ namespace ConsleCaller
             this._WebBrowser.Location = new CoreWindowsWrapper.Api.Win32.Point(100,100);
             this._WebBrowser.Width = 200;
             this._WebBrowser.Height = 200;
-            this._WebBrowser.ControlId = 600;
+            
             this.Controls.Add(this._WebBrowser);
            
            

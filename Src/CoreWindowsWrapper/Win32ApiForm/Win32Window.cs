@@ -10,7 +10,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
     internal sealed class Win32Window : IWindowClass
     {
         internal bool IsMainWindow { get; set; }
-
+        
         public event EventHandler<CreateEventArgs> CreateForm;
         public event EventHandler<MouseClickEventArgs> DoubleClick;
         public event EventHandler<MouseClickEventArgs> Click;
@@ -25,11 +25,14 @@ namespace CoreWindowsWrapper.Win32ApiForm
         public string Text { get; set; }
         public string Name { get; set; }
         public Point Location { get; set; }
-        public int Left { get; set; }
-        public int Top { get; set; }
+        public int Left { get; set; } = unchecked((int)0x80000000);
+        public int Top { get; set; } = unchecked((int)0x80000000);
         public int Width { get; set; }
         public int Height { get; set; }
         public string IconFile{get;set;}
+        public bool CenterForm{get;set;}= false;
+        public bool MaximizeForm{get;set;} = false;
+        public bool MinimizeForm{get;set;} = false;
         private static IntPtr _lastMessageReturn = IntPtr.Zero;
         private readonly WndProc _DelegateWndProc = MyWndProc;
         public uint Style{get;set;} = WindowStylesConst.WS_OVERLAPPEDWINDOW | WindowStylesConst.WS_VISIBLE;
@@ -38,7 +41,9 @@ namespace CoreWindowsWrapper.Win32ApiForm
             this.Name = "Win32WindowClass";
             this.Text = this.Name;
             this.Color = Win32Api.RGB(238,238,238);
+           
         }
+
 
         internal void Close()
         {
@@ -82,6 +87,15 @@ namespace CoreWindowsWrapper.Win32ApiForm
             //IntPtr hWnd = CreateWindowEx(0, wind_class.lpszClassName, "MyWnd", WS_OVERLAPPEDWINDOW | WS_VISIBLE, 0, 0, 30, 40, IntPtr.Zero, IntPtr.Zero, wind_class.hInstance, IntPtr.Zero);
 
             //This version worked and resulted in a non-zero hWnd
+            //Rect rect;
+            //Win32Api.GetWindowRect(hWnd, out rect);
+            if(this.CenterForm)
+            {
+                int xPos = (Win32Api.GetSystemMetrics(SystemMetric.SM_CXSCREEN) - this.Width)/2;
+                int yPos = (Win32Api.GetSystemMetrics(SystemMetric.SM_CYSCREEN) - this.Height)/2;
+                this.Left = xPos;
+                this.Top = yPos;
+            }
             IntPtr hWnd = Win32Api.CreateWindowEx((int)WindowStylesConst.WS_EX_APPWINDOW,
                 wndClass,
                 this.Text, this.Style
@@ -101,15 +115,16 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 WindowList.Remove(this.Handle);
 
             WindowList.Add(this.Handle, this);
-
-            Win32Api.ShowWindowAsync(hWnd, (int) ShowWindowCommands.Show);
-            Rect rect;
-            Win32Api.GetWindowRect(hWnd, out rect);
-            int xPos = (Win32Api.GetSystemMetrics(SystemMetric.SM_CXSCREEN) - rect.Right)/2;
-            int yPos = (Win32Api.GetSystemMetrics(SystemMetric.SM_CYSCREEN) - rect.Bottom)/2;
+            int cmdShow = (int)ShowWindowCommands.ShowDefault;
+            if(this.MaximizeForm)
+                cmdShow = (int)(ShowWindowCommands.Maximize);
+            if(this.MinimizeForm)
+                cmdShow = (int)(ShowWindowCommands.Minimize);
+            Win32Api.ShowWindowAsync(hWnd, cmdShow);
+            
             
             Win32Api.UpdateWindow(hWnd);
-            Win32Api.SetWindowPos(this.Handle, (IntPtr) 0,xPos,yPos,0,0,(uint)(SetWindowPosFlags.IgnoreResize | SetWindowPosFlags.IgnoreZOrder));
+            //Win32Api.SetWindowPos(this.Handle, (IntPtr) 0,xPos,yPos,0,0,(uint)(SetWindowPosFlags.IgnoreResize | SetWindowPosFlags.IgnoreZOrder));
             if (!this.IsMainWindow)
             {
                 //The explicit message pump is not necessary, messages are obviously dispatched by the framework.

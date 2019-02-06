@@ -50,10 +50,10 @@ namespace DIGAAppSetup
             this.Width = 542;
             this.Height = 300;
             this.BackColor = CoreWindowsWrapper.Tools.ColorTool.White;
-            this.ControlId = 500;
             this.Name = "MainForm";
             this.Text = "Welcome to the Setup";
             this.IconFile = "app.ico";
+            this.StartUpPosition = WindowsStartupPosition.CenterScreen;
             this.Create += MainFrom_Create;
             //_LabelCaption
             this._LabelCaption.Left = 12;
@@ -63,7 +63,7 @@ namespace DIGAAppSetup
             this._LabelCaption.Text = "Welcome to the Setup &s";
             this._LabelCaption.Name = "LabelCaption";
             this._LabelCaption.ForeColor = CoreWindowsWrapper.Tools.ColorTool.Blue;
-            this._LabelCaption.ControlId = 501;
+            
 
             this._LabelDescription.Left = 12;
             this._LabelDescription.Top = 58;
@@ -71,21 +71,19 @@ namespace DIGAAppSetup
             this._LabelDescription.Height = 78;
             this._LabelDescription.Text = "Do you want to start the Installation?";
             this._LabelDescription.Name = "LabelDescription";
-            this._LabelDescription.ControlId = 502;
-
+            
 
             this._MainProgress.Left = 12;
             this._MainProgress.Top = 161;
             this._MainProgress.Width = 498;
             this._MainProgress.Height = 14;
-            this._MainProgress.ControlId = 503;
+            
             this._MainProgress.Name = "MainProgress";
 
             this._SecondProgress.Left = 12;
             this._SecondProgress.Top = 191;
             this._SecondProgress.Width = 498;
             this._SecondProgress.Height = 14;
-            this._SecondProgress.ControlId = 504;
             this._SecondProgress.Name = "SecondProgress";
 
             this._CancelButton.Left = 320;
@@ -93,7 +91,6 @@ namespace DIGAAppSetup
             this._CancelButton.Width = 92;
             this._CancelButton.Height = 29;
             this._CancelButton.Text = "Cancel";
-            this._CancelButton.ControlId = 505;
             this._CancelButton.Name = "CancelButton";
             //this._CancelButton.BackColor = CoreWindowsWrapper.Tools.ColorTool.Green;
             //this._CancelButton.ForeColor = CoreWindowsWrapper.Tools.ColorTool.Read;
@@ -104,7 +101,6 @@ namespace DIGAAppSetup
             this._OkButton.Width = 92;
             this._OkButton.Height = 29;
             this._OkButton.Text = "OK";
-            this._OkButton.ControlId = 506;
             this._OkButton.Name = "OkButton";
             this._OkButton.Clicked += OkButton_Clicked;
 

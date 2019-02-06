@@ -1,4 +1,5 @@
-﻿using CoreWindowsWrapper.Win32ApiForm;
+﻿using System;
+using CoreWindowsWrapper.Win32ApiForm;
 
 namespace CoreWindowsWrapper
 {
@@ -7,6 +8,12 @@ namespace CoreWindowsWrapper
         protected override void Initialize()
         {
             this.Control = new Win32NoCreateControl();
+        }
+
+        public override bool Create(IntPtr parentId)
+        {
+            this.ParentHandle = parentId;
+            return true;
         }
     }
 }

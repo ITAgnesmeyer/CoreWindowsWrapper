@@ -111,8 +111,13 @@ namespace CoreWindowsWrapper
             get => this.Control.Location;
             set => this.Control.Location = value;
         }
-
-        public int ControlId
+        
+        internal int ControlId
+        {
+            get=> ((IControl)this).ControlId;
+            set=> ((IControl)this).ControlId = value;
+        }
+        int IControl.ControlId
         {
             get => this.Control.ControlId;
             set => this.Control.ControlId = value;
@@ -124,7 +129,7 @@ namespace CoreWindowsWrapper
             set => this.Control.ForeColor = value; 
         }
 
-        public bool Create(IntPtr parentId)
+        public virtual bool Create(IntPtr parentId)
         {
             return this.Control.Create(parentId);
         }

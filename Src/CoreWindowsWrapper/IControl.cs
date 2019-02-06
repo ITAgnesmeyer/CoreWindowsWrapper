@@ -3,7 +3,7 @@ using CoreWindowsWrapper.Api.Win32;
 
 namespace CoreWindowsWrapper
 {
-    public interface  IControl:IWindow
+    internal interface  IControl:IWindow
     {
         IntPtr ParentHandle { get; set; }
         string Name { get; set; }
