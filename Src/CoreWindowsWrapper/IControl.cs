@@ -17,6 +17,7 @@ namespace CoreWindowsWrapper
         Point Location { get; set; }
         int ControlId { get; set; }
         bool Create(IntPtr parentId);
+        Font Font{get;set;}
         void Destroy();
         bool HandleEvents(IntPtr hWndParent, IntPtr hWndControl, int controlId, uint command, IntPtr wParam,
             IntPtr lParam);

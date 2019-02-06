@@ -20,6 +20,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
         public int ControlId { get; set; }
         public int BackColor { get; set; }
         public int ForeColor{get;set;}
+        public Font Font{get;set;}
         public CommonControls CommonControType { get; set; } = CommonControls.ICC_UNDEFINED;
         public uint Style { get; set; } =
             (WindowStylesConst.WS_VISIBLE | WindowStylesConst.WS_CHILD | WindowStylesConst.WS_TABSTOP);
@@ -51,6 +52,16 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 this.Width, this.Height, this.ParentHandle,
                 (IntPtr) this.ControlId, IntPtr.Zero, IntPtr.Zero);
 
+            if(this.Font != null)
+            {
+
+                this.Font.FromLogFont(this.Handle);
+
+                LOGFONTW f =  this.Font.ToLogFont(this.Handle);
+                IntPtr hFont = Win32Api.CreateFontIndirect(ref f);
+               IntPtr retVal = Win32Api.SendMessage(this.Handle,WindowsMessages.WM_SETFONT,hFont,0);
+
+            }
      
             return true;
 

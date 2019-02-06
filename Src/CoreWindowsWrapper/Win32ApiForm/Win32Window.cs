@@ -300,6 +300,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 case WindowsMessages.WM_HANDHELDFIRST:
                     window.OnCreate();
                     break;
+
                 case WindowsMessages.WM_CTLCOLOREDIT:
                     IntPtr editCtlHdc = wParam;
                     int editControlId = Win32Api.GetDlgCtrlID(lParam);

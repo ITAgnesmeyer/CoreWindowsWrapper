@@ -127,11 +127,70 @@ namespace CoreWindowsWrapper.Api.Win32
         public static extern IntPtr CreateSolidBrush(int crColor);
 
 
+
+
         [DllImport("gdi32.dll", EntryPoint = "SetBkColor", SetLastError = true)]
         public static extern uint SetBkColor(IntPtr hdc, int crColor);
 
         [DllImport("gdi32.dll")]
         public static extern uint SetTextColor(IntPtr hdc, int crColor);
+
+
+        /// Return Type: int
+        ///hdc: HDC->HDC__*
+        ///index: int
+        [DllImport("gdi32.dll", EntryPoint = "GetDeviceCaps")]
+        public static extern int GetDeviceCaps([In()] IntPtr hdc, int index);
+
+        /// Return Type: HFONT->HFONT__*
+        ///lplf: LOGFONTW*
+        [DllImport("gdi32.dll", EntryPoint = "CreateFontIndirectW")]
+        public static extern IntPtr CreateFontIndirect([In()] ref LOGFONTW lplf);
+
+
+        [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        public static extern int GetObject(IntPtr hObject, int nSize, [In(), Out()] LOGFONTW lf);
+
+            /// Return Type: int
+    ///h: HANDLE->void*
+    ///c: int
+    ///pv: LPVOID->void*
+    [System.Runtime.InteropServices.DllImportAttribute("gdi32.dll", EntryPoint="GetObjectW")]
+public static extern  int GetObjectW([In()] IntPtr h, int c, IntPtr pv) ;
+
+
+        public static int GetObject(IntPtr hObject, LOGFONTW lp)
+        {
+            return GetObject(hObject, Marshal.SizeOf(typeof(LOGFONTW)), lp);
+        }
+
+
+        /// Return Type: BOOL->int
+        ///uiAction: UINT->unsigned int
+        ///uiParam: UINT->unsigned int
+        ///pvParam: PVOID->void*
+        ///fWinIni: UINT->unsigned int
+        [DllImport("user32.dll", EntryPoint = "SystemParametersInfoW")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool SystemParametersInfoW(uint uiAction, uint uiParam, IntPtr pvParam, uint fWinIni);
+
+        [DllImport("user32.dll", EntryPoint = "SystemParametersInfoW")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool SystemParametersInfo(uint uiAction, int uiParam, ref LOGFONTW logFont, int fWinIni);
+
+
+
+        public static bool GetDefaultLogFont(out LOGFONTW logFont)
+        {
+            LOGFONTW lFont = new LOGFONTW();
+            
+            int size = Marshal.SizeOf(typeof(LOGFONTW));
+            bool retVal = SystemParametersInfo(SpiConst.SPI_GETICONTITLELOGFONT,size,ref lFont,0 );
+            logFont = lFont;
+            return retVal;
+        }
+
+
 
         [DllImport("user32.dll", EntryPoint = "GetDC", SetLastError = true)]
         public static extern IntPtr GetDC(IntPtr hWnd);
@@ -228,6 +287,10 @@ namespace CoreWindowsWrapper.Api.Win32
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         public static extern IntPtr SendMessage(IntPtr hWnd, int msg, int wParam, HighLow lParam);
 
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public static extern IntPtr SendMessage(IntPtr hWnd, uint msg, IntPtr wParam, int lParam);
+
+
 
         ///pvReserved: LPVOID->void*
         [DllImport("ole32.dll", EntryPoint = "OleInitialize", CallingConvention = CallingConvention.StdCall)]
@@ -266,6 +329,26 @@ namespace CoreWindowsWrapper.Api.Win32
         {
             return (IntPtr)((hiWord << 16) | (loWord & 0xffff));
         }
-    }
 
+        public static int MulDiv(int number, int numerator, int denominator)
+        {
+            return (int)((long)number * numerator / denominator);
+        }
+
+        public static int MulDivReverse(int number, int numerator, int dimension)
+        {
+            return (int)((long)number * dimension / numerator);
+        }
+        public static byte BoolToByte(bool input)
+        {
+            if (input) return 1;
+            return 0;
+        }
+
+        public static bool ByteToBool(byte input)
+        {
+            if (input == 1) return true;
+            return false;
+        }
+    }
 }

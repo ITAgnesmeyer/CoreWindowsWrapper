@@ -123,6 +123,7 @@ namespace CoreWindowsWrapper
             set=> this._Window.IconFile = value;
         }
         public int ForeColor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public Font Font { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         bool IControl.Create(IntPtr parentId)
         {

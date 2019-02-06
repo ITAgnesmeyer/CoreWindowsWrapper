@@ -63,7 +63,7 @@ namespace DIGAAppSetup
             this._LabelCaption.Text = "Welcome to the Setup &s";
             this._LabelCaption.Name = "LabelCaption";
             this._LabelCaption.ForeColor = CoreWindowsWrapper.Tools.ColorTool.Blue;
-            
+            this._LabelCaption.Font = new Font(){Name = "Arial",Size=15,Bold = true};
 
             this._LabelDescription.Left = 12;
             this._LabelDescription.Top = 58;
@@ -71,6 +71,7 @@ namespace DIGAAppSetup
             this._LabelDescription.Height = 78;
             this._LabelDescription.Text = "Do you want to start the Installation?";
             this._LabelDescription.Name = "LabelDescription";
+            this._LabelDescription.Font = new Font(){Name = "Arial", Size=12, Italic= true};
             
 
             this._MainProgress.Left = 12;
@@ -92,6 +93,8 @@ namespace DIGAAppSetup
             this._CancelButton.Height = 29;
             this._CancelButton.Text = "Cancel";
             this._CancelButton.Name = "CancelButton";
+            this._CancelButton.ForeColor = CoreWindowsWrapper.Tools.ColorTool.Yellow;
+            this._CancelButton.Font = new Font(){Size=11,Bold=true};
             //this._CancelButton.BackColor = CoreWindowsWrapper.Tools.ColorTool.Green;
             //this._CancelButton.ForeColor = CoreWindowsWrapper.Tools.ColorTool.Read;
 
