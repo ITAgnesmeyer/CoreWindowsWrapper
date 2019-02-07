@@ -19,7 +19,8 @@ namespace ConsleCaller
         private NativeProgress _ProgressBar;
         private NativeBitmap _Bitmap;
         private NativeTimer _Timer;
-
+        private NativeCheckBox _CheckBox;
+        private NativeListBox _ListBox;
         protected override  void InitControls()
         {
            
@@ -115,8 +116,22 @@ namespace ConsleCaller
             this._Bitmap.Width = 100;
             this._Bitmap.Height = 100;
 
+            this._CheckBox = new NativeCheckBox();
+            this._CheckBox.Left = 300;
+            this._CheckBox.Top = 50;
+            this._CheckBox.Width = 200;
+            this._CheckBox.Height = 30;
+            this._CheckBox.Text = "TEST CHECKBOX";
+            this._CheckBox.BackColor = ColorTool.White;
+            this._CheckBox.Checked = true;
 
-            
+            this._ListBox = new NativeListBox();
+            this._ListBox.Left = 300;
+            this._ListBox.Top = 90;
+            this._ListBox.Width = 400;
+            this._ListBox.Height = 400;
+            this._ListBox.BackColor = ColorTool.Yellow;
+
 
             this._ProgressBar = new NativeProgress
             {
@@ -127,6 +142,8 @@ namespace ConsleCaller
                 //ControlId = 507
             };
 
+
+
             this._TextBox.Clicked += TextBox_Click;
             
             this.Controls.Add(this._Button);
@@ -135,6 +152,8 @@ namespace ConsleCaller
             this.Controls.Add(this._TextBox2);
             this.Controls.Add(this._Label1);
             this.Controls.Add(this._Bitmap);
+            this.Controls.Add(this._CheckBox);
+            this.Controls.Add(this._ListBox);
             this.Controls.Add(this._ProgressBar);
             this.Controls.Add(this._Timer);
             Click += Window1_Click;
@@ -174,6 +193,7 @@ namespace ConsleCaller
             int maxVal = this._ProgressBar.MaxValue;
             MessageBox.Show("maximum:" + maxVal.ToString());
             this._ProgressBar.Value = value;
+  
         }
 
         private void Label1_DblClick(object sender, EventArgs eventArgs)
@@ -195,6 +215,7 @@ namespace ConsleCaller
         private void button_OnClicked(object sender, EventArgs e)
         {
             MessageBox.Show("Button Clicked!");
+            this._ListBox.Clear();
         }
 
         private void Window1_Create(object sender, CreateEventArgs e)
@@ -204,6 +225,8 @@ namespace ConsleCaller
             //MessageBox.Show("OnCreate");
            //this._Timer.ParentHandle = this.Handle;
             this._Timer.StartTimer();
+            this._ListBox.AddText("hallo");
+            this._ListBox.AddText("wert");
         }
 
         private void Window1_DblClick(object sender, MouseClickEventArgs e)

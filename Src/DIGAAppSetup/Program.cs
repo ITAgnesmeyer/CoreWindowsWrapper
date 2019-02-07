@@ -5,6 +5,7 @@ namespace DIGAAppSetup
 {
     class Program
     {
+        [STAThread]
         static void Main(string[] args)
         {
              MainForm nw = new MainForm();

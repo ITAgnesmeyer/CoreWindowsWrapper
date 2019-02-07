@@ -16,6 +16,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
         public int Top { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
+        public bool ClientEdge{get;set;}
         public string TypeIdentifyer { get; set; }
         public int ControlId { get; set; }
         public int BackColor { get; set; }
@@ -45,7 +46,12 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 Win32Api.InitCommonControlsEx(ref ccInit);
             }
             this.ParentHandle = parentHandle;
-            this.Handle  = Win32Api.CreateWindowEx(0,
+            
+            int ediged = 0;
+            if(this.ClientEdge)
+                ediged =(int)WindowStyles.WS_EX_CLIENTEDGE;
+
+            this.Handle  = Win32Api.CreateWindowEx(ediged,
                 this.TypeIdentifyer , this.Text,
                 this.Style, this.Left ,
                 this.Top,

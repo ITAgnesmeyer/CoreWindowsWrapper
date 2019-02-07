@@ -16,6 +16,7 @@ namespace CoreWindowsWrapper
         int Height { get; set; }
         Point Location { get; set; }
         int ControlId { get; set; }
+        bool ClientEdge{get;set;}
         bool Create(IntPtr parentId);
         Font Font{get;set;}
         void Destroy();

@@ -95,8 +95,6 @@ namespace DIGAAppSetup
             this._CancelButton.Name = "CancelButton";
             this._CancelButton.ForeColor = CoreWindowsWrapper.Tools.ColorTool.Yellow;
             this._CancelButton.Font = new Font(){Size=11,Bold=true};
-            //this._CancelButton.BackColor = CoreWindowsWrapper.Tools.ColorTool.Green;
-            //this._CancelButton.ForeColor = CoreWindowsWrapper.Tools.ColorTool.Read;
 
             this._CancelButton.Clicked += CancelButton_Clicked;
             this._OkButton.Left = 418;

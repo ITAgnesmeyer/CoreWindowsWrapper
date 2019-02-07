@@ -151,12 +151,12 @@ namespace CoreWindowsWrapper.Api.Win32
         [DllImport("gdi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         public static extern int GetObject(IntPtr hObject, int nSize, [In(), Out()] LOGFONTW lf);
 
-            /// Return Type: int
-    ///h: HANDLE->void*
-    ///c: int
-    ///pv: LPVOID->void*
-    [System.Runtime.InteropServices.DllImportAttribute("gdi32.dll", EntryPoint="GetObjectW")]
-public static extern  int GetObjectW([In()] IntPtr h, int c, IntPtr pv) ;
+        /// Return Type: int
+        ///h: HANDLE->void*
+        ///c: int
+        ///pv: LPVOID->void*
+        [System.Runtime.InteropServices.DllImportAttribute("gdi32.dll", EntryPoint = "GetObjectW")]
+        public static extern int GetObjectW([In()] IntPtr h, int c, IntPtr pv);
 
 
         public static int GetObject(IntPtr hObject, LOGFONTW lp)
@@ -183,9 +183,9 @@ public static extern  int GetObjectW([In()] IntPtr h, int c, IntPtr pv) ;
         public static bool GetDefaultLogFont(out LOGFONTW logFont)
         {
             LOGFONTW lFont = new LOGFONTW();
-            
+
             int size = Marshal.SizeOf(typeof(LOGFONTW));
-            bool retVal = SystemParametersInfo(SpiConst.SPI_GETICONTITLELOGFONT,size,ref lFont,0 );
+            bool retVal = SystemParametersInfo(SpiConst.SPI_GETICONTITLELOGFONT, size, ref lFont, 0);
             logFont = lFont;
             return retVal;
         }
@@ -290,6 +290,20 @@ public static extern  int GetObjectW([In()] IntPtr h, int c, IntPtr pv) ;
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         public static extern IntPtr SendMessage(IntPtr hWnd, uint msg, IntPtr wParam, int lParam);
 
+        /// Return Type: UINT->unsigned int
+        ///hDlg: HWND->HWND__*
+        ///nIDButton: int
+        [DllImport("user32.dll", EntryPoint = "IsDlgButtonChecked")]
+        public static extern uint IsDlgButtonChecked([In()] IntPtr hDlg, int nIDButton);
+
+
+        /// Return Type: BOOL->int
+        ///hDlg: HWND->HWND__*
+        ///nIDButton: int
+        ///uCheck: UINT->unsigned int
+        [DllImport("user32.dll", EntryPoint = "CheckDlgButton")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool CheckDlgButton([In()] IntPtr hDlg, int nIDButton, uint uCheck);
 
 
         ///pvReserved: LPVOID->void*

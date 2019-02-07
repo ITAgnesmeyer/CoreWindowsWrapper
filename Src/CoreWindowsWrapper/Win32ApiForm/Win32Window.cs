@@ -124,6 +124,9 @@ namespace CoreWindowsWrapper.Win32ApiForm
             
             
             Win32Api.UpdateWindow(hWnd);
+
+            this.OnCreate();
+
             //Win32Api.SetWindowPos(this.Handle, (IntPtr) 0,xPos,yPos,0,0,(uint)(SetWindowPosFlags.IgnoreResize | SetWindowPosFlags.IgnoreZOrder));
             if (!this.IsMainWindow)
             {
@@ -257,9 +260,12 @@ namespace CoreWindowsWrapper.Win32ApiForm
                         windowControl.Create(hWnd);
                     }
 
-                    window.OnCreate();
-                    _lastMessageReturn = new IntPtr(0);
+                    
+                    _lastMessageReturn = new IntPtr(1);
+                    handled = true;
                     break;
+                
+                
                 case WindowsMessages.WM_PAINT:
                     Paintstruct ps;
                     IntPtr hdc = Win32Api.BeginPaint(hWnd, out ps);

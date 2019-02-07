@@ -26,6 +26,10 @@ namespace CoreWindowsWrapper
 
         }
 
+        protected virtual void AfterCreate()
+        {
+
+        }
         internal uint Style
         {
             get => this.Control.Style;
@@ -125,7 +129,12 @@ namespace CoreWindowsWrapper
             get => this.Control.ControlId;
             set => this.Control.ControlId = value;
         }
-
+        internal bool ClientEdge
+        {
+            get => ((IControl)this).ClientEdge;
+            set => ((IControl)this).ClientEdge = value;
+        }
+        bool IControl.ClientEdge { get => this.Control.ClientEdge; set => this.Control.ClientEdge = value; }
         public int ForeColor
         {
             get => this.Control.ForeColor;
@@ -157,9 +166,13 @@ namespace CoreWindowsWrapper
             }
         }
 
+         
+
         public virtual bool Create(IntPtr parentId)
         {
-            return this.Control.Create(parentId);
+            bool retCreate = this.Control.Create(parentId);
+            this.AfterCreate();
+            return retCreate;
         }
 
         protected virtual bool ControlProc(IntPtr hWndParent, IntPtr hWndControl, int controlId, uint command,

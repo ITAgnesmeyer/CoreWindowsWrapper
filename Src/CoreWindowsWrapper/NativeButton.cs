@@ -3,6 +3,7 @@ using CoreWindowsWrapper.Api.Win32;
 
 namespace CoreWindowsWrapper
 {
+
     public class NativeButton : NativeControlBase
     {
         public override event EventHandler Clicked;

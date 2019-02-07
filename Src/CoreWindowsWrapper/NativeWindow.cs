@@ -130,6 +130,8 @@ namespace CoreWindowsWrapper
             throw new NotImplementedException();
         }
 
+        bool IControl.ClientEdge{get=>throw new NotImplementedException(); set=> throw new NotImplementedException();}
+
 
         public bool HandleEvents(IntPtr hWndParent, IntPtr hWndControl, int controlId, uint command, IntPtr wParam, IntPtr lParam)
         {
