@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreWindowsWrapper", "CoreW
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsleCaller", "..\ConsleCaller\ConsleCaller.csproj", "{72A44751-86B5-488F-8214-C8DD305A212B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DIGAAppSetup", "..\DIGAAppSetup\DIGAAppSetup.csproj", "{23D5F6D3-123B-4001-AF52-69679E38AE58}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DIGAAppSetup", "..\DIGAAppSetup\DIGAAppSetup.csproj", "{23D5F6D3-123B-4001-AF52-69679E38AE58}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -365,4 +365,9 @@ namespace CoreWindowsWrapper.Api.Win32
             return false;
         }
     }
+
+
+
 }
+
+
