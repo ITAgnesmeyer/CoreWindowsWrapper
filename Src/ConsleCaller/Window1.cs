@@ -127,7 +127,7 @@ namespace ConsleCaller
 
             this._ListBox = new NativeListBox();
             this._ListBox.Left = 300;
-            this._ListBox.Top = 90;
+            this._ListBox.Top = 200;
             this._ListBox.Width = 400;
             this._ListBox.Height = 400;
             this._ListBox.BackColor = ColorTool.Yellow;
@@ -216,17 +216,24 @@ namespace ConsleCaller
         {
             MessageBox.Show("Button Clicked!");
             this._ListBox.Clear();
+           this._Bitmap.Width = this._Bitmap.Width- 10;
+            this._Bitmap.Refresh();
+            this._Button.Enabled = false;
         }
 
         private void Window1_Create(object sender, CreateEventArgs e)
         {
-            this._Button.Text = "halllo";
+            this._Button.Text = "hallo";
             this._Bitmap.Refresh();
             //MessageBox.Show("OnCreate");
            //this._Timer.ParentHandle = this.Handle;
             this._Timer.StartTimer();
             this._ListBox.AddText("hallo");
-            this._ListBox.AddText("wert");
+            this._ListBox.AddText("welt");
+            for(int i = 1; i< 100;i++)
+            {
+                this._ListBox.AddText("welt" + i);
+            }
         }
 
         private void Window1_DblClick(object sender, MouseClickEventArgs e)

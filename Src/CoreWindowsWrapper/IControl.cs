@@ -14,6 +14,7 @@ namespace CoreWindowsWrapper
         int Top { get; set; }
         int Width { get; set; }
         int Height { get; set; }
+        bool Enabled{get;set;}
         Point Location { get; set; }
         int ControlId { get; set; }
         bool ClientEdge{get;set;}

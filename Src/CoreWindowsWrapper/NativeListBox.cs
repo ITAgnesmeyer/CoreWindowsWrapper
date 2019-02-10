@@ -9,7 +9,7 @@ namespace CoreWindowsWrapper
             base.Initialize();
             this.TypeIdentifier = "listbox";
             this.ClientEdge = true;
-            //this.Style = this.Style | (int)WindowStyles.WS_VSCROLL | EditBoxStyles.ES_AUTOVSCROLL;
+            this.Style = this.Style | (int)WindowStyles.WS_VSCROLL | (int)WindowStyles.WS_HSCROLL | EditBoxStyles.ES_AUTOVSCROLL;
         
         }
 

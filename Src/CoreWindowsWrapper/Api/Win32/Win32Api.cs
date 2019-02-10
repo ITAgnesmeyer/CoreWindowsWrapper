@@ -101,6 +101,24 @@ namespace CoreWindowsWrapper.Api.Win32
         [DllImport("user32.dll", EntryPoint = "LoadImageW")]
         public static extern IntPtr LoadImage([In()] IntPtr hInst, [In()] [MarshalAs(UnmanagedType.LPWStr)] string name, uint type, int cx, int cy, uint fuLoad);
 
+        /// Return Type: BOOL->int
+        ///hWnd: HWND->HWND__*
+        ///X: int
+        ///Y: int
+        ///nWidth: int
+        ///nHeight: int
+        ///bRepaint: BOOL->int
+        [DllImport("user32.dll", EntryPoint = "MoveWindow")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool MoveWindow([In()] IntPtr hWnd, int X, int Y, int nWidth, int nHeight, [MarshalAs(UnmanagedType.Bool)] bool bRepaint);
+
+
+        /// Return Type: BOOL->int
+        ///hWnd: HWND->HWND__*
+        ///bEnable: BOOL->int
+        [DllImport("user32.dll", EntryPoint = "EnableWindow")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool EnableWindow([In()] System.IntPtr hWnd, [MarshalAs(UnmanagedType.Bool)] bool bEnable);
 
 
         [DllImport("user32.dll")]

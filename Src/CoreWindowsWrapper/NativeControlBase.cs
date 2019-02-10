@@ -145,10 +145,10 @@ namespace CoreWindowsWrapper
             get
             {
                 Font f = this._Font;
-                if(this.Control!= null)
+                if (this.Control != null)
                 {
                     f = this.Control.Font;
-                    if(!f.Equals(this._Font))
+                    if (!f.Equals(this._Font))
                     {
                         this._Font = f;
                     }
@@ -156,17 +156,17 @@ namespace CoreWindowsWrapper
                 return f;
             }
             set
-            {   
+            {
                 this._Font = value;
-                if(this.Control!= null)
+                if (this.Control != null)
                 {
                     this.Control.Font = this._Font;
                 }
-                
+
             }
         }
 
-         
+
 
         public virtual bool Create(IntPtr parentId)
         {
@@ -198,6 +198,12 @@ namespace CoreWindowsWrapper
         public virtual void Destroy()
         {
             Console.Write("on Destroy");
+        }
+
+        public bool Enabled
+        {
+            get => this.Control.Enabled;
+            set => this.Control.Enabled = value;
         }
     }
 }
