@@ -1,5 +1,6 @@
 ﻿using System;
 using CoreWindowsWrapper.Api.Win32;
+
 namespace CoreWindowsWrapper.Tools
 {
     internal class ImageTool
@@ -14,7 +15,8 @@ namespace CoreWindowsWrapper.Tools
 
         public static IntPtr SaveLoadBitmapFromFile(string filePath)
         {
-            IntPtr hBmp = Win32Api.LoadImage(IntPtr.Zero, filePath, ImageTypeConst.IMAGE_BITMAP, 0,0,LoadResourceConst.LR_LOADFROMFILE | LoadResourceConst.LR_DEFAULTSIZE | LoadResourceConst.LR_SHARED);
+            IntPtr hBmp = Win32Api.LoadImage(IntPtr.Zero, filePath, ImageTypeConst.IMAGE_BITMAP, 0, 0,
+                LoadResourceConst.LR_LOADFROMFILE | LoadResourceConst.LR_DEFAULTSIZE | LoadResourceConst.LR_SHARED);
             return hBmp;
         }
     }

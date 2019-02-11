@@ -1,4 +1,5 @@
 ﻿// ReSharper disable InconsistentNaming
+
 namespace CoreWindowsWrapper.Api.Win32
 {
     internal static class EditBoxMessaes
@@ -15,6 +16,5 @@ namespace CoreWindowsWrapper.Api.Win32
         public const uint EN_ALIGN_RTL_EC = 0x0701;
         public const uint EN_BEFORE_PASTE = 0x0800;
         public const uint EN_AFTER_PASTE = 0x0801;
-
     }
 }

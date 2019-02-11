@@ -2,12 +2,13 @@
 
 namespace CoreWindowsWrapper.Api.Ole
 {
-    [StructLayout(LayoutKind.Sequential, Pack = 4)]
-  public struct POINT
-  {
-    [ComAliasName("Microsoft.VisualStudio.OLE.Interop.LONG")]
-    public int x;
-    [ComAliasName("Microsoft.VisualStudio.OLE.Interop.LONG")]
-    public int y;
-  }
+    [StructLayout(LayoutKind.Sequential)]
+    public struct Point
+    {
+        /// LONG->int
+        public int x;
+
+        /// LONG->int
+        public int y;
+    }
 }

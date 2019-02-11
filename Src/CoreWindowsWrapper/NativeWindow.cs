@@ -4,12 +4,29 @@ using CoreWindowsWrapper.Win32ApiForm;
 
 namespace CoreWindowsWrapper
 {
-    public class NativeWindow:IControl
+    public class NativeWindow : IControl
     {
         private Win32Window _Window;
-        internal bool IsMainWindow { get; set; }
+
+        internal bool IsMainWindow
+        {
+            get
+            {
+                return this._IsMainWindow;
+            }
+            set
+            {
+                this._IsMainWindow = value;
+                if (this._Window != null)
+                    this._Window.IsMainWindow = value;
+            }
+        }
+
+        private NativeWindow ParentWindow = null;
         public ControlCollection Controls => this._Window.Controls;
-        private WindowsStartupPosition _StartUpPostion;
+        private WindowsStartupPosition _StartUpPosition;
+        private bool _IsMainWindow;
+
         public IntPtr Handle
         {
             get
@@ -24,18 +41,50 @@ namespace CoreWindowsWrapper
         public event EventHandler<CreateEventArgs> Create;
         public event EventHandler<MouseClickEventArgs> DoubleClick;
         public event EventHandler<MouseClickEventArgs> Click;
+        public event EventHandler<CreateEventArgs> Destroed;
 
-        protected NativeWindow()
+        public NativeWindow()
         {
             Initialize();
         }
-        
-        public void Close()
+
+        public NativeWindow(NativeWindow parent)
         {
-             this._Window.Close();
+            this.ParentWindow = parent;
+
+            Initialize(parent.Handle);
+            this.ParentWindow.Create += OnParentCreate;
+            //this.ParentWindow.Destroed += OnParentDestroyed;
+
+
         }
 
-        public IntPtr ParentHandle { get; set; }
+        private void OnParentDestroyed(object sender, CreateEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void OnParentCreate(object sender, CreateEventArgs e)
+        {
+            ((IControl)this).ParentHandle = e.Handle;
+        }
+
+        public void Close()
+        {
+            this._Window.Close();
+        }
+
+        public IntPtr ParentHandle
+        {
+            get => ((IControl)this).ParentHandle;
+            private set => ((IControl)this).ParentHandle = value;
+        }
+
+        IntPtr IControl.ParentHandle
+        {
+            get => this._Window.ParentHandle;
+            set => this._Window.ParentHandle = value;
+        }
 
         public string Name
         {
@@ -83,12 +132,12 @@ namespace CoreWindowsWrapper
         {
             get
             {
-                return _StartUpPostion;
+                return this._StartUpPosition;
             }
             set
             {
-                this._StartUpPostion = value;
-                switch(this._StartUpPostion)
+                this._StartUpPosition = value;
+                switch (this._StartUpPosition)
                 {
                     case WindowsStartupPosition.Normal:
                         this._Window.CenterForm = false;
@@ -120,7 +169,7 @@ namespace CoreWindowsWrapper
         public string IconFile
         {
             get => this._Window.IconFile;
-            set=> this._Window.IconFile = value;
+            set => this._Window.IconFile = value;
         }
         public int ForeColor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public Font Font { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
@@ -130,8 +179,12 @@ namespace CoreWindowsWrapper
             throw new NotImplementedException();
         }
 
-        bool IControl.ClientEdge{get=>throw new NotImplementedException(); set=> throw new NotImplementedException();}
-        public bool Enabled { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        bool IControl.ClientEdge { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public bool Enabled
+        {
+            get => this._Window.Enable;
+            set => this._Window.Enable = value;
+        }
 
         public bool HandleEvents(IntPtr hWndParent, IntPtr hWndControl, int controlId, uint command, IntPtr wParam, IntPtr lParam)
         {
@@ -140,16 +193,35 @@ namespace CoreWindowsWrapper
 
         private void Initialize()
         {
-            this._Window = new Win32Window();
+            this._Window = new Win32Window(this.IsMainWindow);
             //{
             //    Style = WindowStylesConst.WS_CAPTION | WindowStylesConst.WS_SYSMENU |
             //            WindowStylesConst.WS_EX_STATICEDGE
             //};
+            InitDefaults();
+        }
+
+        private void InitDefaults()
+        {
             this.StartUpPosition = WindowsStartupPosition.Normal;
             this._Window.CreateForm += OnCreateForm;
             this._Window.DoubleClick += OnFormDoubleClick;
             this._Window.Click += OnFormClick;
+            this._Window.Destroyed += OnDestroyed;
             InitControls();
+        }
+
+        private void OnDestroyed(object sender, CreateEventArgs e)
+        {
+            Destroed?.Invoke(this, e);
+            this.Destroy();
+        }
+
+        private void Initialize(IntPtr parentHandle)
+        {
+            this._Window = new Win32Window(parentHandle, this.IsMainWindow);
+
+            InitDefaults();
         }
 
         protected virtual void InitControls()
@@ -164,7 +236,7 @@ namespace CoreWindowsWrapper
 
         private void OnFormClick(object sender, MouseClickEventArgs e)
         {
-         OnClick(e);  
+            OnClick(e);
         }
 
         private void OnFormDoubleClick(object sender, MouseClickEventArgs e)
@@ -174,13 +246,21 @@ namespace CoreWindowsWrapper
 
         private void OnCreateForm(object sender, CreateEventArgs e)
         {
+
             OnCreate(e);
         }
 
+        public void ShowModal()
+        {
+            if (this.ParentWindow != null)
+                this.ParentWindow.Enabled = false;
+            this._Window.Create();
+        }
         public void Show()
         {
+              
             this._Window.Create();
-            
+         
         }
 
         protected virtual void OnCreate(CreateEventArgs e)
@@ -200,6 +280,16 @@ namespace CoreWindowsWrapper
 
         public void Destroy()
         {
+            // ReSharper disable once RedundantCheckBeforeAssignment
+            if (this.ParentWindow != null)
+            {
+
+                this.ParentWindow.Create -= OnParentCreate;
+                this.ParentWindow.Destroed -= OnParentDestroyed;
+                this.ParentWindow.Enabled = true;
+                this.ParentWindow = null;
+            }
+
             Console.Write("On Window Destroy");
         }
     }

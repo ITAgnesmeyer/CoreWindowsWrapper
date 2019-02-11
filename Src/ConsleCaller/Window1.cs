@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Globalization;
 using CoreWindowsWrapper;
 using CoreWindowsWrapper.Tools;
 
@@ -163,7 +164,7 @@ namespace ConsleCaller
 
         private void Timer_OnTick(object sender, EventArgs e)
         {
-            this._Label1.Text = DateTime.Now.ToString();
+            this._Label1.Text = DateTime.Now.ToString(CultureInfo.InvariantCulture);
             int value = this._ProgressBar.Value;
             value += 1;
             if(value > 100)
@@ -239,7 +240,7 @@ namespace ConsleCaller
         private void Window1_DblClick(object sender, MouseClickEventArgs e)
         {
             Window2 win = new Window2();
-            win.Show();
+            win.ShowModal();
 
         }
 

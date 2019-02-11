@@ -1,4 +1,5 @@
 ﻿using System;
+
 // ReSharper disable InconsistentNaming
 
 namespace CoreWindowsWrapper.Api.Win32
@@ -10,8 +11,6 @@ namespace CoreWindowsWrapper.Api.Win32
     /// </summary>
     internal static class WindowsMessages
     {
-
-        
         /// <summary>
         /// The WM_NULL message performs no operation. An application sends the WM_NULL message if it wants to post a message that the recipient window will ignore.
         /// </summary>

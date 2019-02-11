@@ -9,7 +9,7 @@ namespace CoreWindowsWrapper.Api.Win32
         SWP_DRAWFRAME = 0x0020,
 
         ///<Summary>Sends a WM_NCCALCSIZE message to the window, even if the window's size is not being changed. If this flag is not specified, WM_NCCALCSIZE is sent only when the window's size is being changed.</Summary>
-        SWP_FRAMECHANGED = 0x0020, 
+        SWP_FRAMECHANGED = 0x0020,
 
         ///<Summary>Hides the window.</Summary>
         SWP_HIDEWINDOW = 0x0080,
@@ -44,6 +44,4 @@ namespace CoreWindowsWrapper.Api.Win32
         ///<Summary>Displays the window.</Summary>
         SWP_SHOWWINDOW = 0x0040
     };
-
-
 }

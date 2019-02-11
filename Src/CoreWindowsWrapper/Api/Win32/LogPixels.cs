@@ -10,6 +10,5 @@ namespace CoreWindowsWrapper.Api.Win32
 
         /// LOGPIXELSX -> 88
         public const int LOGPIXELSX = 88;
-
     }
 }

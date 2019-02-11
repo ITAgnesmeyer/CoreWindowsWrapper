@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+
 // ReSharper disable InconsistentNaming
 // ReSharper disable UnusedMember.Local
 
@@ -7,7 +8,6 @@ namespace CoreWindowsWrapper.Api.Win32
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public struct LOGFONTW
     {
-
         /// LONG->int
         public int lfHeight;
 
@@ -51,5 +51,4 @@ namespace CoreWindowsWrapper.Api.Win32
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
         public string lfFaceName;
     }
-
 }

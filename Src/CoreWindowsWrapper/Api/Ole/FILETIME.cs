@@ -2,13 +2,13 @@
 
 namespace CoreWindowsWrapper.Api.Ole
 {
-    [StructLayout(LayoutKind.Sequential, Pack = 4)]
+    [StructLayout(LayoutKind.Sequential)]
     public struct FILETIME
     {
-        [ComAliasName("Microsoft.VisualStudio.OLE.Interop.DWORD")]
+        /// DWORD->unsigned int
         public uint dwLowDateTime;
-        [ComAliasName("Microsoft.VisualStudio.OLE.Interop.DWORD")]
+
+        /// DWORD->unsigned int
         public uint dwHighDateTime;
     }
-
 }

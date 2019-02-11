@@ -4,12 +4,15 @@ using System.Runtime.InteropServices;
 namespace CoreWindowsWrapper.Api.Win32
 {
     [StructLayout(LayoutKind.Sequential)]
-    internal struct Paintstruct {
+    internal struct Paintstruct
+    {
         public IntPtr hdc;
         public bool fErase;
         public Rect rcPaint;
         public bool fRestore;
         public bool fIncUpdate;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst=32)] public byte [] rgbReserved;
+
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
+        public byte[] rgbReserved;
     }
 }

@@ -5,6 +5,11 @@ namespace ConsleCaller
     public class Window2 : NativeWindow
     {
         private NativeWebBrowser _WebBrowser;
+
+        //public Window2(NativeWindow parent) : base(parent)
+        //{
+
+        //}
         protected override void InitControls()
         {
             this.Text = "Dies ist ein 2. Fenster";

@@ -1,13 +1,13 @@
 ﻿// ReSharper disable InconsistentNaming
+
 namespace CoreWindowsWrapper.Api.Win32
 {
     ///<summary>
     /// Flags that define appearance and behaviour of a standard message box displayed by a call to the MessageBox function.
     /// </summary>    
-   
     public static class MessageBoxOptionsConst
     {
-        internal const uint 
+        internal const uint
             OkOnly = 0x000000,
             OkCancel = 0x000001,
             AbortRetryIgnore = 0x000002,

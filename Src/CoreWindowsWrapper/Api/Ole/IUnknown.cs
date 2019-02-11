@@ -3,16 +3,16 @@ using System.Runtime.InteropServices;
 
 namespace CoreWindowsWrapper.Api.Ole
 {
-    [ComVisible(false)]
-    [ComImport, InterfaceType(ComInterfaceType.InterfaceIsIUnknown), Guid("00000000-0000-0000-C000-000000000046")]
-    public interface IUnknown
+    [StructLayout(LayoutKind.Sequential)]
+    public struct IUnknown
     {
-        IntPtr QueryInterface(ref Guid riid);
-
-        [PreserveSig]
-        UInt32 AddRef();
-
-        [PreserveSig]
-        UInt32 Release();
+        /// IUnknownVtbl*
+        public IntPtr lpVtbl;
     }
+
+    //public interface IUnknown
+    //{
+    //    int QueryInterface(object This, GUID riid, object ppvObject[] );
+
+    //}
 }
