@@ -64,8 +64,7 @@ public class Window1:NativeWindow
 			Height = 30,
 			Text = "Test",//Caption of the Button
 			Name = "bnTest",
-			ControlId = 501 //Currently every Control neads a unique ID. 
-					//You must set it manually.
+			Font = new Font(){Name="Arial",Size=14} //set the Font of the Button
 		};	
 		//Add Eventhandler
 		this._Button.Clicked += button_OnClicked;
