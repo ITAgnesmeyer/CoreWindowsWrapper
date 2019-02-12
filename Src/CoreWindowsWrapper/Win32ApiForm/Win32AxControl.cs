@@ -20,7 +20,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
             this.ParentHandle = parentHandle;
             this.Handle = Win32Api.CreateWindowEx(0,
-                this.TypeIdentifyer, this.Text,
+                "static", this.Text,
                 this.Style, this.Left,
                 this.Top,
                 this.Width, this.Height, this.ParentHandle,

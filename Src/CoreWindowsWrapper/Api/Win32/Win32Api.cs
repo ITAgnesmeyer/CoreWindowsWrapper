@@ -328,6 +328,14 @@ namespace CoreWindowsWrapper.Api.Win32
 
 
         /// Return Type: BOOL->int
+        ///hWnd: HWND->HWND__*
+        ///lpRect: LPRECT->tagRECT*
+        [DllImport("user32.dll", EntryPoint="GetClientRect")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern  bool GetClientRect([In] IntPtr hWnd, [Out] out Rect lpRect) ;
+
+
+        /// Return Type: BOOL->int
         ///hDlg: HWND->HWND__*
         ///nIDButton: int
         ///uCheck: UINT->unsigned int
@@ -393,6 +401,11 @@ namespace CoreWindowsWrapper.Api.Win32
             if (input == 1) return true;
             return false;
         }
+
+
+
+       
+
     }
 }
 
