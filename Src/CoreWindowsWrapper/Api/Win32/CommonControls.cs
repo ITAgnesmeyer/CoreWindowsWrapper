@@ -3,7 +3,7 @@
 namespace CoreWindowsWrapper.Api.Win32
 {
     /// <inheritdoc />
-    public enum CommonControls : uint
+    internal enum CommonControls : uint
     {
         ICC_UNDEFINED = 0,
         ICC_LISTVIEW_CLASSES = 0x00000001, // listview, header

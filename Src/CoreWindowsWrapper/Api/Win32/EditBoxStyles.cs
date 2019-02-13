@@ -3,7 +3,7 @@
 
 namespace CoreWindowsWrapper.Api.Win32
 {
-    public static class EditBoxStyles
+    internal static class EditBoxStyles
     {
         /// ES_AUTOVSCROLL -> 0x0040L
         public const int ES_AUTOVSCROLL = 64;

@@ -3,7 +3,7 @@
 
 namespace CoreWindowsWrapper.Api.Win32
 {
-    public class LoadResourceConst
+    internal class LoadResourceConst
     {
         /// LR_CREATEDIBSECTION -> 0x2000
         public const int LR_CREATEDIBSECTION = 8192;

@@ -22,6 +22,7 @@ namespace ConsleCaller
         private NativeTimer _Timer;
         private NativeCheckBox _CheckBox;
         private NativeListBox _ListBox;
+        private NativeComboBox _ComboBox;
         protected override  void InitControls()
         {
            
@@ -66,6 +67,19 @@ namespace ConsleCaller
             this._Button.DblClicked += button_OnDblClicked;
             this._Button1.Clicked += button1_OnClicked;
             this._Button1.DblClicked += button1_OnDblClicked;
+
+
+            this._ComboBox = new NativeComboBox();
+            this._ComboBox.Left = 300;
+            this._ComboBox.Top = 10;
+            this._ComboBox.Height = 30;
+            this._ComboBox.Width = 200;
+            this._ComboBox.Name = "cbbTest";
+            this._ComboBox.ForeColor = ColorTool.Blue;
+            this._ComboBox.BackColor = ColorTool.Green;
+            this._ComboBox.Font = new Font() {Name = "Arial", Size = 10};
+            this._ComboBox.SelChange += ComboBox_SelChange;
+
 
             this._TextBox = new NativeTextBox
             {
@@ -132,6 +146,8 @@ namespace ConsleCaller
             this._ListBox.Width = 400;
             this._ListBox.Height = 400;
             this._ListBox.BackColor = ColorTool.Yellow;
+            this._ListBox.ForeColor = ColorTool.Read;
+            this._ListBox.Font = new Font() {Name = "Arial", Size = 16};
 
 
             this._ProgressBar = new NativeProgress
@@ -149,6 +165,7 @@ namespace ConsleCaller
             
             this.Controls.Add(this._Button);
             this.Controls.Add(this._Button1);
+            this.Controls.Add(this._ComboBox);
             this.Controls.Add(this._TextBox);
             this.Controls.Add(this._TextBox2);
             this.Controls.Add(this._Label1);
@@ -160,6 +177,12 @@ namespace ConsleCaller
             Click += Window1_Click;
             DoubleClick += Window1_DblClick;
             Create += Window1_Create;
+        }
+
+        private void ComboBox_SelChange(object sender, NativeComboBoxSelChangeEventArgs e)
+        {
+            string text = this._ComboBox.ItemText(e.Index);
+            MessageBox.Show("Text => " + text);
         }
 
         private void Timer_OnTick(object sender, EventArgs e)
@@ -194,6 +217,7 @@ namespace ConsleCaller
             int maxVal = this._ProgressBar.MaxValue;
             MessageBox.Show("maximum:" + maxVal.ToString());
             this._ProgressBar.Value = value;
+            this._Button.Enabled = true;
   
         }
 
@@ -217,6 +241,13 @@ namespace ConsleCaller
         {
             MessageBox.Show("Button Clicked!");
             this._ListBox.Clear();
+            int items = this._ComboBox.ItemsCount();
+            for(int i = 0; i < items;i++)
+            {
+                this._ListBox.AddText(this._ComboBox.ItemText(i));
+            }
+            
+            MessageBox.Show($"Combobox has {items} Items!");
            this._Bitmap.Width = this._Bitmap.Width- 10;
             this._Bitmap.Refresh();
             this._Button.Enabled = false;
@@ -235,6 +266,11 @@ namespace ConsleCaller
             {
                 this._ListBox.AddText("welt" + i);
             }
+
+            this._ComboBox.Add("hallo");
+            this._ComboBox.Add("world");
+            this._ComboBox.Add("home");
+            this._ComboBox.SelectedIndex = 2;
         }
 
         private void Window1_DblClick(object sender, MouseClickEventArgs e)

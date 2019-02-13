@@ -3,7 +3,7 @@
 
 namespace CoreWindowsWrapper.Api.Win32
 {
-    public enum DefaultHWND : int
+    internal enum DefaultHWND : int
     {
         HWND_TOP = 0,
         HWND_BOTTOM = 1,

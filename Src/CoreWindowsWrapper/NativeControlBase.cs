@@ -9,8 +9,8 @@ namespace CoreWindowsWrapper
     {
         private Win32Control _Control;
         internal virtual Win32Control Control { get => this._Control; set => this._Control = value; }
-        public virtual event EventHandler Clicked;
-        public virtual event EventHandler DblClicked;
+        public virtual event EventHandler<EventArgs> Clicked;
+        public virtual event EventHandler<EventArgs> DblClicked;
         private Font _Font;
         public NativeControlBase()
         {
@@ -23,6 +23,7 @@ namespace CoreWindowsWrapper
         {
             this.Control = new Win32Control();
             this.Control.Font = this._Font;
+            this.Control.BackColor = 0xF0F0F0;
 
         }
 
@@ -187,12 +188,14 @@ namespace CoreWindowsWrapper
 
         protected virtual void OnClicked()
         {
-            Clicked?.Invoke(this, EventArgs.Empty);
+            //Clicked?.Invoke(this, EventArgs.Empty);
+            SafeInvoke(this.Clicked, EventArgs.Empty);
         }
 
         protected virtual void OnDblClicked()
         {
-            DblClicked?.Invoke(this, EventArgs.Empty);
+            SafeInvoke(this.DblClicked, EventArgs.Empty);
+            //DblClicked?.Invoke(this, EventArgs.Empty);
         }
 
         public virtual void Destroy()
@@ -200,10 +203,29 @@ namespace CoreWindowsWrapper
             Console.Write("on Destroy");
         }
 
+        protected void SafeInvoke<T>(EventHandler<T> eventHandler, T ars) where T:EventArgs
+        {
+            try
+            {
+                eventHandler?.Invoke(this, ars);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Event Error:" + e.Message);
+            }
+        }
+
+
         public bool Enabled
         {
             get => this.Control.Enabled;
             set => this.Control.Enabled = value;
+        }
+
+        string IControl.TypeIdentifyer
+        {
+            get => this.TypeIdentifier;
+            set => this.TypeIdentifier = value;
         }
     }
 }

@@ -6,7 +6,7 @@
 namespace CoreWindowsWrapper.Api.Win32
 {
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    public struct LOGFONTW
+    internal struct LOGFONTW
     {
         /// LONG->int
         public int lfHeight;

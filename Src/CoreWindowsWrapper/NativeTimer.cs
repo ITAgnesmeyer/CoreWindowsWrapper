@@ -5,7 +5,7 @@ namespace CoreWindowsWrapper
     public class NativeTimer:NativeNoCreateControlBase
     {
         public int Interval{get;set;}
-        public event EventHandler Tick;
+        public event EventHandler<EventArgs> Tick;
         protected override void Initialize()
         {
             base.Initialize();
@@ -28,7 +28,8 @@ namespace CoreWindowsWrapper
 
         protected virtual void OnTick()
         {
-            this.Tick?.Invoke(this,new EventArgs());
+            //this.Tick?.Invoke(this,new EventArgs());
+            SafeInvoke(this.Tick, EventArgs.Empty);
         }
 
         public void StopTimer()

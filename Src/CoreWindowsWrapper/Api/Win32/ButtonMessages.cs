@@ -2,7 +2,7 @@
 
 namespace CoreWindowsWrapper.Api.Win32
 {
-    public static class ButtonMessages
+    internal static class ButtonMessages
     {
         public const uint BN_CLICKED = 0;
         public const uint BN_PAINT = 1;

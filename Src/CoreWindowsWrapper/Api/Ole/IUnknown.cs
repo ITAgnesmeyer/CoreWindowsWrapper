@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security;
+// ReSharper disable IdentifierTypo
+// ReSharper disable InconsistentNaming
 
 namespace CoreWindowsWrapper.Api.Ole
 {
-    public enum WebBrowserReadyState
+    internal enum WebBrowserReadyState
     {
         Uninitialized,
         Loading,
@@ -15,7 +15,7 @@ namespace CoreWindowsWrapper.Api.Ole
         Complete
     }
 
-    public enum OLECMDF
+    internal enum OLECMDF
     {
         OLECMDF_SUPPORTED = 1,
         OLECMDF_ENABLED = 2,
@@ -25,7 +25,7 @@ namespace CoreWindowsWrapper.Api.Ole
         OLECMDF_DEFHIDEONCTXTMENU = 32
     }
 
-    public enum OLECMDID
+    internal enum OLECMDID
     {
         OLECMDID_SAVEAS = 4,
         OLECMDID_PRINT = 6,
@@ -34,7 +34,7 @@ namespace CoreWindowsWrapper.Api.Ole
         OLECMDID_PROPERTIES = 10
     }
 
-    public enum OLECMDEXECOPT
+    internal enum OLECMDEXECOPT
     {
         OLECMDEXECOPT_DODEFAULT,
         OLECMDEXECOPT_PROMPTUSER,
@@ -45,7 +45,7 @@ namespace CoreWindowsWrapper.Api.Ole
    [Guid("D30C1661-CDAF-11d0-8A3E-00C04FC9E26E")]
         [SuppressUnmanagedCodeSecurity]
         [TypeLibType(TypeLibTypeFlags.FHidden | TypeLibTypeFlags.FDual | TypeLibTypeFlags.FOleAutomation)]
-        public interface IWebBrowser2
+        internal interface IWebBrowser2
         {
             [DispId(555)]
             bool AddressBar

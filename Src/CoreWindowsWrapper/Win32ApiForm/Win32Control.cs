@@ -69,7 +69,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
         public bool ClientEdge { get; set; }
         public string TypeIdentifyer { get; set; }
         public int ControlId { get; set; }
-        public int BackColor { get; set; }
+        public int BackColor { get; set; }=0xF0F0F0;
         public int ForeColor { get; set; }
         public Font Font { get; set; }
         public CommonControls CommonControType { get; set; } = CommonControls.ICC_UNDEFINED;

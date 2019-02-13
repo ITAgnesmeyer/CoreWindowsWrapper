@@ -2,7 +2,7 @@
 
 namespace CoreWindowsWrapper.Api.Win32
 {
-    public static class MessageBoxCheckFlags
+    internal static class MessageBoxCheckFlags
     {
         internal const uint MB_OK = 0x00000000,
             MB_OKCANCEL = 0x00000001,

@@ -42,10 +42,13 @@ namespace CoreWindowsWrapper
         public event EventHandler<MouseClickEventArgs> DoubleClick;
         public event EventHandler<MouseClickEventArgs> Click;
         public event EventHandler<CreateEventArgs> Destroed;
+        public event EventHandler<MouseClickEventArgs> MouseDown;
+        public event EventHandler<MouseClickEventArgs> MouseUp;
 
         public NativeWindow()
         {
             Initialize();
+            
         }
 
         public NativeWindow(NativeWindow parent)
@@ -166,6 +169,11 @@ namespace CoreWindowsWrapper
 
         public Point Location { get; set; }
         int IControl.ControlId { get; set; } = -1;
+        string IControl.TypeIdentifyer
+        {
+            get => "window";
+            set { Console.Write("Window try to set dietifier=>" + value); }
+        }
         public string IconFile
         {
             get => this._Window.IconFile;
@@ -194,6 +202,7 @@ namespace CoreWindowsWrapper
         private void Initialize()
         {
             this._Window = new Win32Window(this.IsMainWindow);
+            
             //{
             //    Style = WindowStylesConst.WS_CAPTION | WindowStylesConst.WS_SYSMENU |
             //            WindowStylesConst.WS_EX_STATICEDGE
@@ -208,7 +217,31 @@ namespace CoreWindowsWrapper
             this._Window.DoubleClick += OnFormDoubleClick;
             this._Window.Click += OnFormClick;
             this._Window.Destroyed += OnDestroyed;
+            this._Window.MouseDown += OnFormMouseDown;
+            this._Window.MouseUp += OnFormMouseUp;
             InitControls();
+        }
+
+        private void OnFormMouseUp(object sender, MouseClickEventArgs e)
+        {
+            this.OnMouseUp(e);
+        }
+
+        private void OnFormMouseDown(object sender, MouseClickEventArgs e)
+        {
+            this.OnMouseDown(e);
+        }
+
+        private void OnMouseUp(MouseClickEventArgs e)
+        {
+            SafeInvoke(this.MouseUp, e);
+            //this.MouseUp?.Invoke(this,e);
+        }
+
+        private void OnMouseDown(MouseClickEventArgs e)
+        {
+            SafeInvoke(this.MouseDown, e);
+            
         }
 
         private void OnDestroyed(object sender, CreateEventArgs e)
@@ -236,18 +269,31 @@ namespace CoreWindowsWrapper
 
         private void OnFormClick(object sender, MouseClickEventArgs e)
         {
-            OnClick(e);
+            this.OnClick(e);
+            
+        }
+
+        private void SafeInvoke<T>(EventHandler<T> eventHandler, T ars) where T:EventArgs
+        {
+            try
+            {
+                eventHandler?.Invoke(this, ars);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Event Error:" + e.Message);
+            }
         }
 
         private void OnFormDoubleClick(object sender, MouseClickEventArgs e)
         {
-            OnDoubleClick(e);
+            this.OnDoubleClick(e);
         }
 
         private void OnCreateForm(object sender, CreateEventArgs e)
         {
 
-            OnCreate(e);
+            this.OnCreate(e);
         }
 
         public void ShowModal()
@@ -265,17 +311,21 @@ namespace CoreWindowsWrapper
 
         protected virtual void OnCreate(CreateEventArgs e)
         {
-            Create?.Invoke(this, e);
+            SafeInvoke(this.Create, e);
+            //Create?.Invoke(this, e);
         }
 
         protected virtual void OnDoubleClick(MouseClickEventArgs e)
         {
-            DoubleClick?.Invoke(this, e);
+            SafeInvoke(this.DoubleClick, e);
+            //DoubleClick?.Invoke(this, e);
+
         }
 
         protected virtual void OnClick(MouseClickEventArgs e)
         {
-            Click?.Invoke(this, e);
+            SafeInvoke(this.Click, e);
+            //Click?.Invoke(this, e);
         }
 
         public void Destroy()

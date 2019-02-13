@@ -27,6 +27,7 @@ namespace CoreWindowsWrapper.Api.Win32
         public static extern UIntPtr SetTimer([In] IntPtr hWnd, UIntPtr nIDEvent, uint uElapse,
             TIMERPROC lpTimerFunc);
 
+       
 
         /// Return Type: BOOL->int
         ///hWnd: HWND->HWND__*
@@ -295,6 +296,10 @@ namespace CoreWindowsWrapper.Api.Win32
         public static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wParam, StringBuilder lParam);
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public static extern IntPtr SendMessage(IntPtr hWnd, int msg, int wParam, StringBuilder lParam);
+
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
         public static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wParam,
             [MarshalAs(UnmanagedType.LPWStr)] string lParam);
 
@@ -307,6 +312,10 @@ namespace CoreWindowsWrapper.Api.Win32
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         public static extern IntPtr SendMessage(IntPtr hWnd, int msg, int wParam, IntPtr lParam);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public static extern IntPtr SendMessage(IntPtr hWnd, int msg, int wParam, int lParam);
+
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         public static extern IntPtr SendMessage(IntPtr hWnd, uint msg, uint wParam = 0, uint lParam = 0);
@@ -357,6 +366,15 @@ namespace CoreWindowsWrapper.Api.Win32
         public static extern bool InitCommonControlsEx(ref INITCOMMONCONTROLSEX iccex);
 
 
+        
+        /// Return Type: BOOL->int
+        ///hwndCombo: HWND->HWND__*
+        ///pcbi: PCOMBOBOXINFO->tagCOMBOBOXINFO*
+        [DllImport("user32.dll", EntryPoint="GetComboBoxInfo")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern  bool GetComboBoxInfo([In] IntPtr hwndCombo, ref COMBOBOXINFO pcbi) ;
+
+
         public static int HiWord(int number)
         {
             if ((number & 0x80000000) == 0x80000000)
@@ -382,11 +400,13 @@ namespace CoreWindowsWrapper.Api.Win32
 
         public static int MulDiv(int number, int numerator, int denominator)
         {
+            if (denominator == 0) return 0;
             return (int) ((long) number * numerator / denominator);
         }
 
         public static int MulDivReverse(int number, int numerator, int dimension)
         {
+            if (numerator == 0) return 0;
             return (int) ((long) number * dimension / numerator);
         }
 
@@ -404,7 +424,7 @@ namespace CoreWindowsWrapper.Api.Win32
 
 
 
-       
+     
 
     }
 }

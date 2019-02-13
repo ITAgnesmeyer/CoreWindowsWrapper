@@ -3,7 +3,7 @@
 
 namespace CoreWindowsWrapper.Api.Win32
 {
-    public static class SpiConst
+    internal static class SpiConst
     {
         /// SPI_SETFONTSMOOTHINGORIENTATION -> 0x2013
         public const int SPI_SETFONTSMOOTHINGORIENTATION = 8211;

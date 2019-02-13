@@ -3,7 +3,7 @@
 
 namespace CoreWindowsWrapper.Api.Win32
 {
-    public partial class ImageTypeConst
+    internal  class ImageTypeConst
     {
         /// IMAGE_DLLCHARACTERISTICS_TERMINAL_SERVER_AWARE -> 0x8000
         public const int IMAGE_DLLCHARACTERISTICS_TERMINAL_SERVER_AWARE = 32768;

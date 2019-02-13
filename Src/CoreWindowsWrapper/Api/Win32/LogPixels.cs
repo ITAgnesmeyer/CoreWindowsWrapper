@@ -3,7 +3,7 @@
 
 namespace CoreWindowsWrapper.Api.Win32
 {
-    public static class LogPixels
+    internal static class LogPixels
     {
         /// LOGPIXELSY -> 90
         public const int LOGPIXELSY = 90;

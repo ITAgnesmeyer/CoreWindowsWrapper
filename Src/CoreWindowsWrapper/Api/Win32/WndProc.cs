@@ -2,5 +2,5 @@
 
 namespace CoreWindowsWrapper.Api.Win32
 {
-    delegate IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+    internal delegate IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
 }

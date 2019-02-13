@@ -5,7 +5,7 @@ namespace CoreWindowsWrapper.Api.Win32
     ///<summary>
     /// Flags that define appearance and behaviour of a standard message box displayed by a call to the MessageBox function.
     /// </summary>    
-    public static class MessageBoxOptionsConst
+    internal static class MessageBoxOptionsConst
     {
         internal const uint
             OkOnly = 0x000000,

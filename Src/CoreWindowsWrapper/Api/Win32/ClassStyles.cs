@@ -5,7 +5,7 @@
 namespace CoreWindowsWrapper.Api.Win32
 {
     [Flags]
-    public enum ClassStyles : uint
+    internal enum ClassStyles : uint
     {
         /// <summary>Aligns the window's client area on a byte boundary (in the x direction). This style affects the width of the window and its horizontal placement on the display.</summary>
         ByteAlignClient = 0x1000,

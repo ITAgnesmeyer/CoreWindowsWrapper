@@ -4,7 +4,7 @@
 
 namespace CoreWindowsWrapper.Api.Win32
 {
-    public struct MSG
+    internal struct MSG
     {
         public IntPtr hwnd;
         public uint message;

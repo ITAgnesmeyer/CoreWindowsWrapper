@@ -2,7 +2,7 @@
 
 namespace CoreWindowsWrapper.Api.Win32
 {
-    internal static class EditBoxMessaes
+    internal static class EditBoxMessages
     {
         public const uint EN_SETFOCUS = 0x0100;
         public const uint EN_KILLFOCUS = 0x0200;

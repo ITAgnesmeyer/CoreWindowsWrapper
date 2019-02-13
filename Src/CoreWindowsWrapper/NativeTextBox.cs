@@ -5,7 +5,7 @@ namespace CoreWindowsWrapper
 {
     public class NativeTextBox : NativeControlBase
     {
-        public event EventHandler Change;
+        public event EventHandler<EventArgs> Change;
         protected override void Initialize()
         {
             base.Initialize();
@@ -32,7 +32,7 @@ namespace CoreWindowsWrapper
             bool handled = false;
             switch (command)
             {
-                case EditBoxMessaes.EN_CHANGE:
+                case EditBoxMessages.EN_CHANGE:
                     OnChange();
                     handled = true;
                     break;
@@ -46,7 +46,8 @@ namespace CoreWindowsWrapper
 
         protected virtual void OnChange()
         {
-            Change?.Invoke(this, EventArgs.Empty);
+            //Change?.Invoke(this, EventArgs.Empty);
+            SafeInvoke(this.Change, EventArgs.Empty);
         }
     }
 }

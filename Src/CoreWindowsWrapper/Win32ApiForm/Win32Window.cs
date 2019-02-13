@@ -7,7 +7,7 @@ using Point = CoreWindowsWrapper.Api.Win32.Point;
 
 namespace CoreWindowsWrapper.Win32ApiForm
 {
-    internal sealed class Win32Window : IWindowClass
+    internal sealed class Win32Window : IWindowClass,IDisposable
     {
         public bool IsMainWindow { get; set; }
 
@@ -20,7 +20,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
         
         private static readonly Dictionary<IntPtr, Win32Window> WindowList = new Dictionary<IntPtr, Win32Window>();
         private static readonly Stack<Win32Window> WindowStack = new Stack<Win32Window>();
-        public ControlCollection Controls = new ControlCollection();
+        public ControlCollection Controls;
         public IntPtr Handle { get; private set; }
         public IntPtr ParentHandle { get; set; }
         public int Color { get; set; }
@@ -47,19 +47,21 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
         public Win32Window(bool isMainWindow = false)
         {
+            this.Controls = new ControlCollection(this);
             this.IsMainWindow = isMainWindow;
             this.Name = "Win32WindowClass";
             this.Text = this.Name;
-            this.Color = Win32Api.RGB(238, 238, 238);
+            this.Color = 0xF0F0F0;
         }
 
         public Win32Window(IntPtr parentHandle,bool isMainWindow = false)
         {
+            this.Controls = new ControlCollection(this);
             this.IsMainWindow = isMainWindow;
             this.ParentHandle = parentHandle;
             this.Name = "Win32WindowClass";
             this.Text = this.Name;
-            this.Color = Win32Api.RGB(238, 238, 238);
+            this.Color = 0xF0F0F0;
         }
 
 
@@ -270,8 +272,36 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 window = WindowList[hWnd];
             }
 
+           
             switch (eventType)
             {
+                case WindowsMessages.WM_NOTIFY:
+                    Api.Win32.NMHDR hdr = null;
+                    try
+                    {
+                        object obj = Marshal.PtrToStructure(lParam,typeof(NMHDR));
+                        hdr = (Api.Win32.NMHDR)obj;
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.Print(e.Message);
+
+
+                    }
+
+                    uint test = unchecked((0U - 0U) - 2);
+                    if (hdr != null && hdr.code == test)
+                    {
+                        int cId = Convert.ToInt32(hdr.idFrom);
+                        uint cCmd = hdr.code;
+                        IntPtr hCWndControl = hdr.hwndFrom;
+                        if (window.Controls.ContainsKey(cId))
+                        {
+                            IControl cControl = window.Controls[cId];
+                            handled = cControl.HandleEvents(hWnd, hCWndControl, cId, cCmd, wParam, lParam);
+                        }
+                    }
+                    break;
                 case WindowsMessages.WM_COMMAND:
                     int controlId = Win32Api.LoWord(wParam.ToInt32());
                     uint command = (uint) Win32Api.HiWord(wParam.ToInt32());
@@ -342,52 +372,22 @@ namespace CoreWindowsWrapper.Win32ApiForm
                     window.OnCreate();
                     break;
 
-                case WindowsMessages.WM_CTLCOLOREDIT:
-                    IntPtr editCtlHdc = wParam;
-                    int editControlId = Win32Api.GetDlgCtrlID(lParam);
-                    _lastMessageReturn = Win32Api.CreateSolidBrush(Tools.ColorTool.White);
-                    if (window.Controls.ContainsKey(editControlId))
-                    {
-                        IControl control = window.Controls[editControlId];
-                        Win32Api.SetTextColor(editCtlHdc, control.ForeColor);
-                        Win32Api.SetBkColor(editCtlHdc, control.BackColor);
-                        IntPtr brush = Win32Api.CreateSolidBrush(control.BackColor);
-                        _lastMessageReturn = brush;
-                    }
-
+                case WindowsMessages.WM_CTLCOLOREDIT :
+                    CtlColors(wParam, lParam, window);
                     break;
                 case WindowsMessages.WM_CTLCOLORSTATIC:
-                    IntPtr staticCtlHdc = wParam;
-                    int staticControlId = Win32Api.GetDlgCtrlID(lParam);
-                    _lastMessageReturn = Win32Api.CreateSolidBrush(Tools.ColorTool.White);
-                    if (window.Controls.ContainsKey(staticControlId))
-                    {
-                        IControl control = window.Controls[staticControlId];
-                        Win32Api.SetTextColor(staticCtlHdc, control.ForeColor);
-                        Win32Api.SetBkColor(staticCtlHdc, control.BackColor);
-                        IntPtr brush = Win32Api.CreateSolidBrush(control.BackColor);
-                        _lastMessageReturn = brush;
-                    }
-
-                    handled = true;
+                    CtlColors(wParam, lParam, window);
                     break;
 
                 case WindowsMessages.WM_CTLCOLORBTN:
-                    IntPtr btnCtlHdc = wParam;
-                    int btnControlId = Win32Api.GetDlgCtrlID(lParam);
-                    _lastMessageReturn = Win32Api.CreateSolidBrush(Tools.ColorTool.White);
-                    if (window.Controls.ContainsKey(btnControlId))
-                    {
-                        IControl control = window.Controls[btnControlId];
-                        Win32Api.SetTextColor(btnCtlHdc, control.ForeColor);
-                        Win32Api.SetBkColor(btnCtlHdc, control.BackColor);
-                        IntPtr brush = Win32Api.CreateSolidBrush(control.BackColor);
-                        _lastMessageReturn = brush;
-                    }
-
-                    handled = true;
+                    CtlColors(wParam,lParam,window);
                     break;
 
+                case WindowsMessages.WM_CTLCOLORLISTBOX:
+                    
+                    CtlColors(wParam,lParam,window);
+                    break;
+                
                 case WindowsMessages.WM_SIZE:
 
                     handled = false;
@@ -399,6 +399,41 @@ namespace CoreWindowsWrapper.Win32ApiForm
             }
 
             return handled;
+        }
+
+        private static void CtlColors(IntPtr wParam, IntPtr lParam, Win32Window window)
+        {
+            IntPtr editCtlHdc = wParam;
+            int editControlId = Win32Api.GetDlgCtrlID(lParam);
+            _lastMessageReturn = Win32Api.CreateSolidBrush(Tools.ColorTool.White);
+            if (window.Controls.ContainsKey(editControlId))
+            {
+                IControl control = window.Controls[editControlId];
+
+                if (control.TypeIdentifyer == "combobox")
+                {
+                    COMBOBOXINFO cinfo = new COMBOBOXINFO();
+                    cinfo.cbSize = (uint)Marshal.SizeOf<COMBOBOXINFO>();
+                    if (Win32Api.GetComboBoxInfo(control.Handle, ref cinfo))
+                    {
+                        Win32Api.SetBkColor(cinfo.hwndCombo, control.BackColor);
+                        Win32Api.SetTextColor(cinfo.hwndCombo, control.ForeColor);
+                        Win32Api.SetBkColor(cinfo.hwndItem, control.BackColor);
+                        Win32Api.SetTextColor(cinfo.hwndItem, control.ForeColor);
+                        Win32Api.SetBkColor(cinfo.hwndList, control.BackColor);
+                        Win32Api.SetTextColor(cinfo.hwndList, control.ForeColor);
+                    }
+                }
+                else
+                {
+                    Win32Api.SetTextColor(editCtlHdc, control.ForeColor);
+                    Win32Api.SetBkColor(editCtlHdc, control.BackColor);
+                }
+
+                IntPtr brush = Win32Api.CreateSolidBrush(control.BackColor);
+                _lastMessageReturn = brush;
+               
+            }
         }
 
         private void OnPaint(IntPtr hWnd, Paintstruct ps)
@@ -438,5 +473,11 @@ namespace CoreWindowsWrapper.Win32ApiForm
         }
 
         public Wndclassex WindowClass { get; set; }
+
+        public void Dispose()
+        {
+            this.Controls?.Dispose();
+            this.Controls = null;
+        }
     }
 }
