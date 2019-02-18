@@ -8,10 +8,14 @@ namespace ConsleCaller
         private NativeWebBrowser _WebBrowser;
         private NativeButton _Button;
         private NativeLink _Link;
+        private NativeGroupBox _GroupBox;
         private  int lastLeft = 1;
         private  int LastTop = 1;
 
-        
+        public Window2(NativeWindow parent):base(parent)
+        {
+            
+        }
         //public Window2(NativeWindow parent) : base(parent)
         //{
 
@@ -51,9 +55,18 @@ namespace ConsleCaller
             this._Link.LinkClicked += Link_Clicked;
             this._Link.Font = new Font() {Name = "Arial", Size = 12};
 
+            this._GroupBox = new NativeGroupBox();
+            this._GroupBox.Left = 100;
+            this._GroupBox.Top = 250;
+            this._GroupBox.Width = 300;
+            this._GroupBox.Height = 100;
+            this._GroupBox.Text = "TEST";
+            
+
             this.Controls.Add(this._WebBrowser);
             this.Controls.Add(this._Button);
             this.Controls.Add(this._Link);
+            this.Controls.Add(this._GroupBox);
 
         }
 

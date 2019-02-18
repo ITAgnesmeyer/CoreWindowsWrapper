@@ -7,7 +7,7 @@ using CoreWindowsWrapper.Tools;
 
 namespace ConsleCaller
 {
-    class Window1:NativeWindow
+    class Window1 : NativeWindow
     {
 
 
@@ -23,14 +23,14 @@ namespace ConsleCaller
         private NativeCheckBox _CheckBox;
         private NativeListBox _ListBox;
         private NativeComboBox _ComboBox;
-        protected override  void InitControls()
+        protected override void InitControls()
         {
-           
-            
+
+
             this.Text = "Dies ist meine Anwnedung";
             this.Name = "Window1";
-           // this.Left = 100;
-           //this.Top = 100;
+            // this.Left = 100;
+            //this.Top = 100;
             this.Width = 600;
             this.Height = 400;
             //this.BackColor = ColorTool.LightGray;
@@ -48,9 +48,9 @@ namespace ConsleCaller
                 Height = 30,
                 Text = "Test",
                 Name = "bnTest",
-                BackColor=ColorTool.Blue,
+                BackColor = ColorTool.Blue,
                 ForeColor = ColorTool.Green
-               
+
             };
 
             this._Button1 = new NativeButton
@@ -77,7 +77,7 @@ namespace ConsleCaller
             this._ComboBox.Name = "cbbTest";
             this._ComboBox.ForeColor = ColorTool.Blue;
             this._ComboBox.BackColor = ColorTool.Green;
-            this._ComboBox.Font = new Font() {Name = "Arial", Size = 10};
+            this._ComboBox.Font = new Font() { Name = "Arial", Size = 10 };
             this._ComboBox.SelChange += ComboBox_SelChange;
 
 
@@ -89,7 +89,7 @@ namespace ConsleCaller
                 Height = 30,
                 Text = "ATEST",
                 Name = "txtTest",
-                Font = new Font(){Name="Arial",Size=14},
+                Font = new Font() { Name = "Arial", Size = 14 },
                 ForeColor = ColorTool.Read
                 //ControlId = 502
             };
@@ -105,8 +105,8 @@ namespace ConsleCaller
                 Name = "txt2Test",
                 //ControlId = 503,
                 BackColor = ColorTool.Black,
-                ForeColor= ColorTool.White
-                
+                ForeColor = ColorTool.White
+
             };
 
             this._Label1 = new NativeLabel
@@ -116,12 +116,12 @@ namespace ConsleCaller
                 Width = 100,
                 Height = 30,
                 Text = "Dies ist ein Label"//,
-                //BackColor=ColorTool.Read,
-                //ForeColor = ColorTool.Green,
-                //ControlId = 504
-                
+                                           //BackColor=ColorTool.Read,
+                                           //ForeColor = ColorTool.Green,
+                                           //ControlId = 504
+
             };
-            this._Label1.Clicked += Label1_Click; 
+            this._Label1.Clicked += Label1_Click;
             this._Label1.DblClicked += Label1_DblClick;
 
             this._Bitmap = new NativeBitmap();
@@ -147,7 +147,7 @@ namespace ConsleCaller
             this._ListBox.Height = 400;
             this._ListBox.BackColor = ColorTool.Yellow;
             this._ListBox.ForeColor = ColorTool.Read;
-            this._ListBox.Font = new Font() {Name = "Arial", Size = 16};
+            this._ListBox.Font = new Font() { Name = "Arial", Size = 16 };
 
 
             this._ProgressBar = new NativeProgress
@@ -162,7 +162,7 @@ namespace ConsleCaller
 
 
             this._TextBox.Clicked += TextBox_Click;
-            
+
             this.Controls.Add(this._Button);
             this.Controls.Add(this._Button1);
             this.Controls.Add(this._ComboBox);
@@ -174,6 +174,7 @@ namespace ConsleCaller
             this.Controls.Add(this._ListBox);
             this.Controls.Add(this._ProgressBar);
             this.Controls.Add(this._Timer);
+
             Click += Window1_Click;
             DoubleClick += Window1_DblClick;
             Create += Window1_Create;
@@ -190,7 +191,7 @@ namespace ConsleCaller
             this._Label1.Text = DateTime.Now.ToString(CultureInfo.InvariantCulture);
             int value = this._ProgressBar.Value;
             value += 1;
-            if(value > 100)
+            if (value > 100)
                 value = 1;
             this._ProgressBar.Value = value;
         }
@@ -218,7 +219,7 @@ namespace ConsleCaller
             MessageBox.Show("maximum:" + maxVal.ToString());
             this._ProgressBar.Value = value;
             this._Button.Enabled = true;
-  
+
         }
 
         private void Label1_DblClick(object sender, EventArgs eventArgs)
@@ -242,15 +243,16 @@ namespace ConsleCaller
             MessageBox.Show("Button Clicked!");
             this._ListBox.Clear();
             int items = this._ComboBox.ItemsCount();
-            for(int i = 0; i < items;i++)
+            for (int i = 0; i < items; i++)
             {
                 this._ListBox.AddText(this._ComboBox.ItemText(i));
             }
-            
+
             MessageBox.Show($"Combobox has {items} Items!");
-           this._Bitmap.Width = this._Bitmap.Width- 10;
+            this._Bitmap.Width = this._Bitmap.Width - 10;
             this._Bitmap.Refresh();
             this._Button.Enabled = false;
+            this.Width = 200;
         }
 
         private void Window1_Create(object sender, CreateEventArgs e)
@@ -258,11 +260,11 @@ namespace ConsleCaller
             this._Button.Text = "hallo";
             this._Bitmap.Refresh();
             //MessageBox.Show("OnCreate");
-           //this._Timer.ParentHandle = this.Handle;
+            //this._Timer.ParentHandle = this.Handle;
             this._Timer.StartTimer();
             this._ListBox.AddText("hallo");
             this._ListBox.AddText("welt");
-            for(int i = 1; i< 100;i++)
+            for (int i = 1; i < 100; i++)
             {
                 this._ListBox.AddText("welt" + i);
             }
@@ -275,14 +277,15 @@ namespace ConsleCaller
 
         private void Window1_DblClick(object sender, MouseClickEventArgs e)
         {
-            Window2 win = new Window2();
-            win.ShowModal();
-
+            Windows3 win2 = new Windows3();
+            //this.Controls.Add(win2);
+            win2.Show();
+            MessageBox.Show("Nach Show");
         }
 
         private void Window1_Click(object sender, MouseClickEventArgs e)
         {
-            
+
         }
     }
 }

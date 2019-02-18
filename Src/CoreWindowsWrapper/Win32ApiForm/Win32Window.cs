@@ -17,6 +17,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
         public event EventHandler<MouseClickEventArgs> MouseDown;
         public event EventHandler<MouseClickEventArgs> MouseUp;
         public event EventHandler<CreateEventArgs> Destroyed;
+        public event EventHandler<SizeEventArgs> Size;
         
         private static readonly Dictionary<IntPtr, Win32Window> WindowList = new Dictionary<IntPtr, Win32Window>();
         private static readonly Stack<Win32Window> WindowStack = new Stack<Win32Window>();
@@ -27,11 +28,57 @@ namespace CoreWindowsWrapper.Win32ApiForm
         public string Text { get; set; }
         public string Name { get; set; }
         internal string WindowClassName { get; set; }
-        public Point Location { get; set; }
-        public int Left { get; set; } = unchecked((int) 0x80000000);
-        public int Top { get; set; } = unchecked((int) 0x80000000);
-        public int Width { get; set; }
-        public int Height { get; set; }
+
+        public Point Location
+        {
+            get => new Point(){X=this.Left, Y=this.Top};
+            set
+            {
+                this.Left = value.X;
+                this.Top = value.Y;
+            }
+        }
+
+        public int Left
+        {
+            get => this._Left;
+            set
+            {
+                this._Left = value;
+                MoveMyWindow();
+            }
+        }
+
+        public int Top
+        {
+            get => this._Top;
+            set
+            {
+                this._Top = value;
+                MoveMyWindow();
+            }
+        }
+
+        public int Width
+        {
+            get => this._Width;
+            set
+            {
+                this._Width = value;
+                MoveMyWindow();
+            }
+        }
+
+        public int Height
+        {
+            get => this._Height;
+            set
+            {
+                this._Height = value;
+                MoveMyWindow();
+            }
+        }
+
         public string IconFile { get; set; }
         public bool CenterForm { get; set; }
         public bool MaximizeForm { get; set; }
@@ -43,6 +90,11 @@ namespace CoreWindowsWrapper.Win32ApiForm
         }
         private static IntPtr _lastMessageReturn = IntPtr.Zero;
         private readonly WndProc _DelegateWndProc = MyWndProc;
+        private int _Left = unchecked((int) 0x80000000);
+        private int _Top = unchecked((int) 0x80000000);
+        private int _Width = unchecked((int) 0x80000000);
+        private int _Height= unchecked((int) 0x80000000);
+        private Point _Location;
         public uint Style { get; set; } = WindowStylesConst.WS_OVERLAPPEDWINDOW | WindowStylesConst.WS_VISIBLE;
 
         public Win32Window(bool isMainWindow = false)
@@ -64,13 +116,18 @@ namespace CoreWindowsWrapper.Win32ApiForm
             this.Color = 0xF0F0F0;
         }
 
+        private void MoveMyWindow()
+        {
+            if (this.Handle == IntPtr.Zero) return;
+            Win32Api.MoveWindow(this.Handle, this.Left, this.Top, this.Width, this.Height, true);
+        }
 
         internal void Close()
         {
             Win32Api.SendMessage(this.Handle, WindowsMessages.WM_CLOSE);
         }
 
-        internal bool Create()
+        internal bool Create(bool asControl = false)
         {
             this.WindowClassName = this.Name + "_" + WindowList.Count;
             Wndclassex windClass = new Wndclassex
@@ -136,8 +193,12 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 return false;
             }
 
-            //if (this.ParentHandle != IntPtr.Zero)
-            //    Win32Api.SetParent(this.Handle, this.ParentHandle);
+            if (asControl)
+            {
+                if (this.ParentHandle != IntPtr.Zero)
+                    Win32Api.SetParent(this.Handle, this.ParentHandle);
+
+            }
 
             if (WindowList.ContainsKey(this.Handle))
                 WindowList.Remove(this.Handle);
@@ -152,6 +213,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
 
             Win32Api.UpdateWindow(hWnd);
+            
 
             OnCreate();
 
@@ -389,8 +451,18 @@ namespace CoreWindowsWrapper.Win32ApiForm
                     break;
                 
                 case WindowsMessages.WM_SIZE:
+                    Win32Api.GetClientRect(hWnd, out var r);
+                    window.OnSize(new SizeEventArgs(r.X, r.Y,  r.Right - r.Left , r.Bottom - r.Top));
+                    //handled = false;
+                    break;
+                case WindowsMessages.WM_SIZING:
+                    Win32Api.GetClientRect(hWnd, out var rz);
+                    window.OnSize(new SizeEventArgs(rz.X, rz.Y,  rz.Right - rz.Left , rz.Bottom - rz.Top));
+                    break;
 
-                    handled = false;
+                case WindowsMessages.WM_MOVE:
+                    Win32Api.GetClientRect(hWnd, out var rzs);
+                    window.OnSize(new SizeEventArgs(rzs.X, rzs.Y,  rzs.Right - rzs.Left , rzs.Bottom - rzs.Top));
                     break;
 
                 default:
@@ -478,6 +550,17 @@ namespace CoreWindowsWrapper.Win32ApiForm
         {
             this.Controls?.Dispose();
             this.Controls = null;
+        }
+
+        public void AttachToWindow(IntPtr parent)
+        {
+            this.ParentHandle = parent;
+            Win32Api.SetParent(this.Handle, this.ParentHandle);
+        }
+
+        private void OnSize(SizeEventArgs e)
+        {
+            Size?.Invoke(this, e);
         }
     }
 }

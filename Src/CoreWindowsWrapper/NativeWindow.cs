@@ -44,6 +44,7 @@ namespace CoreWindowsWrapper
         public event EventHandler<CreateEventArgs> Destroed;
         public event EventHandler<MouseClickEventArgs> MouseDown;
         public event EventHandler<MouseClickEventArgs> MouseUp;
+        public event EventHandler<SizeEventArgs> Size;
 
         public NativeWindow()
         {
@@ -184,7 +185,9 @@ namespace CoreWindowsWrapper
 
         bool IControl.Create(IntPtr parentId)
         {
-            throw new NotImplementedException();
+            this._Window.ParentHandle = parentId;
+            bool val = this._Window.Create(true);
+            return val;
         }
 
         bool IControl.ClientEdge { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
@@ -219,7 +222,17 @@ namespace CoreWindowsWrapper
             this._Window.Destroyed += OnDestroyed;
             this._Window.MouseDown += OnFormMouseDown;
             this._Window.MouseUp += OnFormMouseUp;
+            this._Window.Size += OnFormSize;
+            this._Window.Width = unchecked((int) 0x80000000);
+            this._Window.Height = unchecked((int) 0x80000000);
+            this._Window.Left = unchecked((int) 0x80000000);
+            this._Window.Top = unchecked((int) 0x80000000);
             InitControls();
+        }
+
+        private void OnFormSize(object sender, SizeEventArgs e)
+        {
+            this.OnSize(e);
         }
 
         private void OnFormMouseUp(object sender, MouseClickEventArgs e)
@@ -281,7 +294,7 @@ namespace CoreWindowsWrapper
             }
             catch (Exception e)
             {
-                MessageBox.Show("Event Error:" + e.Message);
+                MessageBox.Show("Event Error:" + e.Message + Environment.NewLine + e.StackTrace.ToString());
             }
         }
 
@@ -338,9 +351,21 @@ namespace CoreWindowsWrapper
                 this.ParentWindow.Destroed -= OnParentDestroyed;
                 this.ParentWindow.Enabled = true;
                 this.ParentWindow = null;
+                //this._Window.Close();
             }
 
             Console.Write("On Window Destroy");
+        }
+
+
+        public void AttachToWindow(IntPtr parent)
+        {
+            this._Window.AttachToWindow(parent);
+        }
+
+        protected virtual void OnSize(SizeEventArgs e)
+        {
+            Size?.Invoke(this, e);
         }
     }
 }

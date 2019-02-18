@@ -3,7 +3,9 @@ using System.Collections.Generic;
 
 namespace CoreWindowsWrapper
 {
-    public class ControlCollection : Dictionary<int, NativeControlBase>,IDisposable
+
+
+    public class ControlCollection : Dictionary<int, IControl>,IDisposable
     {
         private Win32ApiForm.Win32Window _ParentWindow;
 
@@ -11,10 +13,10 @@ namespace CoreWindowsWrapper
         {
             this._ParentWindow = parent;
         }
-        public void Add(NativeControlBase contorl)
+        public void Add(IControl contorl)
         {
             IControl ctrl = contorl;
-            if(ctrl.ControlId == 0)
+            if(ctrl.ControlId <= 0)
             {
                 Win32ApiForm.Win32Control.LastControlId+=1;
                 ctrl.ControlId = Win32ApiForm.Win32Control.LastControlId;
