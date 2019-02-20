@@ -9,6 +9,7 @@ namespace CoreWindowsWrapper
         protected override void Initialize()
         {
             base.Initialize();
+            this.ControlType = Win32ApiForm.ControlType.Label;
             this.TypeIdentifier = "static";
             this.Style = WindowStylesConst.WS_VISIBLE | WindowStylesConst.WS_CHILD | StaticControlStyles.SS_BITMAP | StaticControlStyles.SS_NOTIFY;
         }

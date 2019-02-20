@@ -3,7 +3,7 @@
 namespace CoreWindowsWrapper.Api.Win32
 {
   [StructLayout(LayoutKind.Sequential)]
-  internal struct Rect
+  public struct Rect
   {
     public int Left, Top, Right, Bottom;
 

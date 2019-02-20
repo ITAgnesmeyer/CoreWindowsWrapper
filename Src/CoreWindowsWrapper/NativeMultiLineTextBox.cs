@@ -7,8 +7,10 @@ namespace CoreWindowsWrapper
         protected override void Initialize()
         {
             base.Initialize();
-            this.Style = this.Style | EditBoxStyles.ES_MULTILINE | WindowStylesConst.WS_HSCROLL | WindowStylesConst.WS_VSCROLL;
-            this.BackColor = Tools.ColorTool.Rgb(199, 199, 199);
+            this.ControlType = Win32ApiForm.ControlType.Edit;
+            this.Style = this.Style | EditBoxStyles.ES_MULTILINE | WindowStylesConst.WS_HSCROLL | WindowStylesConst.WS_VSCROLL | WindowStylesConst.WS_VISIBLE;
+            this.BackColor =Tools.ColorTool.White;
+            this.ForeColor = Tools.ColorTool.Black;
             this.Font = new Font() {Name = "Arial", Size = 10};
         }
     }

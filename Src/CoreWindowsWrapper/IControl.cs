@@ -1,5 +1,6 @@
 ﻿using System;
 using CoreWindowsWrapper.Api.Win32;
+using CoreWindowsWrapper.Win32ApiForm;
 
 namespace CoreWindowsWrapper
 {
@@ -25,6 +26,7 @@ namespace CoreWindowsWrapper
             IntPtr lParam);
 
         string TypeIdentifyer{get;set;}
+        ControlType ControlType{get;set;}
 
         
     }

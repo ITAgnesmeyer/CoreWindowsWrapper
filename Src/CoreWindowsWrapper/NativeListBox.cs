@@ -7,6 +7,7 @@ namespace CoreWindowsWrapper
         protected override void Initialize()
         {
             base.Initialize();
+            this.ControlType = Win32ApiForm.ControlType.ListBox;
             this.TypeIdentifier = "listbox";
             this.ClientEdge = true;
             this.Style = this.Style | (int)WindowStyles.WS_VSCROLL | (int)WindowStyles.WS_HSCROLL | EditBoxStyles.ES_AUTOVSCROLL;

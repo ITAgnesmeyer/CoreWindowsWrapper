@@ -11,6 +11,7 @@ namespace CoreWindowsWrapper
         protected override void Initialize()
         {
             base.Initialize();
+            this.ControlType = Win32ApiForm.ControlType.Progress;
             this.TypeIdentifier = "msctls_progress32";
             this.CommonControlType = CommonControls.ICC_PROGRESS_CLASS;
             this.Style = this.Style | ProgressBarStyles.PBS_SMOOTH;

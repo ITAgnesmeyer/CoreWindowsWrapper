@@ -15,6 +15,7 @@ namespace CoreWindowsWrapper
         public NativeControlBase()
         {
             this.Font = new Font();
+            this.ControlType = ControlType.DefaultControl;
             Initialize();
         }
 
@@ -227,5 +228,7 @@ namespace CoreWindowsWrapper
             get => this.TypeIdentifier;
             set => this.TypeIdentifier = value;
         }
+
+        public ControlType ControlType { get; set; }
     }
 }

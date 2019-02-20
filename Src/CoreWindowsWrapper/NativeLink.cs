@@ -11,6 +11,7 @@ namespace CoreWindowsWrapper
         protected override void Initialize()
         {
             base.Initialize();
+            this.ControlType = Win32ApiForm.ControlType.Link;
             this.TypeIdentifier = "SysLink";
             this.CommonControlType = Api.Win32.CommonControls.ICC_LINK_CLASS;
            

@@ -10,9 +10,9 @@ namespace CoreWindowsWrapper
             this.Control = new Win32NoCreateControl();
         }
 
-        public override bool Create(IntPtr parentId)
+        public override bool Create(IntPtr parentHandle)
         {
-            this.ParentHandle = parentId;
+            this.ParentHandle = parentHandle;
             return true;
         }
     }

@@ -115,14 +115,14 @@ namespace CoreWindowsWrapper.Api.Win32
         /// Return Type: HWND->HWND__*
         ///hWndChild: HWND->HWND__*
         ///hWndNewParent: HWND->HWND__*
-        [DllImportAttribute("user32.dll", EntryPoint="SetParent")]
+        [DllImport("user32.dll", EntryPoint="SetParent")]
         public static extern IntPtr SetParent([In] IntPtr hWndChild, [In] IntPtr hWndNewParent);
 
         
         /// Return Type: BOOL->int
         ///hWnd: HWND->HWND__*
-        [DllImportAttribute("user32.dll", EntryPoint="IsWindowEnabled")]
-        [return: MarshalAsAttribute(UnmanagedType.Bool)]
+        [DllImport("user32.dll", EntryPoint="IsWindowEnabled")]
+        [return: MarshalAs(UnmanagedType.Bool)]
         public static extern  bool IsWindowEnabled([In] IntPtr hWnd) ;
 
 
@@ -165,6 +165,58 @@ namespace CoreWindowsWrapper.Api.Win32
         public static extern uint SetTextColor(IntPtr hdc, int crColor);
 
 
+        /// Return Type: HMENU->HMENU__*
+        [DllImport("user32.dll", EntryPoint="CreateMenu")]
+        public static extern  IntPtr CreateMenu() ;
+
+        /// Return Type: BOOL->int
+        ///hMenu: HMENU->HMENU__*
+        ///uFlags: UINT->unsigned int
+        ///uIDNewItem: UINT_PTR->unsigned int
+        ///lpNewItem: LPCWSTR->WCHAR*
+        [DllImport("user32.dll", EntryPoint="AppendMenuW")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern  bool AppendMenu([In] IntPtr hMenu, uint uFlags, uint uIDNewItem, [In] [MarshalAs(UnmanagedType.LPWStr)] string lpNewItem) ;
+
+        [DllImport("user32.dll", EntryPoint="AppendMenuW")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern  bool AppendMenu([In] IntPtr hMenu, IntPtr uFlags, uint uIDNewItem, [In] [MarshalAs(UnmanagedType.LPWStr)] string lpNewItem) ;
+
+        /// Return Type: BOOL->int
+        ///hMenu: HMENU->HMENU__*
+        ///uPosition: UINT->unsigned int
+        ///uFlags: UINT->unsigned int
+        ///uIDNewItem: UINT_PTR->unsigned int
+        ///lpNewItem: LPCWSTR->WCHAR*
+        [DllImport("user32.dll", EntryPoint="InsertMenuW")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern  bool InsertMenu([In] IntPtr hMenu, uint uPosition, uint uFlags, uint uIDNewItem, [In] [MarshalAs(UnmanagedType.LPWStr)] string lpNewItem) ;
+
+        /// Return Type: HMENU->HMENU__*
+        ///lpMenuTemplate: MENUTEMPLATEW*
+        [DllImport("user32.dll", EntryPoint="LoadMenuIndirectW")]
+        public static extern  IntPtr LoadMenuIndirectW([In] IntPtr lpMenuTemplate) ;
+
+        
+        /// Return Type: HMENU->HMENU__*
+        ///hMenu: HMENU->HMENU__*
+        ///nPos: int
+        [DllImport("user32.dll", EntryPoint="GetSubMenu")]
+        public static extern  IntPtr GetSubMenu([In] IntPtr hMenu, int nPos) ;
+
+        /// Return Type: UINT->unsigned int
+        ///hMenu: HMENU->HMENU__*
+        ///nPos: int
+        [DllImport("user32.dll", EntryPoint="GetMenuItemID")]
+        public static extern  uint GetMenuItemID([In] IntPtr hMenu, int nPos) ;
+
+        
+        /// Return Type: HMENU->HMENU__*
+        [DllImport("user32.dll", EntryPoint="CreatePopupMenu")]
+        public static extern  IntPtr CreatePopupMenu() ;
+
+
+
         /// Return Type: int
         ///hdc: HDC->HDC__*
         ///index: int
@@ -184,7 +236,7 @@ namespace CoreWindowsWrapper.Api.Win32
         ///h: HANDLE->void*
         ///c: int
         ///pv: LPVOID->void*
-        [DllImportAttribute("gdi32.dll", EntryPoint = "GetObjectW")]
+        [DllImport("gdi32.dll", EntryPoint = "GetObjectW")]
         public static extern int GetObjectW([In] IntPtr h, int c, IntPtr pv);
 
 

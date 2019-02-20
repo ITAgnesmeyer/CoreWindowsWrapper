@@ -10,6 +10,7 @@ namespace CoreWindowsWrapper
         protected override void Initialize()
         {
             base.Initialize();
+            this.ControlType = Win32ApiForm.ControlType.ComboBox;
             this.TypeIdentifier = "combobox";
            
             this.Style = ComboBoxStyles.CBS_DROPDOWN | ComboBoxStyles.CBS_HASSTRINGS |WindowStylesConst.WS_CHILD | WindowStylesConst.WS_OVERLAPPED | WindowStylesConst.WS_VISIBLE;

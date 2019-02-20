@@ -27,6 +27,11 @@ namespace CoreWindowsWrapper
         private WindowsStartupPosition _StartUpPosition;
         private bool _IsMainWindow;
 
+        public NativeMenu Menu
+        {
+            get => (NativeMenu) this._Window.Menu;
+            set => this._Window.Menu = value;
+        }
         public IntPtr Handle
         {
             get
@@ -48,6 +53,7 @@ namespace CoreWindowsWrapper
 
         public NativeWindow()
         {
+            this.ControlType = ControlType.Window;
             Initialize();
             
         }
@@ -175,6 +181,9 @@ namespace CoreWindowsWrapper
             get => "window";
             set { Console.Write("Window try to set dietifier=>" + value); }
         }
+
+        public ControlType ControlType { get; set; }
+
         public string IconFile
         {
             get => this._Window.IconFile;
@@ -366,6 +375,13 @@ namespace CoreWindowsWrapper
         protected virtual void OnSize(SizeEventArgs e)
         {
             Size?.Invoke(this, e);
+        }
+
+        protected Rect GetClientRect()
+        {
+            Rect rect;
+            Win32Api.GetClientRect(this.Handle, out rect);
+            return rect;
         }
     }
 }

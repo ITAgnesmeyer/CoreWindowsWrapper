@@ -22,6 +22,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
         private static readonly Dictionary<IntPtr, Win32Window> WindowList = new Dictionary<IntPtr, Win32Window>();
         private static readonly Stack<Win32Window> WindowStack = new Stack<Win32Window>();
         public ControlCollection Controls;
+        public MenuItemCollection FlatMenuItems;
         public IntPtr Handle { get; private set; }
         public IntPtr ParentHandle { get; set; }
         public int Color { get; set; }
@@ -94,12 +95,14 @@ namespace CoreWindowsWrapper.Win32ApiForm
         private int _Top = unchecked((int) 0x80000000);
         private int _Width = unchecked((int) 0x80000000);
         private int _Height= unchecked((int) 0x80000000);
+        public IMenuItem Menu{get;set;}
         private Point _Location;
         public uint Style { get; set; } = WindowStylesConst.WS_OVERLAPPEDWINDOW | WindowStylesConst.WS_VISIBLE;
 
         public Win32Window(bool isMainWindow = false)
         {
             this.Controls = new ControlCollection(this);
+            this.FlatMenuItems = new MenuItemCollection();
             this.IsMainWindow = isMainWindow;
             this.Name = "Win32WindowClass";
             this.Text = this.Name;
@@ -109,6 +112,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
         public Win32Window(IntPtr parentHandle,bool isMainWindow = false)
         {
             this.Controls = new ControlCollection(this);
+            this.FlatMenuItems = new MenuItemCollection();
             this.IsMainWindow = isMainWindow;
             this.ParentHandle = parentHandle;
             this.Name = "Win32WindowClass";
@@ -149,6 +153,20 @@ namespace CoreWindowsWrapper.Win32ApiForm
             //Black background, +1 is necessary
             // alternative: Process.GetCurrentProcess().Handle;
             // Crosshair cursor;
+            IntPtr hMenu = IntPtr.Zero;
+
+
+
+            if (this.Menu != null)
+            {
+                this.Menu.Create(hMenu);
+                hMenu = this.Menu.ParentMenuHandle;
+                
+                FillFlatMenuItemList(this.Menu);
+
+            }
+
+
             windClass.hbrBackground = Win32Api.CreateSolidBrush(this.Color);
             this.WindowClass = windClass;
             ushort regResult = Win32Api.RegisterClassEx(ref windClass);
@@ -180,7 +198,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
             IntPtr hWnd = Win32Api.CreateWindowEx((int) WindowStylesConst.WS_EX_APPWINDOW,
                 this.WindowClassName,
                 this.Text, this.Style
-                , this.Left, this.Top, this.Width, this.Height,this.ParentHandle, IntPtr.Zero
+                , this.Left, this.Top, this.Width, this.Height,this.ParentHandle, hMenu
                 , windClass.hInstance, IntPtr.Zero);
 
 
@@ -232,6 +250,28 @@ namespace CoreWindowsWrapper.Win32ApiForm
             }
 
             return true;
+        }
+
+        private void FillFlatMenuItemList(IMenuItem menu)
+        {
+            if (menu is NativeMenu)
+            {
+                NativeMenu men = menu as NativeMenu;
+                foreach (var menuItem in men.Items.Values)
+                {
+                    FillFlatMenuItemList(menuItem);
+                }
+            }
+            else
+            {
+                NativeMenuItem men = menu as NativeMenuItem;
+                this.FlatMenuItems.Add(men);
+                if (men != null)
+                    foreach (var menuItem in men.Items.Values)
+                    {
+                        FillFlatMenuItemList(menuItem);
+                    }
+            }
         }
 
         public void Dispatch()
@@ -375,7 +415,16 @@ namespace CoreWindowsWrapper.Win32ApiForm
                     }
                     else
                     {
-                        handled = false;
+                        if (window.FlatMenuItems.ContainsKey(controlId))
+                        {
+                            IMenuItem menu = window.FlatMenuItems[controlId];
+                            handled = menu.HandleEvents(hWnd, hWndControl, controlId, command, wParam, lParam);
+                        }
+                        else
+                        {
+                            handled = false;
+                        }
+                        
                     }
 
 
@@ -482,7 +531,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
             {
                 IControl control = window.Controls[editControlId];
 
-                if (control.TypeIdentifyer == "combobox")
+                if (control.ControlType == ControlType.ComboBox)
                 {
                     COMBOBOXINFO cinfo = new COMBOBOXINFO();
                     cinfo.cbSize = (uint)Marshal.SizeOf<COMBOBOXINFO>();
