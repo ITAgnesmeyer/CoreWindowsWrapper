@@ -29,6 +29,7 @@ namespace ConsleCaller
 
             this.Text = "Dies ist meine Anwnedung";
             this.Name = "Window1";
+            this.StatusBar = true;
             // this.Left = 100;
             //this.Top = 100;
             this.Width = 600;

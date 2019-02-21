@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.IO;
 using CoreWindowsWrapper;
 
 namespace ConsleCaller
@@ -12,6 +10,7 @@ namespace ConsleCaller
         protected override void InitControls()
         {
             this.Text = "Little Editor";
+            this.StatusBar = true;
             this._TextBox = new NativeMultiLineTextBox();
             this._TextBox.Left = 0;
             this._TextBox.Top = 0;
@@ -47,9 +46,10 @@ namespace ConsleCaller
             NativeMenuItem menuInfo = new NativeMenuItem("&Info");
             //Add Event-Handler
             menuInfo.Click += MenuInfo_Click;
+            //Add the Sub-Item to the Help-Menu
             menuHelp.Items.Add(menuInfo);
+            //Add the Help-Menu to the File-Menu
             menuFile.Items.Add(menuHelp);
-
             //Add the first Element of the Menu to the Form
             this.Menu = menuFile;
 
@@ -64,8 +64,14 @@ namespace ConsleCaller
 
         private void FileOpen_Click(object sender, MouseClickEventArgs e)
         {
-            MessageBox.Show(this.Handle, "FileOpen_Click", "Info",
-                MessageBoxOptions.IconInformation | MessageBoxOptions.OkOnly);
+            OpenFileDialog ofd = new OpenFileDialog();
+            if (ofd.Show(this))
+            {
+                string fileName = ofd.File;
+                string text = File.ReadAllText(fileName);
+                this._TextBox.Text = text;
+                this.Text = "Little Edit:" + fileName;
+            }
         }
 
         private void Menu_Exit(object sender, MouseClickEventArgs e)

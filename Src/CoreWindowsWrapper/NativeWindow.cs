@@ -104,8 +104,18 @@ namespace CoreWindowsWrapper
 
         public string Text
         {
-            get => this._Window.Text;
-            set => this._Window.Text = value;
+            get
+            {
+
+                return  this._Window.Text;
+                
+            }
+            set
+            {
+                this._Window.Text = value;
+                if (this.Handle != IntPtr.Zero)
+                    Win32Api.SetWindowText(this.Handle, this._Window.Text);
+            }
         }
 
         public int BackColor
@@ -136,6 +146,12 @@ namespace CoreWindowsWrapper
         {
             get => this._Window.Height;
             set => this._Window.Height = value;
+        }
+
+        public bool StatusBar
+        {
+            get => this._Window.Statusbar;
+            set => this._Window.Statusbar = value;
         }
 
         public WindowsStartupPosition StartUpPosition
@@ -379,9 +395,7 @@ namespace CoreWindowsWrapper
 
         protected Rect GetClientRect()
         {
-            Rect rect;
-            Win32Api.GetClientRect(this.Handle, out rect);
-            return rect;
+            return this._Window.GetCleanClientRect();
         }
     }
 }

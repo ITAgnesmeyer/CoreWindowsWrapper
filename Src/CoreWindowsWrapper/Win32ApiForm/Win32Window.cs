@@ -21,6 +21,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
         
         private static readonly Dictionary<IntPtr, Win32Window> WindowList = new Dictionary<IntPtr, Win32Window>();
         private static readonly Stack<Win32Window> WindowStack = new Stack<Win32Window>();
+        public static IntPtr InstanceHandle { get; set; } = IntPtr.Zero;
         public ControlCollection Controls;
         public MenuItemCollection FlatMenuItems;
         public IntPtr Handle { get; private set; }
@@ -29,7 +30,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
         public string Text { get; set; }
         public string Name { get; set; }
         internal string WindowClassName { get; set; }
-
+        internal IntPtr StatusBarHandle { get; set; } = IntPtr.Zero;
         public Point Location
         {
             get => new Point(){X=this.Left, Y=this.Top};
@@ -84,6 +85,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
         public bool CenterForm { get; set; }
         public bool MaximizeForm { get; set; }
         public bool MinimizeForm { get; set; }
+        public bool Statusbar{get;set;} = false;
         public bool Enable
         {
             get => Win32Api.IsWindowEnabled(this.Handle);
@@ -155,7 +157,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
             // Crosshair cursor;
             IntPtr hMenu = IntPtr.Zero;
 
-
+            Win32Window.InstanceHandle = windClass.hInstance;
 
             if (this.Menu != null)
             {
@@ -195,7 +197,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 this.Top = yPos;
             }
 
-            IntPtr hWnd = Win32Api.CreateWindowEx((int) WindowStylesConst.WS_EX_APPWINDOW,
+            IntPtr hWnd = Win32Api.CreateWindowEx((int) (WindowStylesConst.WS_EX_APPWINDOW | WindowStylesConst.WS_EX_CLIENTEDGE),
                 this.WindowClassName,
                 this.Text, this.Style
                 , this.Left, this.Top, this.Width, this.Height,this.ParentHandle, hMenu
@@ -378,11 +380,11 @@ namespace CoreWindowsWrapper.Win32ApiForm
             switch (eventType)
             {
                 case WindowsMessages.WM_NOTIFY:
-                    Api.Win32.NMHDR hdr = null;
+                    NMHDR hdr = null;
                     try
                     {
                         object obj = Marshal.PtrToStructure(lParam,typeof(NMHDR));
-                        hdr = (Api.Win32.NMHDR)obj;
+                        hdr = (NMHDR)obj;
                     }
                     catch (Exception e)
                     {
@@ -430,6 +432,16 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
                     break;
                 case WindowsMessages.WM_CREATE:
+
+                    if (window.Statusbar)
+                    {
+                       
+                        IntPtr sbId = new IntPtr(100);
+                        window.StatusBarHandle = Win32Api.CreateWindowEx(0, "msctls_statusbar32", null,
+                            (uint)(WindowStyles.WS_VISIBLE | WindowStyles.WS_CHILD), 0, 0, 0, 0, hWnd, sbId,
+                            Win32Window.InstanceHandle, IntPtr.Zero);
+                        Win32Api.ShowWindow(window.StatusBarHandle, (int)ShowWindowCommands.Show);
+                    }
 
                     foreach (IControl windowControl in window.Controls.Values)
                     {
@@ -500,17 +512,22 @@ namespace CoreWindowsWrapper.Win32ApiForm
                     break;
                 
                 case WindowsMessages.WM_SIZE:
-                    Win32Api.GetClientRect(hWnd, out var r);
+                    if (window.Statusbar)
+                    {
+                        Win32Api.SendMessage(window.StatusBarHandle, WindowsMessages.WM_SIZE, 0, 0);
+                    }
+                        
+                    Rect r = window.GetCleanClientRect();
                     window.OnSize(new SizeEventArgs(r.X, r.Y,  r.Right - r.Left , r.Bottom - r.Top));
                     //handled = false;
                     break;
                 case WindowsMessages.WM_SIZING:
-                    Win32Api.GetClientRect(hWnd, out var rz);
+                    Rect rz = window.GetCleanClientRect();
                     window.OnSize(new SizeEventArgs(rz.X, rz.Y,  rz.Right - rz.Left , rz.Bottom - rz.Top));
                     break;
 
                 case WindowsMessages.WM_MOVE:
-                    Win32Api.GetClientRect(hWnd, out var rzs);
+                    Rect rzs = window.GetCleanClientRect();
                     window.OnSize(new SizeEventArgs(rzs.X, rzs.Y,  rzs.Right - rzs.Left , rzs.Bottom - rzs.Top));
                     break;
 
@@ -610,6 +627,21 @@ namespace CoreWindowsWrapper.Win32ApiForm
         private void OnSize(SizeEventArgs e)
         {
             Size?.Invoke(this, e);
+        }
+
+        public Rect GetCleanClientRect()
+        {
+            int sbHeigt = 0;
+            if (this.Statusbar)
+            {
+                
+                Win32Api.GetWindowRect(this.StatusBarHandle, out var sbRect);
+                sbHeigt = sbRect.Bottom - sbRect.Top;
+            }
+                        
+            Win32Api.GetClientRect(this.Handle, out var r);
+            r.Bottom = r.Bottom - sbHeigt;
+            return r;
         }
     }
 }

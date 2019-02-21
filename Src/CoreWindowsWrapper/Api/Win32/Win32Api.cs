@@ -417,6 +417,13 @@ namespace CoreWindowsWrapper.Api.Win32
         [DllImport("comctl32.dll", EntryPoint = "InitCommonControlsEx", CallingConvention = CallingConvention.StdCall)]
         public static extern bool InitCommonControlsEx(ref INITCOMMONCONTROLSEX iccex);
 
+        
+        /// Return Type: HFILE->int
+        ///lpFileName: LPCSTR->CHAR*
+        ///lpReOpenBuff: LPOFSTRUCT->_OFSTRUCT*
+        ///uStyle: UINT->unsigned int
+        [DllImport("kernel32.dll", EntryPoint="OpenFile")]
+        public static extern  int OpenFile([In()] [MarshalAs(UnmanagedType.LPStr)] string lpFileName, ref OFSTRUCT lpReOpenBuff, uint uStyle) ;
 
         
         /// Return Type: BOOL->int
@@ -475,10 +482,66 @@ namespace CoreWindowsWrapper.Api.Win32
         }
 
 
+        /// Return Type: BOOL->int
+        ///param0: LPOPENFILENAMEW->tagOFNW*
+        [DllImport("comdlg32.dll", EntryPoint="GetOpenFileNameW")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern  bool GetOpenFileName(ref OFNW param0) ;
 
-     
+        /// Return Type: BOOL->int
+        ///param0: LPOPENFILENAMEW->tagOFNW*
+        [DllImport("comdlg32.dll", EntryPoint="GetSaveFileNameW")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern  bool GetSaveFileNameW(ref OFNW param0) ;
 
+
+
+        public static string ShowOpen(
+            string filter = "All Files\0*.*\0",
+            string title = "Open File Dialog...",
+            string defext = "*",
+            string path="C:\\")
+        {
+            try
+            {
+                OFNW ofn = new OFNW();
+                
+                ofn.lStructSize = (uint) Marshal.SizeOf(ofn);
+                ofn.lpstrFilter = filter;
+                ofn.lpstrFile = new string(new char[257]);
+                ofn.nMaxFile = (uint) ofn.lpstrFile.Length;
+                ofn.lpstrFileTitle = new string(new char[65]);
+                ofn.nMaxFileTitle = (uint) ofn.lpstrFileTitle.Length;
+                ofn.lpstrInitialDir = path;
+                ofn.lpstrTitle = title;
+                ofn.lpstrDefExt = defext;
+
+                if (GetOpenFileName(ref ofn))
+                {
+                    Console.WriteLine(@"Selected file with full path: {0}", ofn.lpstrFile);
+                    Console.WriteLine(@"Selected file name: {0}", ofn.lpstrFileTitle);
+                    Console.WriteLine(@"Offset from file name: {0}", ofn.nFileOffset);
+                    Console.WriteLine(@"Offset from file extension: {0}", ofn.nFileExtension);
+
+                    return ofn.lpstrFile;
+                }
+
+                return string.Empty;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return string.Empty;
+            }
+        }
     }
+
+
+
+
+
+
+
 }
 
 
