@@ -5,13 +5,14 @@ namespace ConsleCaller
 {
     class Windows3 : NativeWindow
     {
-        private NativeTextBox _TextBox;
+        private NativeMultiLineTextBox _TextBox;
         private string _CurrentFileName;
 
 
         protected override void InitControls()
         {
             this.Text = "Little Editor";
+            this.Name = "MainWindow";
             this.StatusBar = true;
             this._TextBox = new NativeMultiLineTextBox();
             this._TextBox.Left = 0;
@@ -70,6 +71,7 @@ namespace ConsleCaller
                 {
                     this._CurrentFileName = sfd.File;
                     string text = this._TextBox.Text;
+                   
                     File.WriteAllText(this._CurrentFileName, text);
                     this.Text = "Little Edit:" + this._CurrentFileName;
                 }

@@ -27,7 +27,8 @@ namespace CoreWindowsWrapper.Api.Win32
         public static extern UIntPtr SetTimer([In] IntPtr hWnd, UIntPtr nIDEvent, uint uElapse,
             TIMERPROC lpTimerFunc);
 
-       
+        
+
 
         /// Return Type: BOOL->int
         ///hWnd: HWND->HWND__*
@@ -198,6 +199,11 @@ namespace CoreWindowsWrapper.Api.Win32
         public static extern  IntPtr LoadMenuIndirectW([In] IntPtr lpMenuTemplate) ;
 
         
+        /// Return Type: HMODULE->HINSTANCE->HINSTANCE__*
+        ///lpLibFileName: LPCSTR->CHAR*
+        [DllImport("kernel32.dll", EntryPoint="LoadLibraryW")]
+        public static extern  IntPtr LoadLibrary([In] [MarshalAs(UnmanagedType.LPWStr)] string lpLibFileName) ;
+
         /// Return Type: HMENU->HMENU__*
         ///hMenu: HMENU->HMENU__*
         ///nPos: int

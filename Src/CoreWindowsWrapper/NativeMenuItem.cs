@@ -84,11 +84,22 @@ namespace CoreWindowsWrapper
         {
             
         }
-
+        protected void SafeInvoke<T>(EventHandler<T> eventHandler, T ars) where T:EventArgs
+        {
+            try
+            {
+                eventHandler?.Invoke(this, ars);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Event Error:" + e.Message);
+            }
+        }
 
         protected virtual void OnClick(MouseClickEventArgs e)
         {
-            Click?.Invoke(this, e);
+            SafeInvoke(Click, e); 
+ 
 
         }
     }
