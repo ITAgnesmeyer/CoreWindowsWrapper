@@ -1,13 +1,14 @@
 ﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
 using CoreWindowsWrapper.Api.Win32;
+
 namespace CoreWindowsWrapper
 {
-    public class OpenFileDialog
+    public class SaveFileDialog
     {
         private OFNW _OFNW;
 
-        public OpenFileDialog()
+        public SaveFileDialog()
         {
             this._OFNW = new OFNW {hInstance = Process.GetCurrentProcess().Handle};
             this._OFNW.lStructSize = (uint) Marshal.SizeOf(this._OFNW);
@@ -19,15 +20,13 @@ namespace CoreWindowsWrapper
             this._OFNW.lpstrInitialDir = "C:\\";
             this._OFNW.lpstrTitle = "Open File...";
             this._OFNW.lpstrDefExt = "*";
-            
         }
 
         public bool Show(IControl parent = null)
         {
             if (parent != null)
                 this._OFNW.hwndOwner = parent.Handle;
-            return Win32Api.GetOpenFileName(ref this._OFNW);
-           
+            return Win32Api.GetSaveFileName(ref this._OFNW);           
         }
 
         public int DefaultFilterIndex

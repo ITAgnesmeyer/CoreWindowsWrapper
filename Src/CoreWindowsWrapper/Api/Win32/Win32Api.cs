@@ -492,7 +492,7 @@ namespace CoreWindowsWrapper.Api.Win32
         ///param0: LPOPENFILENAMEW->tagOFNW*
         [DllImport("comdlg32.dll", EntryPoint="GetSaveFileNameW")]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern  bool GetSaveFileNameW(ref OFNW param0) ;
+        public static extern  bool GetSaveFileName(ref OFNW param0) ;
 
 
 
