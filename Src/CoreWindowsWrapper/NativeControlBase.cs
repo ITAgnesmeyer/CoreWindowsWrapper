@@ -5,6 +5,15 @@ using CoreWindowsWrapper.Win32ApiForm;
 namespace CoreWindowsWrapper
 {
 
+    public class NativeContainerControl : NativeNoCreateControlBase
+    {
+        protected override void Initialize()
+        {
+            base.Initialize();
+
+        }
+    }
+
     public class NativeControlBase : IControl
     {
         private Win32Control _Control;
@@ -230,5 +239,8 @@ namespace CoreWindowsWrapper
         }
 
         public ControlType ControlType { get; set; }
+
+        public ControlCollection Controls=> this._Control.Controls;
+       
     }
 }

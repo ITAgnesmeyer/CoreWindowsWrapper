@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -387,6 +388,9 @@ namespace CoreWindowsWrapper.Api.Win32
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         public static extern IntPtr SendMessage(IntPtr hWnd, uint msg, IntPtr wParam, int lParam);
 
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public static extern IntPtr SendMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr  lParam);
+
         /// Return Type: UINT->unsigned int
         ///hDlg: HWND->HWND__*
         ///nIDButton: int
@@ -429,7 +433,7 @@ namespace CoreWindowsWrapper.Api.Win32
         ///lpReOpenBuff: LPOFSTRUCT->_OFSTRUCT*
         ///uStyle: UINT->unsigned int
         [DllImport("kernel32.dll", EntryPoint="OpenFile")]
-        public static extern  int OpenFile([In()] [MarshalAs(UnmanagedType.LPStr)] string lpFileName, ref OFSTRUCT lpReOpenBuff, uint uStyle) ;
+        public static extern  int OpenFile([In] [MarshalAs(UnmanagedType.LPStr)] string lpFileName, ref OFSTRUCT lpReOpenBuff, uint uStyle) ;
 
         
         /// Return Type: BOOL->int
@@ -502,49 +506,193 @@ namespace CoreWindowsWrapper.Api.Win32
 
 
 
-        public static string ShowOpen(
-            string filter = "All Files\0*.*\0",
-            string title = "Open File Dialog...",
-            string defext = "*",
-            string path="C:\\")
+        
+        /// Return Type: void*
+        ///cx: int
+        ///cy: int
+        ///flags: int
+        ///cInitial: int
+        ///cGrow: int
+        [DllImport("Comctl32.dll", EntryPoint="ImageList_Create", CallingConvention=CallingConvention.StdCall)]
+        public static extern  IntPtr ImageList_Create(int cx, int cy, int flags, int cInitial, int cGrow) ;
+
+        /// Return Type: int
+        ///himl: void*
+        ///hbmImage: void*
+        ///hbmMask: void*
+        [DllImport("Comctl32.dll", EntryPoint="ImageList_Add", CallingConvention=CallingConvention.StdCall)]
+        public static extern  int ImageList_Add(IntPtr himl, IntPtr hbmImage, IntPtr hbmMask) ;
+
+        /// Return Type: int
+        ///himl: void*
+        [DllImport("Comctl32.dll", EntryPoint="ImageList_Destroy", CallingConvention=CallingConvention.StdCall)]
+        public static extern  int ImageList_Destroy(IntPtr himl) ;
+
+
+
+
+        
+        [DllImport("kernel32.dll", EntryPoint = "CopyMemory", SetLastError = false)]
+        public static extern void CopyMemory(IntPtr dest, IntPtr src, uint count);
+
+            
+        /// Return Type: int
+        ///lpString: LPCWSTR->WCHAR*
+        [DllImport("kernel32.dll", EntryPoint="lstrlenW")]
+        public static extern  int lstrlenW([In] [MarshalAs(UnmanagedType.LPWStr)] string lpString) ;
+
+        /// Return Type: INT_PTR->int
+        ///hInstance: HINSTANCE->HINSTANCE__*
+        ///hDialogTemplate: LPCDLGTEMPLATEW->DLGTEMPLATE*
+        ///hWndParent: HWND->HWND__*
+        ///lpDialogFunc: DLGPROC
+        ///dwInitParam: LPARAM->LONG_PTR->int
+        [DllImport("user32.dll", EntryPoint="DialogBoxIndirectParamW")]
+        public static extern  int DialogBoxIndirectParam([In] IntPtr hInstance, [In] ref DialogTemplate hDialogTemplate, [In] IntPtr hWndParent, DLGPROC lpDialogFunc, [MarshalAs(UnmanagedType.SysInt)] int dwInitParam) ;
+
+
+
+
+        /// Return Type: void
+        ///dwFlags: DWORD->unsigned int
+        [DllImport("UxTheme.dll", EntryPoint="SetThemeAppProperties")]
+        public static extern  void SetThemeAppProperties(uint dwFlags) ;
+
+        
+        /// Return Type: INT_PTR->int
+        ///param0: HWND->HWND__*
+        ///param1: UINT->unsigned int
+        ///param2: WPARAM->UINT_PTR->unsigned int
+        ///param3: LPARAM->LONG_PTR->int
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        public delegate int DLGPROC(IntPtr hWnd, uint param1, IntPtr wParam, IntPtr lParam);
+
+        public static void AddTbButton(IntPtr tbHandle, string name, int idCommand)
         {
+            int btnStuctSiez = Marshal.SizeOf(typeof(TBBUTTON));
+            SendMessage(tbHandle, 0x41E, new IntPtr(btnStuctSiez), IntPtr.Zero);
+            TBBUTTON btnStruct = new TBBUTTON();
+            btnStruct.fsState = 0x4;
+            btnStruct.idCommand = idCommand;
+            btnStruct.iString = SendMessage(tbHandle, 0x44D, 0, name + '\0');
+            //btnStruct.fsStyle = 0x2;
+            IntPtr btnStructState = IntPtr.Zero;
             try
             {
-                OFNW ofn = new OFNW();
-                
-                ofn.lStructSize = (uint) Marshal.SizeOf(ofn);
-                ofn.lpstrFilter = filter;
-                ofn.lpstrFile = new string(new char[257]);
-                ofn.nMaxFile = (uint) ofn.lpstrFile.Length;
-                ofn.lpstrFileTitle = new string(new char[65]);
-                ofn.nMaxFileTitle = (uint) ofn.lpstrFileTitle.Length;
-                ofn.lpstrInitialDir = path;
-                ofn.lpstrTitle = title;
-                ofn.lpstrDefExt = defext;
+                btnStructState = Marshal.AllocHGlobal(btnStuctSiez);
+                Marshal.StructureToPtr(btnStruct, btnStructState, true);
+                SendMessage(tbHandle, 0x444, new IntPtr(1), btnStructState);
 
-                if (GetOpenFileName(ref ofn))
-                {
-                    Console.WriteLine(@"Selected file with full path: {0}", ofn.lpstrFile);
-                    Console.WriteLine(@"Selected file name: {0}", ofn.lpstrFileTitle);
-                    Console.WriteLine(@"Offset from file name: {0}", ofn.nFileOffset);
-                    Console.WriteLine(@"Offset from file extension: {0}", ofn.nFileExtension);
-
-                    return ofn.lpstrFile;
-                }
-
-                return string.Empty;
             }
-            catch (Exception ex)
+            finally
             {
-                Console.WriteLine(ex.Message);
-                return string.Empty;
+                if (btnStructState != IntPtr.Zero) Marshal.FreeHGlobal(btnStructState);
             }
+
+
+       
         }
+
+
+        [DllImport("uxtheme.dll", ExactSpelling=true, CharSet=CharSet.Unicode)]
+        public static extern int SetWindowTheme(IntPtr hWnd, String pszSubAppName, String pszSubIdList);
+
+        public const int STAP_ALLOW_NONCLIENT    =  (1 << 0);
+        public const int STAP_ALLOW_CONTROLS     =  (1 << 1);
+        public const int STAP_ALLOW_WEBCONTENT   =  (1 << 2);
+        public static void EnableTheme()
+        {
+            SetThemeAppProperties(STAP_ALLOW_NONCLIENT | STAP_ALLOW_CONTROLS | STAP_ALLOW_WEBCONTENT);
+        }
+
+        /// Return Type: UINT->unsigned int
+        ///lpBuffer: LPWSTR->WCHAR*
+        ///uSize: UINT->unsigned int
+        [DllImport("kernel32.dll", EntryPoint="GetSystemDirectoryW")]
+        public static extern  uint GetSystemDirectory([Out] [MarshalAs(UnmanagedType.LPWStr)] StringBuilder lpBuffer, uint uSize) ;
+
+
+        public static  uint EnableVisualStyles()
+        {
+	        string dir = System.Reflection.Assembly.GetExecutingAssembly().Location;;
+            
+            ACTCTX actCtx = new ACTCTX()
+	        {
+				cbSize = Marshal.SizeOf(typeof(ACTCTX)), 
+				dwFlags = ACTCX_FALGS.ACTCTX_FLAG_RESOURCE_NAME_VALID , 
+				lpSource=  dir, 
+				wLangId = 0,
+				lpResourceName =new IntPtr(101)
+
+	        };
+
+            IntPtr hActCtx = CreateActCtx(ref actCtx);
+            bool contextCreationSucceeded = (hActCtx != new IntPtr(-1));
+
+            if (!contextCreationSucceeded)
+            {
+                actCtx.lpResourceName =(IntPtr) ACTCX_FALGS.ISOLATIONAWARE_NOSTATICIMPORT_MANIFEST_RESOURCE_ID;
+                hActCtx = CreateActCtx(ref actCtx);
+                contextCreationSucceeded = (hActCtx != new IntPtr(-1));
+            }
+
+            if (!contextCreationSucceeded)
+            {
+                actCtx.lpResourceName = (IntPtr) ACTCX_FALGS.CREATEPROCESS_MANIFEST_RESOURCE_ID;
+                hActCtx = CreateActCtx(ref actCtx);
+                contextCreationSucceeded = (hActCtx != new IntPtr(-1));
+            }
+
+            ActivateActCtx(hActCtx,out var ulpActivationCookie);
+	        return ulpActivationCookie;
+        }
+
+
+        /// Return Type: BOOL->int
+        ///hActCtx: HANDLE->void*
+        ///lpCookie: ULONG_PTR*
+        [DllImport("kernel32.dll", EntryPoint="ActivateActCtx")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern  bool ActivateActCtx(IntPtr hActCtx, [Out] out uint lpCookie) ;
+
+        /// Return Type: HANDLE->void*
+        ///pActCtx: PCACTCTXW->ACTCTXW*
+        [DllImport("kernel32.dll", EntryPoint="CreateActCtxW")]
+        public static extern  IntPtr CreateActCtx([In] ref ACTCTX pActCtx) ;
+
     }
 
 
+    internal class ACTCX_FALGS {
+    
+        public const uint ACTCTX_FLAG_PROCESSOR_ARCHITECTURE_VALID = 0x001;
+        public const uint ACTCTX_FLAG_LANGID_VALID = 0x002;
+        public const uint ACTCTX_FLAG_ASSEMBLY_DIRECTORY_VALID = 0x004;
+        public const uint ACTCTX_FLAG_RESOURCE_NAME_VALID = 0x008;
+        public const uint ACTCTX_FLAG_SET_PROCESS_DEFAULT = 0x010;
+        public const uint ACTCTX_FLAG_APPLICATION_NAME_VALID = 0x020;
+        public const uint ACTCTX_FLAG_HMODULE_VALID = 0x080;
+        public const uint RT_MANIFEST = 24;
+        public const uint CREATEPROCESS_MANIFEST_RESOURCE_ID = 1;
+        public const uint ISOLATIONAWARE_MANIFEST_RESOURCE_ID = 2;
+        public const uint ISOLATIONAWARE_NOSTATICIMPORT_MANIFEST_RESOURCE_ID = 3;
+    }
 
 
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct ACTCTX {
+    
+	
+        public int cbSize;
+        public uint dwFlags;
+        public string lpSource;
+        public ushort wProcessorArchitecture;
+        public ushort wLangId;
+        public string lpAssemblyDirectory;
+        public IntPtr lpResourceName;
+        public string lpApplicationName;
+
+    }
 
 
 

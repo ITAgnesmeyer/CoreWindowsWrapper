@@ -6,10 +6,11 @@ namespace ConsleCaller
     class Program
     {
        
-        static void Main(string[] args)
+        public static int Main(string[] args)
         {
-            Windows3 nw = new Windows3();
+            Window1 nw = new Window1();
             NativeApp.Run(nw);
+            return 0;
         }
     }
 }

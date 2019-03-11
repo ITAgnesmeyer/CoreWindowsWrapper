@@ -27,6 +27,7 @@ namespace CoreWindowsWrapper
                 if (disposing)
                 {
                     // TODO: verwalteten Zustand (verwaltete Objekte) entsorgen.
+                    
                 }
 
        
@@ -46,7 +47,12 @@ namespace CoreWindowsWrapper
     public class ControlCollection : Dictionary<int, IControl>,IDisposable
     {
         private Win32ApiForm.Win32Window _ParentWindow;
+        private Win32ApiForm.Win32Control _ParentControl;
 
+        internal ControlCollection(Win32ApiForm.Win32Control parent)
+        {
+            this._ParentControl = parent;
+        }
         internal ControlCollection(Win32ApiForm.Win32Window parent)
         {
             this._ParentWindow = parent;
@@ -69,11 +75,20 @@ namespace CoreWindowsWrapper
                     ctrl.Create(this._ParentWindow.Handle);
                 }
             }
+
+            if (this._ParentControl != null)
+            {
+                if (this._ParentControl.Handle != IntPtr.Zero)
+                {
+                    ctrl.Create(this._ParentControl.Handle);
+                }
+            }
         }
 
         public void Dispose()
         {
             this._ParentWindow = null;
+            this._ParentControl = null;
 
         }
     }

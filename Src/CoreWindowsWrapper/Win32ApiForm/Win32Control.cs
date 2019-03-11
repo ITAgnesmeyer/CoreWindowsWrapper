@@ -5,6 +5,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
 {
     internal class Win32Control : IWindowClass
     {
+
         public static int LastControlId { get; set; } = 500;
         public IntPtr Handle { get; protected set; }
         public IntPtr ParentHandle { get; internal set; }
@@ -12,7 +13,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
         public string Name { get; set; }
         public Point Location { get; set; }
         private bool _Enabled = true;
-
+        public ControlCollection Controls;
         public bool Enabled
         {
             get { return this._Enabled; }
@@ -83,6 +84,11 @@ namespace CoreWindowsWrapper.Win32ApiForm
         private int _Width;
         private int _Height;
 
+        public Win32Control()
+        {
+            this.Controls = new ControlCollection(this);
+        }
+
         private void MoveMyWindow()
         {
             if (this.Handle == IntPtr.Zero) return;
@@ -91,11 +97,28 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
         private static IntPtr MyWndProc(IntPtr hwnd, uint msg, IntPtr wparam, IntPtr lparam)
         {
+           
             return Win32Api.DefWindowProc(hwnd, msg, wparam, lparam);
         }
 
+        public void PreCreate(IntPtr hWnd)
+        {
+            if (Win32Window.WindowList.ContainsKey(hWnd))
+            {
+                var window = Win32Window.WindowList[hWnd];
+                foreach (var control in this.Controls.Values)
+                {
+                    window.Controls.Add(control);
+                }
+
+                this.Controls.Clear();
+
+            }
+
+        }
         internal virtual bool Create(IntPtr parentHandle)
         {
+            
             //if(this.ControlId == 0)
             //{
             //    LastControlId += 1;
@@ -109,11 +132,13 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
             this.ParentHandle = parentHandle;
 
-            int ediged = 0;
-            if (this.ClientEdge)
-                ediged = (int) WindowStyles.WS_EX_CLIENTEDGE;
+            
 
-            this.Handle = Win32Api.CreateWindowEx(ediged,
+            int edged = 0;
+            if (this.ClientEdge)
+                edged = (int) WindowStyles.WS_EX_CLIENTEDGE;
+
+            this.Handle = Win32Api.CreateWindowEx(edged,
                 this.TypeIdentifyer, this.Text,
                 this.Style, this.Left,
                 this.Top,
@@ -128,6 +153,8 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 IntPtr hFont = Win32Api.CreateFontIndirect(ref f);
                 IntPtr retVal = Win32Api.SendMessage(this.Handle, WindowsMessages.WM_SETFONT, hFont, 0);
             }
+
+           
 
             return true;
         }

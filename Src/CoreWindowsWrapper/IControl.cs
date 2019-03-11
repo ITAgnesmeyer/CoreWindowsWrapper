@@ -25,6 +25,7 @@ namespace CoreWindowsWrapper
         bool HandleEvents(IntPtr hWndParent, IntPtr hWndControl, int controlId, uint command, IntPtr wParam,
             IntPtr lParam);
 
+        ControlCollection Controls{get;}
         string TypeIdentifyer{get;set;}
         ControlType ControlType{get;set;}
 

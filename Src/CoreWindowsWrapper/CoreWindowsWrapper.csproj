@@ -29,11 +29,21 @@
     <AssemblyOriginatorKeyFile>guido_agnesmeyer_2019.cer</AssemblyOriginatorKeyFile>
     <AssemblyVersion>1.0.3.2</AssemblyVersion>
     <FileVersion>1.0.3.2</FileVersion>
+    <ApplicationIcon />
+    <Win32Resource>O:\repos\CoreWindowsWrapper\Src\ConsleCaller\bin\Release\netcoreapp3.0\app.res</Win32Resource>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="runtime.win-x86.Microsoft.NETCore.DotNetAppHost" Version="3.0.0-preview-27324-5" />
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">

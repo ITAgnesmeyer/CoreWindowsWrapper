@@ -11,9 +11,12 @@ namespace CoreWindowsWrapper
 
         public static void Run(NativeWindow window)
         {
+            //Api.Win32.Win32Api.EnableVisualStyles();
+            
             _mainWindow = window;
             _mainWindow.IsMainWindow = true;
             _mainWindow.Show();
+            
             Task t = new Task(TaskAction);
             t.RunSynchronously();
         }

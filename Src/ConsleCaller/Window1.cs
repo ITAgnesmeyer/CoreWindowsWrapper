@@ -25,17 +25,25 @@ namespace ConsleCaller
         private NativeCheckBox _CheckBox;
         private NativeListBox _ListBox;
         private NativeComboBox _ComboBox;
+        private ControlTest _ControlTest;
         protected override void InitControls()
         {
 
 
             this.Text = "Dies ist meine Anwnedung";
             this.Name = "Window1";
-            this.StatusBar = true;
+            //this.StatusBar = false;
             // this.Left = 100;
             //this.Top = 100;
             this.Width = 600;
             this.Height = 400;
+
+            this._ControlTest = new ControlTest();
+            this._ControlTest.Width = 200;
+            this._ControlTest.Height = 30;
+            this._ControlTest.Left = 500;
+            this._ControlTest.Top = 200;
+            
             //this.BackColor = ColorTool.LightGray;
             this.StartUpPosition = WindowsStartupPosition.CenterScreen;
             this.BackColor = ColorTool.White;
@@ -165,7 +173,7 @@ namespace ConsleCaller
 
 
             this._TextBox.Clicked += TextBox_Click;
-
+            //this.Controls.Add(this._ControlTest);
             this.Controls.Add(this._Button);
             this.Controls.Add(this._Button1);
             this.Controls.Add(this._ComboBox);
@@ -221,74 +229,13 @@ namespace ConsleCaller
             int maxVal = this._ProgressBar.MaxValue;
             MessageBox.Show("maximum:" + maxVal.ToString());
             this._ProgressBar.Value = value;
-            test();
+        
            
             this._Button.Enabled = true;
 
         }
 
-        private void test()
-        {
-            Dictionary<string, int> value = new Dictionary<string, int>();
-            value.Add("WM_USER          ",               0x0400);
-value.Add("WM_CONTEXTMENU	",		0x007B);
-value.Add("WM_UNICHAR		",		0x0109);
-value.Add("WM_PRINTCLIENT	",		0x0318);
-value.Add("EM_GETLIMITTEXT			",(1024 + 37));
-value.Add("EM_POSFROMCHAR			",(1024 + 38));
-value.Add("EM_CHARFROMPOS			",(1024 + 39));
-value.Add("EM_SCROLLCARET			",(1024 + 49));
-value.Add("EM_CANPASTE				",(1024 + 50));
-value.Add("EM_DISPLAYBAND			",(1024 + 51));
-value.Add("EM_EXGETSEL				",(1024 + 52));
-value.Add("EM_EXLIMITTEXT			",(1024 + 53));
-value.Add("EM_EXLINEFROMCHAR		",(1024 + 54));
-value.Add("EM_EXSETSEL				",(1024 + 55));
-value.Add("EM_FINDTEXT				",(1024 + 56));
-value.Add("EM_FORMATRANGE			",(1024 + 57));
-value.Add("EM_GETCHARFORMAT		",(1024 + 58));
-value.Add("EM_GETEVENTMASK			",(1024 + 59));
-value.Add("EM_GETOLEINTERFACE		",(1024 + 60));
-value.Add("EM_GETPARAFORMAT		",(1024 + 61));
-value.Add("EM_GETSELTEXT			",(1024 + 62));
-value.Add("EM_HIDESELECTION		",(1024 + 63));
-value.Add("EM_PASTESPECIAL			",(1024 + 64));
-value.Add("EM_REQUESTRESIZE		",(1024 + 65));
-value.Add("EM_SELECTIONTYPE		",(1024 + 66));
-value.Add("EM_SETBKGNDCOLOR		",(1024 + 67));
-value.Add("EM_SETCHARFORMAT		",(1024 + 68));
-value.Add("EM_SETEVENTMASK			",(1024 + 69));
-value.Add("EM_SETOLECALLBACK		",(1024 + 70));
-value.Add("EM_SETPARAFORMAT		",(1024 + 71));
-value.Add("EM_SETTARGETDEVICE		",(1024 + 72));
-value.Add("EM_STREAMIN				",(1024 + 73));
-value.Add("EM_STREAMOUT			",(1024 + 74));
-value.Add("EM_GETTEXTRANGE			",(1024 + 75));
-value.Add("EM_FINDWORDBREAK		",(1024 + 76));
-value.Add("EM_SETOPTIONS			",(1024 + 77));
-value.Add("EM_GETOPTIONS			",(1024 + 78));
-value.Add("EM_FINDTEXTEX			",(1024 + 79));
-value.Add("EM_GETWORDBREAKPROCEX	",(1024 + 80));
-value.Add("EM_SETWORDBREAKPROCEX	",(1024 + 81));
-value.Add("EM_SETUNDOLIMIT			",(1024 + 82));
-value.Add("EM_REDO					",(1024 + 84));
-value.Add("EM_CANREDO				",(1024 + 85));
-value.Add("EM_GETUNDONAME			",(1024 + 86));
-value.Add("EM_GETREDONAME			",(1024 + 87));
-value.Add("EM_STOPGROUPTYPING		",(1024 + 88));
-
-value.Add("EM_SETTEXTMODE			",(1024 + 89));
-value.Add("EM_GETTEXTMODE			",(1024 + 90));
-
-StringBuilder sb = new StringBuilder();
-foreach (string valueKey in value.Keys)
-{
-    Debug.WriteLine( "#define " + valueKey + value[valueKey]);
-
-}
-
-
-        }
+    
         private void Label1_DblClick(object sender, EventArgs eventArgs)
         {
             MessageBox.Show("label DblClicked!");
@@ -340,6 +287,7 @@ foreach (string valueKey in value.Keys)
             this._ComboBox.Add("world");
             this._ComboBox.Add("home");
             this._ComboBox.SelectedIndex = 2;
+
         }
 
         private void Window1_DblClick(object sender, MouseClickEventArgs e)

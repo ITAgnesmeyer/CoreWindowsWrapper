@@ -19,7 +19,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
         public event EventHandler<CreateEventArgs> Destroyed;
         public event EventHandler<SizeEventArgs> Size;
         
-        private static readonly Dictionary<IntPtr, Win32Window> WindowList = new Dictionary<IntPtr, Win32Window>();
+        internal static readonly Dictionary<IntPtr, Win32Window> WindowList = new Dictionary<IntPtr, Win32Window>();
         private static readonly Stack<Win32Window> WindowStack = new Stack<Win32Window>();
         public static IntPtr InstanceHandle { get; set; } = IntPtr.Zero;
         public ControlCollection Controls;
@@ -31,6 +31,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
         public string Name { get; set; }
         internal string WindowClassName { get; set; }
         internal IntPtr StatusBarHandle { get; set; } = IntPtr.Zero;
+        internal IntPtr ToolBarHandle { get; set; } = IntPtr.Zero;
         public Point Location
         {
             get => new Point(){X=this.Left, Y=this.Top};
@@ -86,6 +87,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
         public bool MaximizeForm { get; set; }
         public bool MinimizeForm { get; set; }
         public bool Statusbar{get;set;} = false;
+        public bool ToolBar{get;set;} = false ;
         public bool Enable
         {
             get => Win32Api.IsWindowEnabled(this.Handle);
@@ -98,7 +100,6 @@ namespace CoreWindowsWrapper.Win32ApiForm
         private int _Width = unchecked((int) 0x80000000);
         private int _Height= unchecked((int) 0x80000000);
         public IMenuItem Menu{get;set;}
-        private Point _Location;
         public uint Style { get; set; } = WindowStylesConst.WS_OVERLAPPEDWINDOW | WindowStylesConst.WS_VISIBLE;
 
         public Win32Window(bool isMainWindow = false)
@@ -168,7 +169,16 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
             }
 
+            List<int> keys = new List<int>();
+            foreach (int controlsKey in this.Controls.Keys)
+            {
+                keys.Add(controlsKey);
+            }
 
+            foreach (var item in keys)
+            {
+                FlattenControlItems(this.Controls[item]);
+            }
             windClass.hbrBackground = Win32Api.CreateSolidBrush(this.Color);
             this.WindowClass = windClass;
             ushort regResult = Win32Api.RegisterClassEx(ref windClass);
@@ -253,6 +263,20 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
             return true;
         }
+
+        private void FlattenControlItems(IControl control)
+        {
+            if (!this.Controls.ContainsKey(control.ControlId))
+                this.Controls.Add(control);
+            foreach (var controlControl in control.Controls.Values)
+            {
+                FlattenControlItems(controlControl);
+
+            }
+
+            control.Controls.Clear();
+        }
+
 
         private void FillFlatMenuItemList(IMenuItem menu)
         {
@@ -443,6 +467,22 @@ namespace CoreWindowsWrapper.Win32ApiForm
                         Win32Api.ShowWindow(window.StatusBarHandle, (int)ShowWindowCommands.Show);
                     }
 
+
+                    if (window.ToolBar)
+                    {
+                        IntPtr tbId = new IntPtr(101);
+                        window.ToolBarHandle = Win32Api.CreateWindowEx(0, "ToolbarWindow32", null,
+                             WindowStylesConst.WS_CHILD | 512 , 0,
+                            0, 0, 0, hWnd, IntPtr.Zero, Win32Window.InstanceHandle, IntPtr.Zero);
+
+                        Win32Api.AddTbButton(window.ToolBarHandle, "Test",50);
+                        //Win32Api.AddTbButton(window.ToolBarHandle, "Test2", 51);
+                        Win32Api.ShowWindow(window.ToolBarHandle, (int) Api.Win32.ShowWindowCommands.Show);
+
+                    }
+
+                   
+
                     foreach (IControl windowControl in window.Controls.Values)
                     {
                         windowControl.Create(hWnd);
@@ -516,7 +556,11 @@ namespace CoreWindowsWrapper.Win32ApiForm
                     {
                         Win32Api.SendMessage(window.StatusBarHandle, WindowsMessages.WM_SIZE, 0, 0);
                     }
-                        
+
+                    if (window.ToolBar)
+                    {
+                        Win32Api.SendMessage(window.ToolBarHandle, WindowsMessages.WM_SIZE, 0, 0);
+                    }
                     Rect r = window.GetCleanClientRect();
                     window.OnSize(new SizeEventArgs(r.X, r.Y,  r.Right - r.Left , r.Bottom - r.Top));
                     //handled = false;
@@ -632,15 +676,23 @@ namespace CoreWindowsWrapper.Win32ApiForm
         public Rect GetCleanClientRect()
         {
             int sbHeigt = 0;
+            int tbHeigt = 0;
             if (this.Statusbar)
             {
                 
                 Win32Api.GetWindowRect(this.StatusBarHandle, out var sbRect);
                 sbHeigt = sbRect.Bottom - sbRect.Top;
             }
+
+            if (this.ToolBar)
+            {
+                Win32Api.GetWindowRect(this.ToolBarHandle, out var tbRect);
+                tbHeigt = tbRect.Bottom - tbRect.Top;
+            }
                         
             Win32Api.GetClientRect(this.Handle, out var r);
             r.Bottom = r.Bottom - sbHeigt;
+            r.Top = r.Top + tbHeigt;
             return r;
         }
     }
