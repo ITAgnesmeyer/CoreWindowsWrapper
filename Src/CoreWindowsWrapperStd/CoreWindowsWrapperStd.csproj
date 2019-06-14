@@ -1,0 +1,128 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>CoreWindowsWrapper</AssemblyName>
+    <RootNamespace>CoreWindowsWrapper</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\CoreWindowsWrapper\Api\Ole\IUnknown.cs" Link="Api\Ole\IUnknown.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Ole\NativeMethods.cs" Link="Api\Ole\NativeMethods.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\ButtonMessages.cs" Link="Api\Win32\ButtonMessages.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\ButtonStyles.cs" Link="Api\Win32\ButtonStyles.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\ClassStyles.cs" Link="Api\Win32\ClassStyles.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\CodepageConst.cs" Link="Api\Win32\CodepageConst.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\ComboBoxCommands.cs" Link="Api\Win32\ComboBoxCommands.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\COMBOBOXINFO.cs" Link="Api\Win32\COMBOBOXINFO.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\ComboBoxMessages.cs" Link="Api\Win32\ComboBoxMessages.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\ComboBoxStyles.cs" Link="Api\Win32\ComboBoxStyles.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\CommonControls.cs" Link="Api\Win32\CommonControls.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\DefaultHWND.cs" Link="Api\Win32\DefaultHWND.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\DeferWindowPosCommands.cs" Link="Api\Win32\DeferWindowPosCommands.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\DialogTemplate.cs" Link="Api\Win32\DialogTemplate.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\DLGITEMTEMPLATE.cs" Link="Api\Win32\DLGITEMTEMPLATE.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\DLGTEMPLATE.cs" Link="Api\Win32\DLGTEMPLATE.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\EditBoxMessages.cs" Link="Api\Win32\EditBoxMessages.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\EditBoxStyles.cs" Link="Api\Win32\EditBoxStyles.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\FontType.cs" Link="Api\Win32\FontType.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\FonWeight.cs" Link="Api\Win32\FonWeight.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\GETTEXTEX.cs" Link="Api\Win32\GETTEXTEX.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\HighLow.cs" Link="Api\Win32\HighLow.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\ImageTypeConst.cs" Link="Api\Win32\ImageTypeConst.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\INITCOMMONCONTROLSEX.cs" Link="Api\Win32\INITCOMMONCONTROLSEX.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\ListBoxMessages.cs" Link="Api\Win32\ListBoxMessages.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\LITEM.cs" Link="Api\Win32\LITEM.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\LoadResourceConst.cs" Link="Api\Win32\LoadResourceConst.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\LOGFONTW.cs" Link="Api\Win32\LOGFONTW.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\LogPixels.cs" Link="Api\Win32\LogPixels.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\MenuFlags.cs" Link="Api\Win32\MenuFlags.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\MenuStyles.cs" Link="Api\Win32\MenuStyles.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\MessageBoxCheckFlags.cs" Link="Api\Win32\MessageBoxCheckFlags.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\MessageBoxOptionsConst.cs" Link="Api\Win32\MessageBoxOptionsConst.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\MSG.cs" Link="Api\Win32\MSG.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\NMHDR.cs" Link="Api\Win32\NMHDR.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\NMLINK.cs" Link="Api\Win32\NMLINK.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\OFNW.cs" Link="Api\Win32\OFNW.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\OFSTRUCT.cs" Link="Api\Win32\OFSTRUCT.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\PAINTSTRUCT.cs" Link="Api\Win32\PAINTSTRUCT.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\POINT.cs" Link="Api\Win32\POINT.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\ProgressBarMessages.cs" Link="Api\Win32\ProgressBarMessages.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\ProgressBarStyles.cs" Link="Api\Win32\ProgressBarStyles.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\RichEditMessages.cs" Link="Api\Win32\RichEditMessages.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\RichTextSetTextConst.cs" Link="Api\Win32\RichTextSetTextConst.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\RichtTextGetTextConst.cs" Link="Api\Win32\RichtTextGetTextConst.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\SETTEXTEX.cs" Link="Api\Win32\SETTEXTEX.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\SetWindowPosFlags.cs" Link="Api\Win32\SetWindowPosFlags.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\ShowWindowCommands.cs" Link="Api\Win32\ShowWindowCommands.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\SpiConst.cs" Link="Api\Win32\SpiConst.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\StaticControlMessages.cs" Link="Api\Win32\StaticControlMessages.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\StaticControlStyles.cs" Link="Api\Win32\StaticControlStyles.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\StockObjects.cs" Link="Api\Win32\StockObjects.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\SystemMetric.cs" Link="Api\Win32\SystemMetric.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\TBBUTTON.cs" Link="Api\Win32\TBBUTTON.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\Win32Api.cs" Link="Api\Win32\Win32Api.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\Win32ApiCursors.cs" Link="Api\Win32\Win32ApiCursors.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\WindowsMessages.cs" Link="Api\Win32\WindowsMessages.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\WindowStyles.cs" Link="Api\Win32\WindowStyles.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\WindowStylesConst.cs" Link="Api\Win32\WindowStylesConst.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\WNDCLASSEX.cs" Link="Api\Win32\WNDCLASSEX.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\WndProc.cs" Link="Api\Win32\WndProc.cs" />
+    <Compile Include="..\CoreWindowsWrapper\ControlCollection.cs" Link="ControlCollection.cs" />
+    <Compile Include="..\CoreWindowsWrapper\CreateEventArgs.cs" Link="CreateEventArgs.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Font.cs" Link="Font.cs" />
+    <Compile Include="..\CoreWindowsWrapper\IControl.cs" Link="IControl.cs" />
+    <Compile Include="..\CoreWindowsWrapper\IMenuItem.cs" Link="IMenuItem.cs" />
+    <Compile Include="..\CoreWindowsWrapper\IWindow.cs" Link="IWindow.cs" />
+    <Compile Include="..\CoreWindowsWrapper\IWindowClass.cs" Link="IWindowClass.cs" />
+    <Compile Include="..\CoreWindowsWrapper\MessageBox.cs" Link="MessageBox.cs" />
+    <Compile Include="..\CoreWindowsWrapper\MessageBoxOptions.cs" Link="MessageBoxOptions.cs" />
+    <Compile Include="..\CoreWindowsWrapper\MessageBoxResult.cs" Link="MessageBoxResult.cs" />
+    <Compile Include="..\CoreWindowsWrapper\MouseButton.cs" Link="MouseButton.cs" />
+    <Compile Include="..\CoreWindowsWrapper\MouseClickEventArgs.cs" Link="MouseClickEventArgs.cs" />
+    <Compile Include="..\CoreWindowsWrapper\NativeApp.cs" Link="NativeApp.cs" />
+    <Compile Include="..\CoreWindowsWrapper\NativeAxControlBase.cs" Link="NativeAxControlBase.cs" />
+    <Compile Include="..\CoreWindowsWrapper\NativeBitmap.cs" Link="NativeBitmap.cs" />
+    <Compile Include="..\CoreWindowsWrapper\NativeButton.cs" Link="NativeButton.cs" />
+    <Compile Include="..\CoreWindowsWrapper\NativeCheckBox.cs" Link="NativeCheckBox.cs" />
+    <Compile Include="..\CoreWindowsWrapper\NativeComboBox.cs" Link="NativeComboBox.cs" />
+    <Compile Include="..\CoreWindowsWrapper\NativeComboBoxSelChangeEventArgs.cs" Link="NativeComboBoxSelChangeEventArgs.cs" />
+    <Compile Include="..\CoreWindowsWrapper\NativeContainerControl.cs" Link="NativeContainerControl.cs" />
+    <Compile Include="..\CoreWindowsWrapper\NativeControlBase.cs" Link="NativeControlBase.cs" />
+    <Compile Include="..\CoreWindowsWrapper\NativeGroupBox.cs" Link="NativeGroupBox.cs" />
+    <Compile Include="..\CoreWindowsWrapper\NativeLabel.cs" Link="NativeLabel.cs" />
+    <Compile Include="..\CoreWindowsWrapper\NativeLink.cs" Link="NativeLink.cs" />
+    <Compile Include="..\CoreWindowsWrapper\NativeLinkClickEventArgs.cs" Link="NativeLinkClickEventArgs.cs" />
+    <Compile Include="..\CoreWindowsWrapper\NativeListBox.cs" Link="NativeListBox.cs" />
+    <Compile Include="..\CoreWindowsWrapper\NativeMenu.cs" Link="NativeMenu.cs" />
+    <Compile Include="..\CoreWindowsWrapper\NativeMenuItem.cs" Link="NativeMenuItem.cs" />
+    <Compile Include="..\CoreWindowsWrapper\NativeMultiLineTextBox.cs" Link="NativeMultiLineTextBox.cs" />
+    <Compile Include="..\CoreWindowsWrapper\NativeNoCreateControlBase.cs" Link="NativeNoCreateControlBase.cs" />
+    <Compile Include="..\CoreWindowsWrapper\NativeProgress.cs" Link="NativeProgress.cs" />
+    <Compile Include="..\CoreWindowsWrapper\NativeRichTextBox.cs" Link="NativeRichTextBox.cs" />
+    <Compile Include="..\CoreWindowsWrapper\NativeTextBox.cs" Link="NativeTextBox.cs" />
+    <Compile Include="..\CoreWindowsWrapper\NativeTimer.cs" Link="NativeTimer.cs" />
+    <Compile Include="..\CoreWindowsWrapper\NativeWebBrowser.cs" Link="NativeWebBrowser.cs" />
+    <Compile Include="..\CoreWindowsWrapper\NativeWindow.cs" Link="NativeWindow.cs" />
+    <Compile Include="..\CoreWindowsWrapper\OpenFileDialog.cs" Link="OpenFileDialog.cs" />
+    <Compile Include="..\CoreWindowsWrapper\SaveFileDialog.cs" Link="SaveFileDialog.cs" />
+    <Compile Include="..\CoreWindowsWrapper\SizeEventArgs.cs" Link="SizeEventArgs.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Tools\ColorTool.cs" Link="Tools\ColorTool.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Tools\FontTool.cs" Link="Tools\FontTool.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Tools\ImageTool.cs" Link="Tools\ImageTool.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Win32ApiForm\ControlType.cs" Link="Win32ApiForm\ControlType.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Win32ApiForm\Win32AxControl.cs" Link="Win32ApiForm\Win32AxControl.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Win32ApiForm\Win32Control.cs" Link="Win32ApiForm\Win32Control.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Win32ApiForm\Win32NoCreateControl.cs" Link="Win32ApiForm\Win32NoCreateControl.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Win32ApiForm\Win32Window.cs" Link="Win32ApiForm\Win32Window.cs" />
+    <Compile Include="..\CoreWindowsWrapper\WindowsStartupPosition.cs" Link="WindowsStartupPosition.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Api\Win32\" />
+    <Folder Include="Api\Ole\" />
+    <Folder Include="Win32ApiForm\" />
+    <Folder Include="Tools\" />
+  </ItemGroup>
+
+</Project>

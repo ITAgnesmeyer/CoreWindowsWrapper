@@ -30,7 +30,8 @@ namespace CoreWindowsWrapper
                         if (link.item != null)
                         {
                             string id = link.item.szID;
-                            string linUlr = new string(link.item.szUrl);
+                            string linkUrl = link.item.szUrl;
+                            string linUlr = linkUrl;
                             OnLinkClicked(new NativeLinkClickEventArgs(id, linUlr));
                         }
                     }

@@ -44,7 +44,7 @@ namespace CoreWindowsWrapper.Api.Ole
 
    [Guid("D30C1661-CDAF-11d0-8A3E-00C04FC9E26E")]
         [SuppressUnmanagedCodeSecurity]
-        [TypeLibType(TypeLibTypeFlags.FHidden | TypeLibTypeFlags.FDual | TypeLibTypeFlags.FOleAutomation)]
+        //[TypeLibType(TypeLibTypeFlags.FHidden | TypeLibTypeFlags.FDual | TypeLibTypeFlags.FOleAutomation)]
         internal interface IWebBrowser2
         {
             [DispId(555)]

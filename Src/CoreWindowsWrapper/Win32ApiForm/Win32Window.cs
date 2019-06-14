@@ -365,8 +365,16 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 case WindowsMessages.WM_DESTROY:
 
                     //If you want to shutdown the application, call the next function instead of DestroyWindow
-
-                    Win32Api.PostQuitMessage(0);
+                    if (!WindowList.ContainsKey(hWnd))
+                        Win32Api.PostQuitMessage(0); 
+                    else
+                    {
+                       Win32Window window = WindowList[hWnd];
+                       if(window.IsMainWindow)
+                            Win32Api.PostQuitMessage(0);
+                    }
+                        
+                    
                     break;
 
                 default:
