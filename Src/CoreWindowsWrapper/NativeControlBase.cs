@@ -1,18 +1,10 @@
 ﻿using System;
+using System.Threading.Tasks;
 using CoreWindowsWrapper.Api.Win32;
 using CoreWindowsWrapper.Win32ApiForm;
 
 namespace CoreWindowsWrapper
 {
-
-    public class NativeContainerControl : NativeNoCreateControlBase
-    {
-        protected override void Initialize()
-        {
-            base.Initialize();
-
-        }
-    }
 
     public class NativeControlBase : IControl
     {
@@ -21,6 +13,8 @@ namespace CoreWindowsWrapper
         public virtual event EventHandler<EventArgs> Clicked;
         public virtual event EventHandler<EventArgs> DblClicked;
         private Font _Font;
+        private TaskQueue _TaskQueue = new TaskQueue();
+
         public NativeControlBase()
         {
             this.Font = new Font();
@@ -213,11 +207,11 @@ namespace CoreWindowsWrapper
             Console.Write("on Destroy");
         }
 
-        protected void SafeInvoke<T>(EventHandler<T> eventHandler, T ars) where T:EventArgs
+        protected void SafeInvoke<T>(EventHandler<T> eventHandler, T args) where T : EventArgs
         {
             try
             {
-                eventHandler?.Invoke(this, ars);
+                eventHandler?.Invoke(this, args);
             }
             catch (Exception e)
             {
@@ -225,6 +219,10 @@ namespace CoreWindowsWrapper
             }
         }
 
+        protected   void SafeInvokeAsync<T>(EventHandler<T> eventHandler, T args) where T:EventArgs
+        {
+            this._TaskQueue.Enqueue(()=>Task.Run(()=> eventHandler?.Invoke(this,args)));
+        }
 
         public bool Enabled
         {
@@ -240,7 +238,33 @@ namespace CoreWindowsWrapper
 
         public ControlType ControlType { get; set; }
 
-        public ControlCollection Controls=> this._Control.Controls;
-       
+        public ControlCollection Controls => this._Control.Controls;
+
+    }
+
+
+    internal class TaskQueue
+    {
+        private Task previous = Task.FromResult(false);
+        private object key = new object();
+
+        public Task<T> Enqueue<T>(Func<Task<T>> taskGenerator)
+        {
+            lock (key)
+            {
+                var next = previous.ContinueWith(t => taskGenerator()).Unwrap();
+                previous = next;
+                return next;
+            }
+        }
+        public Task Enqueue(Func<Task> taskGenerator)
+        {
+            lock (key)
+            {
+                var next = previous.ContinueWith(t => taskGenerator()).Unwrap();
+                previous = next;
+                return next;
+            }
+        }
     }
 }

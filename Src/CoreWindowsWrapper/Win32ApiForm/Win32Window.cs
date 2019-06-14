@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using CoreWindowsWrapper.Api.Win32;
 using Point = CoreWindowsWrapper.Api.Win32.Point;
 
@@ -32,6 +33,9 @@ namespace CoreWindowsWrapper.Win32ApiForm
         internal string WindowClassName { get; set; }
         internal IntPtr StatusBarHandle { get; set; } = IntPtr.Zero;
         internal IntPtr ToolBarHandle { get; set; } = IntPtr.Zero;
+
+        private Task DispatchTask;
+
         public Point Location
         {
             get => new Point(){X=this.Left, Y=this.Top};
@@ -248,20 +252,38 @@ namespace CoreWindowsWrapper.Win32ApiForm
             OnCreate();
 
             //Win32Api.SetWindowPos(this.Handle, (IntPtr) 0,xPos,yPos,0,0,(uint)(SetWindowPosFlags.IgnoreResize | SetWindowPosFlags.IgnoreZOrder));
+
+            
+
             if (!this.IsMainWindow)
             {
-                //The explicit message pump is not necessary, messages are obviously dispatched by the framework.
-                //However, if the while loop is implemented, the functions are called... Windows mysteries...
-                while (Win32Api.GetMessage(out var msg, IntPtr.Zero, 0, 0) != 0)
-                {
-                    Win32Api.TranslateMessage(ref msg);
-                    Win32Api.DispatchMessage(ref msg);
-                    if(WindowList.Count == 0) break;
+                ////The explicit message pump is not necessary, messages are obviously dispatched by the framework.
+                ////However, if the while loop is implemented, the functions are called... Windows mysteries...
+                //while (Win32Api.GetMessage(out var msg, IntPtr.Zero, 0, 0) != 0)
+                //{
+                //    Win32Api.TranslateMessage(ref msg);
+                //    try
+                //    {
+                //    Win32Api.DispatchMessage(ref msg);
+                //    }
+                //    catch(Exception e)
+                //    {
+                //        Console.WriteLine(e.StackTrace);
+                //    }
+                //    if(WindowList.Count == 0) break;
                     
-                }
+                //}
+                CreateDsipatchTask();
             }
 
             return true;
+        }
+
+        private void CreateDsipatchTask()
+        {
+            this.DispatchTask = new Task(Dispatch);
+            this.DispatchTask.Start();
+
         }
 
         private void FlattenControlItems(IControl control)
@@ -302,10 +324,29 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
         public void Dispatch()
         {
-            if (Win32Api.GetMessage(out var msg, IntPtr.Zero, 0, 0) != 0)
+            //if (Win32Api.GetMessage(out var msg, IntPtr.Zero, 0, 0) != 0)
+            //{
+            //    Win32Api.TranslateMessage(ref msg);
+
+            //    Win32Api.DispatchMessage(ref msg);
+            //}
+            lock(this)
             {
-                Win32Api.TranslateMessage(ref msg);
-                Win32Api.DispatchMessage(ref msg);
+                while (Win32Api.GetMessage(out var msg, IntPtr.Zero, 0, 0) != 0)
+                {
+                    Win32Api.TranslateMessage(ref msg);
+                    try
+                    {
+                        Win32Api.DispatchMessage(ref msg);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.StackTrace);
+                    }
+                    if (WindowList.Count == 0) break;
+
+                }
+
             }
         }
 
@@ -658,6 +699,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
         public void Dispose()
         {
+            this.DispatchTask?.Dispose();
             this.Controls?.Dispose();
             this.Controls = null;
         }

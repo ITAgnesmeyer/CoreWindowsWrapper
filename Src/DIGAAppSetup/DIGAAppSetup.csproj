@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <ApplicationIcon>Firmen_Emblem.ico</ApplicationIcon>
     <StartupObject>DIGAAppSetup.Program</StartupObject>
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -10,6 +10,10 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>DigaCert.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
 
   <ItemGroup>

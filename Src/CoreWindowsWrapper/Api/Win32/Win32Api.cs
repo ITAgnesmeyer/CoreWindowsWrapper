@@ -139,7 +139,7 @@ namespace CoreWindowsWrapper.Api.Win32
         [DllImport("user32.dll")]
         public static extern bool TranslateMessage([In] ref MSG lpMsg);
 
-        [DllImport("user32.dll")]
+        [DllImport("user32.dll",SetLastError =true)]
         public static extern IntPtr DispatchMessage([In] ref MSG lpmsg);
 
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]

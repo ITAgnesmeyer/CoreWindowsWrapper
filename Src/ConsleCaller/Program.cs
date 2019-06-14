@@ -8,7 +8,7 @@ namespace ConsleCaller
        
         public static int Main(string[] args)
         {
-            Window1 nw = new Window1();
+            Windows3 nw = new Windows3();
             NativeApp.Run(nw);
             return 0;
         }

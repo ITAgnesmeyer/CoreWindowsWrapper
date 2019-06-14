@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup Label="Globals">
     <SccProjectName>SAK</SccProjectName>
@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Dipl.-Ing.(FH) Guido Agnesmeyer</Authors>
@@ -17,20 +17,21 @@
     <PackageTags>dotnet-core</PackageTags>
     <Description>CoreWindowsWrapper is a DLL you can use to create Core Applications showing Dialogs without using System.Windows.Forms. The Project uses the Windows - API to create Native Windows.</Description>
     <Copyright>2019 Dipl.-Ing.(FH) Guido Agnesmeyer</Copyright>
-    <PackageLicenseUrl>https://github.com/ITAgnesmeyer/CoreWindowsWrapper/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseUrl></PackageLicenseUrl>
     <RepositoryType>GitHub</RepositoryType>
     <PackageProjectUrl>https://github.com/ITAgnesmeyer/CoreWindowsWrapper</PackageProjectUrl>
     <PackageIconUrl>https://github.com/ITAgnesmeyer/CoreWindowsWrapper/blob/master/Src/DIGAAppSetup/Firmen_Emblem.ico</PackageIconUrl>
     <PackageReleaseNotes>First implementation.
 </PackageReleaseNotes>
-    <Version>1.0.2.2</Version>
+    <Version>1.0.3.1</Version>
     <SignAssembly>false</SignAssembly>
     <DelaySign>true</DelaySign>
     <AssemblyOriginatorKeyFile>guido_agnesmeyer_2019.cer</AssemblyOriginatorKeyFile>
     <AssemblyVersion>1.0.3.2</AssemblyVersion>
     <FileVersion>1.0.3.2</FileVersion>
     <ApplicationIcon />
-    <Win32Resource>O:\repos\CoreWindowsWrapper\Src\ConsleCaller\bin\Release\netcoreapp3.0\app.res</Win32Resource>
+    <Win32Resource></Win32Resource>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -42,7 +43,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="runtime.win-x86.Microsoft.NETCore.DotNetAppHost" Version="3.0.0-preview-27324-5" />
+    <PackageReference Include="runtime.win-x86.Microsoft.NETCore.DotNetAppHost" Version="2.2.3" />
   </ItemGroup>
 
   <ItemGroup>

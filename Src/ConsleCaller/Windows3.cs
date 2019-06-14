@@ -59,7 +59,7 @@ namespace ConsleCaller
             this.Controls.Add(this._TextBox);
         }
 
-        private void FileSave_Click(object sender, MouseClickEventArgs e)
+        private async void FileSave_Click(object sender, MouseClickEventArgs e)
         {
             if (string.IsNullOrEmpty(this._CurrentFileName))
             {
@@ -72,7 +72,7 @@ namespace ConsleCaller
                     this._CurrentFileName = sfd.File;
                     string text = this._TextBox.Text;
                    
-                    File.WriteAllText(this._CurrentFileName, text);
+                    await File.WriteAllTextAsync(this._CurrentFileName, text);
                     this.Text = "Little Edit:" + this._CurrentFileName;
                 }
             }
@@ -86,7 +86,7 @@ namespace ConsleCaller
 
 
 
-        private void FileOpen_Click(object sender, MouseClickEventArgs e)
+        private async void FileOpen_Click(object sender, MouseClickEventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
 
@@ -102,12 +102,14 @@ namespace ConsleCaller
             //Show the Dialog modal to the current Form.
             if (ofd.Show(this))
             {
+                this._TextBox.Enabled = false;
                 //Read the selected Path
                 string fileName = ofd.File;
                 //File Actions.
-                string text = File.ReadAllText(fileName);
+                string text = await File.ReadAllTextAsync(fileName);
                 this._CurrentFileName = fileName;
                 this._TextBox.Text = text;
+                this._TextBox.Enabled = true;
                 this.Text = "Little Edit:" + fileName;
             }
         }
