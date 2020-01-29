@@ -861,6 +861,11 @@ namespace CoreWindowsWrapper.Win32ApiForm
             {
                 FlattenControlItems(this.Controls[item]);
             }
+
+            foreach (IControl windowControl in this.Controls.Values)
+            {
+                windowControl.Create(this.Handle);
+            }
         }
     }
 }

@@ -34,7 +34,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(38, 28);
+            this.button1.Location = new System.Drawing.Point(12, 288);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(99, 33);
             this.button1.TabIndex = 0;
@@ -50,6 +50,7 @@
             this.Controls.Add(this.button1);
             this.Name = "MainForm";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.ResumeLayout(false);
 
         }
