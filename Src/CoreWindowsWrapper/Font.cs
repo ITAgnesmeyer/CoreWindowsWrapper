@@ -4,7 +4,7 @@ namespace CoreWindowsWrapper
 {
     public class Font
     {
-        private LOGFONTW _LogFont;
+        private LogFont _LogFont;
         private int? _Size;
         private bool? _Italic;
         private bool? _Bold;
@@ -13,13 +13,13 @@ namespace CoreWindowsWrapper
         {
             this._LogFont = Tools.FontTool.GetDefaultLogFont();
         }
-        internal Font(LOGFONTW logFont)
+        internal Font(LogFont logFont)
         {
             this._LogFont = logFont;
 
         }
 
-        internal void FormLogFont(LOGFONTW logFon, IntPtr hWnd)
+        internal void FormLogFont(LogFont logFon, IntPtr hWnd)
         {
             this._LogFont = logFon;
             this.FromLogFont(hWnd,true);
@@ -71,10 +71,10 @@ namespace CoreWindowsWrapper
 
         public bool Bold { get => _Bold.GetValueOrDefault(false); set => _Bold = value; }
 
-        internal LOGFONTW ToLogFont(IntPtr hWnd)
+        internal LogFont ToLogFont(IntPtr hWnd)
         {
             IntPtr hDc = Win32Api.GetDC(hWnd);
-            this._LogFont = new LOGFONTW();
+            this._LogFont = new LogFont();
             this._LogFont.lfFaceName = this.Name;
             
             this._LogFont.lfItalic = Win32Api.BoolToByte(this.Italic);

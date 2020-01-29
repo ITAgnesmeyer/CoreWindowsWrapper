@@ -149,7 +149,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
             {
                 this.Font.FromLogFont(this.Handle);
 
-                LOGFONTW f = this.Font.ToLogFont(this.Handle);
+                LogFont f = this.Font.ToLogFont(this.Handle);
                 IntPtr hFont = Win32Api.CreateFontIndirect(ref f);
                 IntPtr retVal = Win32Api.SendMessage(this.Handle, WindowsMessages.WM_SETFONT, hFont, 0);
             }

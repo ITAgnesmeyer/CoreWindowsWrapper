@@ -17,9 +17,9 @@ namespace CoreWindowsWrapper.Tools
             return -Win32Api.MulDivReverse(height, devCap, 72);
         }
 
-        internal static LOGFONTW GetDefaultLogFont()
+        internal static LogFont GetDefaultLogFont()
         {
-            LOGFONTW lf;
+            LogFont lf;
             Win32Api.GetDefaultLogFont(out lf);
             return lf;
         }

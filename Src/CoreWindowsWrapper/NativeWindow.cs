@@ -4,21 +4,29 @@ using CoreWindowsWrapper.Win32ApiForm;
 
 namespace CoreWindowsWrapper
 {
-    public class NativeChildWindow:NativeWindow
+    public class NativeChildWindow : NativeWindow
     {
-        public NativeChildWindow():base()
+        public NativeChildWindow() : base()
         {
             this.IsMainWindow = false;
         }
-        public NativeChildWindow(NativeWindow parent): base(parent)
+        public NativeChildWindow(NativeWindow parent) : base(parent)
         {
             this.IsMainWindow = false;
         }
     }
-    public class NativeWindow : IControl
+    public class NativeWindow : IControl,IDisposable
     {
         private Win32Window _Window;
-
+        private bool IsHookWindow
+        {
+            get
+            {
+                if(this._Window == null)
+                    return false;
+                return this._Window.IsHookedWindow;
+            }
+        }
         internal bool IsMainWindow
         {
             get
@@ -40,7 +48,7 @@ namespace CoreWindowsWrapper
 
         public NativeMenu Menu
         {
-            get => (NativeMenu) this._Window.Menu;
+            get => (NativeMenu)this._Window.Menu;
             set => this._Window.Menu = value;
         }
         public IntPtr Handle
@@ -66,7 +74,14 @@ namespace CoreWindowsWrapper
         {
             this.ControlType = ControlType.Window;
             Initialize();
-            
+
+        }
+
+        public NativeWindow(IntPtr hookWindowHandle)
+        {
+            this.ControlType = ControlType.Window;
+            this._Window = Win32Window.CreateAsHook(hookWindowHandle);
+            InitializeHook();
         }
 
         public NativeWindow(NativeWindow parent)
@@ -118,8 +133,8 @@ namespace CoreWindowsWrapper
             get
             {
 
-                return  this._Window.Text;
-                
+                return this._Window.Text;
+
             }
             set
             {
@@ -241,7 +256,7 @@ namespace CoreWindowsWrapper
         private void Initialize()
         {
             this._Window = new Win32Window(this.IsMainWindow);
-            
+
             //{
             //    Style = WindowStylesConst.WS_CAPTION | WindowStylesConst.WS_SYSMENU |
             //            WindowStylesConst.WS_EX_STATICEDGE
@@ -249,9 +264,8 @@ namespace CoreWindowsWrapper
             InitDefaults();
         }
 
-        private void InitDefaults()
+        private void InitEvents()
         {
-            this.StartUpPosition = WindowsStartupPosition.Normal;
             this._Window.CreateForm += OnCreateForm;
             this._Window.DoubleClick += OnFormDoubleClick;
             this._Window.Click += OnFormClick;
@@ -259,10 +273,16 @@ namespace CoreWindowsWrapper
             this._Window.MouseDown += OnFormMouseDown;
             this._Window.MouseUp += OnFormMouseUp;
             this._Window.Size += OnFormSize;
-            this._Window.Width = unchecked((int) 0x80000000);
-            this._Window.Height = unchecked((int) 0x80000000);
-            this._Window.Left = unchecked((int) 0x80000000);
-            this._Window.Top = unchecked((int) 0x80000000);
+
+        }
+        private void InitDefaults()
+        {
+            this.StartUpPosition = WindowsStartupPosition.Normal;
+            InitEvents();
+            this._Window.Width = unchecked((int)0x80000000);
+            this._Window.Height = unchecked((int)0x80000000);
+            this._Window.Left = unchecked((int)0x80000000);
+            this._Window.Top = unchecked((int)0x80000000);
             InitControls();
         }
 
@@ -290,7 +310,7 @@ namespace CoreWindowsWrapper
         private void OnMouseDown(MouseClickEventArgs e)
         {
             SafeInvoke(this.MouseDown, e);
-            
+
         }
 
         private void OnDestroyed(object sender, CreateEventArgs e)
@@ -299,6 +319,11 @@ namespace CoreWindowsWrapper
             this.Destroy();
         }
 
+        private void InitializeHook()
+        {
+            InitEvents();
+            InitControls();
+        }
         private void Initialize(IntPtr parentHandle)
         {
             this._Window = new Win32Window(parentHandle, this.IsMainWindow);
@@ -319,10 +344,10 @@ namespace CoreWindowsWrapper
         private void OnFormClick(object sender, MouseClickEventArgs e)
         {
             this.OnClick(e);
-            
+
         }
 
-        private void SafeInvoke<T>(EventHandler<T> eventHandler, T ars) where T:EventArgs
+        private void SafeInvoke<T>(EventHandler<T> eventHandler, T ars) where T : EventArgs
         {
             try
             {
@@ -353,9 +378,9 @@ namespace CoreWindowsWrapper
         }
         public void Show()
         {
-              
+
             this._Window.Create();
-         
+
         }
 
         protected virtual void OnCreate(CreateEventArgs e)
@@ -407,6 +432,15 @@ namespace CoreWindowsWrapper
         protected Rect GetClientRect()
         {
             return this._Window.GetCleanClientRect();
+        }
+
+        public void PostCreateControls()
+        {
+            this._Window.PostCreateControls();
+        }
+        public void Dispose()
+        {
+            this._Window?.Dispose();
         }
     }
 }

@@ -20,15 +20,14 @@
     <PackageLicenseUrl></PackageLicenseUrl>
     <RepositoryType>GitHub</RepositoryType>
     <PackageProjectUrl>https://github.com/ITAgnesmeyer/CoreWindowsWrapper</PackageProjectUrl>
-    <PackageIconUrl>https://github.com/ITAgnesmeyer/CoreWindowsWrapper/blob/master/Src/DIGAAppSetup/Firmen_Emblem.ico</PackageIconUrl>
     <PackageReleaseNotes>First implementation.
 </PackageReleaseNotes>
-    <Version>1.0.3.1</Version>
+    <Version>1.0.3.3</Version>
     <SignAssembly>false</SignAssembly>
     <DelaySign>true</DelaySign>
     <AssemblyOriginatorKeyFile>guido_agnesmeyer_2019.cer</AssemblyOriginatorKeyFile>
-    <AssemblyVersion>1.0.3.2</AssemblyVersion>
-    <FileVersion>1.0.3.2</FileVersion>
+    <AssemblyVersion>1.0.3.3</AssemblyVersion>
+    <FileVersion>1.0.3.3</FileVersion>
     <ApplicationIcon />
     <Win32Resource></Win32Resource>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>

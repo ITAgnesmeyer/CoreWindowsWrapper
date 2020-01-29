@@ -28,6 +28,7 @@
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\FontType.cs" Link="Api\Win32\FontType.cs" />
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\FonWeight.cs" Link="Api\Win32\FonWeight.cs" />
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\GETTEXTEX.cs" Link="Api\Win32\GETTEXTEX.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\GWL.cs" Link="Api\Win32\GWL.cs" />
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\HighLow.cs" Link="Api\Win32\HighLow.cs" />
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\ImageTypeConst.cs" Link="Api\Win32\ImageTypeConst.cs" />
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\INITCOMMONCONTROLSEX.cs" Link="Api\Win32\INITCOMMONCONTROLSEX.cs" />
@@ -47,6 +48,7 @@
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\OFSTRUCT.cs" Link="Api\Win32\OFSTRUCT.cs" />
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\PAINTSTRUCT.cs" Link="Api\Win32\PAINTSTRUCT.cs" />
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\POINT.cs" Link="Api\Win32\POINT.cs" />
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\ProcessAccessTypes.cs" Link="Api\Win32\ProcessAccessTypes.cs" />
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\ProgressBarMessages.cs" Link="Api\Win32\ProgressBarMessages.cs" />
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\ProgressBarStyles.cs" Link="Api\Win32\ProgressBarStyles.cs" />
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\RichEditMessages.cs" Link="Api\Win32\RichEditMessages.cs" />
@@ -119,7 +121,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Api\Win32\" />
     <Folder Include="Api\Ole\" />
     <Folder Include="Win32ApiForm\" />
     <Folder Include="Tools\" />

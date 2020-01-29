@@ -15,6 +15,7 @@
         {
             if (disposing && (components != null))
             {
+                this.nativeWindow?.Dispose();
                 components.Dispose();
             }
             base.Dispose(disposing);
