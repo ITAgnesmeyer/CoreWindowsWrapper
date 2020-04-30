@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <AssemblyName>CoreWindowsWrapper</AssemblyName>
     <RootNamespace>CoreWindowsWrapper</RootNamespace>
   </PropertyGroup>
@@ -124,6 +124,11 @@
     <Folder Include="Api\Ole\" />
     <Folder Include="Win32ApiForm\" />
     <Folder Include="Tools\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Diga.WebView2.Interop" Version="1.0.2" />
+    <PackageReference Include="Diga.WebView2.Wrapper" Version="1.0.2" />
   </ItemGroup>
 
 </Project>
