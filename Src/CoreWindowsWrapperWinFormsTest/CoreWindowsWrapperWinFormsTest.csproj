@@ -82,10 +82,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CoreWindowsWrapperStd\CoreWindowsWrapperStd.csproj">
-      <Project>{1ecd3b60-6065-4776-b005-7fc9cde17bd5}</Project>
-      <Name>CoreWindowsWrapperStd</Name>
-      <Private>True</Private>
+    <ProjectReference Include="..\CoreWindowsWrapperFramework\CoreWindowsWrapperFramework.csproj">
+      <Project>{6f2dd37f-8132-4177-b0a1-f4f36c3d2590}</Project>
+      <Name>CoreWindowsWrapperFramework</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

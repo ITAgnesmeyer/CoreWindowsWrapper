@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using CoreWindowsWrapper;
 using CoreWindowsWrapper.Tools;
@@ -19,6 +12,7 @@ namespace CoreWindowsWrapperWinFormsTest
         private CoreWindowsWrapper.NativeWindow nativeWindow;
         private NativeButton _Button;
         private NativeButton _Button1;
+        private NativeWebBrowser _WebBrowser;
 
         public MainForm()
         {
@@ -34,6 +28,13 @@ namespace CoreWindowsWrapperWinFormsTest
 
         private void OnSize(object sender, SizeEventArgs e)
         {
+            if (e.Width == 0) return;
+            
+            this._WebBrowser.Left = e.X;
+            this._WebBrowser.Top = e.Y;
+            this._WebBrowser.Width = e.Width;
+            this._WebBrowser.Height = e.Height;
+            this._WebBrowser.DoDock();
             this.Refresh();
         }
 
@@ -131,6 +132,18 @@ namespace CoreWindowsWrapperWinFormsTest
             this._Button1.DblClicked += button1_OnDblClicked;
             nativeWindow.Controls.Add(this._Button);
             nativeWindow.Controls.Add(this._Button1);
+            this._WebBrowser = new NativeWebBrowser()
+            {
+                Width = nativeWindow.Width,
+                Height = nativeWindow.Height,
+                Url = "http://www.itagnesmeyer.de",
+                IsStatusBarEnabled = true,
+                DefaultContextMenusEnabled = true,
+                DevToolsEnabled = false
+                
+            };
+           
+            nativeWindow.Controls.Add(this._WebBrowser);
             nativeWindow.PostCreateControls();
         }
 

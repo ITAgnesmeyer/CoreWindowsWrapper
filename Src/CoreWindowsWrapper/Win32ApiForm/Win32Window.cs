@@ -851,21 +851,21 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
             }
 
-            List<int> keys = new List<int>();
-            foreach (int controlsKey in this.Controls.Keys)
-            {
-                keys.Add(controlsKey);
-            }
+            //List<int> keys = new List<int>();
+            //foreach (int controlsKey in this.Controls.Keys)
+            //{
+            //    keys.Add(controlsKey);
+            //}
 
-            foreach (var item in keys)
-            {
-                FlattenControlItems(this.Controls[item]);
-            }
+            //foreach (var item in keys)
+            //{
+            //    FlattenControlItems(this.Controls[item]);
+            //}
 
-            foreach (IControl windowControl in this.Controls.Values)
-            {
-                windowControl.Create(this.Handle);
-            }
+            //foreach (IControl windowControl in this.Controls.Values)
+            //{
+            //    windowControl.Create(this.Handle);
+            //}
         }
     }
 }

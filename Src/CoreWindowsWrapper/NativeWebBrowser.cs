@@ -38,6 +38,10 @@ namespace CoreWindowsWrapper
                 this._Control.Created += OnBrowserControlCreated;
                 this._Control.BeforeCreate += OnWebWindowBeforeCreate;
             }
+            else
+            {
+                throw new Exception("Cannot create WebView");
+            }
 
             return created;
 
@@ -63,6 +67,7 @@ namespace CoreWindowsWrapper
         {
             this._BrowserCreated = true;
             this.Navigate(this.Url);
+            
             
         }
 
