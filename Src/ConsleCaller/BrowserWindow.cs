@@ -5,13 +5,13 @@ using Diga.WebView2.Wrapper.EventArguments;
 
 namespace ConsleCaller
 {
-    class Window4 : NativeWindow
+    class BrowserWindow : NativeWindow
     {
         private NativeWebBrowser _Browser;
         protected override void InitControls()
         {
             this.Text = "Webbrowser";
-            this.Name = "Window_4";
+            this.Name = "BrowserWindow";
             this.StatusBar = true;
             this.IconFile = "Firmen_Emblem.ico";
             //this.StatusBar = false;

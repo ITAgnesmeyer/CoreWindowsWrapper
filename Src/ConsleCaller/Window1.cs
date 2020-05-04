@@ -290,7 +290,7 @@ namespace ConsleCaller
 
         private void Window1_DblClick(object sender, MouseClickEventArgs e)
         {
-            Windows3 win2 = new Windows3();
+            TextEditor win2 = new TextEditor();
             //this.Controls.Add(win2);
             win2.Show();
             MessageBox.Show("Nach Show");

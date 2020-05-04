@@ -3,7 +3,7 @@ using CoreWindowsWrapper;
 
 namespace ConsleCaller
 {
-    class Windows3 : NativeWindow
+    class TextEditor : NativeWindow
     {
         private NativeMultiLineTextBox _TextBox;
         private string _CurrentFileName;
