@@ -1,65 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using System.Text;
 using CoreWindowsWrapper;
 using CoreWindowsWrapper.Tools;
 
 
 namespace ConsleCaller
 {
-    class Window4 : NativeWindow
-    {
-        private NativeWebBrowser _Browser;
-        protected override void InitControls()
-        {
-            this.Text = "Webbrowser";
-            this.Name = "Window_4";
-            this.StatusBar = true;
-            //this.StatusBar = false;
-            // this.Left = 100;
-            //this.Top = 100;
-            this.Width = 600;
-            this.Height = 400;
-            this._Browser = new NativeWebBrowser()
-            {
-                Width = this.Width,
-                Height = this.Height,
-                Url = "http://www.itagnesmeyer.de",
-                IsStatusBarEnabled = true,
-                DefaultContextMenusEnabled = false,
-                DevToolsEnabled = false
-                
-            };
-            this.Controls.Add(this._Browser);
-
-        }
-
-        protected override void OnCreate(CreateEventArgs e)
-        {
-            base.OnCreate(e);
-            CoreWindowsWrapper.Api.Win32.Rect rect = this.GetClientRect();
-            this._Browser.Left = rect.Left;
-            this._Browser.Top = rect.Top;
-            this._Browser.Width = rect.Width;
-            this._Browser.Height = rect.Height;
-        }
-
-        protected override void OnSize(SizeEventArgs e)
-        {
-            if (e.Width == 0) return;
-            base.OnSize(e);
-            this._Browser.Left = e.X;
-            this._Browser.Top = e.Y;
-
-            this._Browser.Width = e.Width;
-            this._Browser.Height = e.Height;
-            this._Browser.DoDock();
-        }
-
-        
-    }
     class Window1 : NativeWindow
     {
 
