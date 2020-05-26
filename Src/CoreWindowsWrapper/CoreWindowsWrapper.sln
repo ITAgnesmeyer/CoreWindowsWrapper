@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.28516.95
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreWindowsWrapper", "CoreWindowsWrapper.csproj", "{820F239A-3001-4659-B224-489079B1357E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsleCaller", "..\ConsleCaller\ConsleCaller.csproj", "{72A44751-86B5-488F-8214-C8DD305A212B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleCaller", "..\ConsleCaller\ConsoleCaller.csproj", "{72A44751-86B5-488F-8214-C8DD305A212B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DIGAAppSetup", "..\DIGAAppSetup\DIGAAppSetup.csproj", "{23D5F6D3-123B-4001-AF52-69679E38AE58}"
 EndProject

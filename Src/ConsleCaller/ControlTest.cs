@@ -1,5 +1,6 @@
 ﻿using CoreWindowsWrapper;
-namespace ConsleCaller
+
+namespace ConsoleCaller
 {
     public class ControlTest: NativeContainerControl 
     {

@@ -8,8 +8,10 @@ namespace CoreWindowsWrapperWinFormsTest
 {
     public partial class MainForm : Form
     {
-        private Window1 win;
-        private CoreWindowsWrapper.NativeWindow nativeWindow;
+        //private Window1 win;
+        private CoreWindowsWrapper.NativeWindow _NativeWindow;
+        private CoreWindowsWrapper.NativeWindow _Panel2Window;
+        private CoreWindowsWrapper.NativeWindow _Panel1Window;
         private NativeButton _Button;
         private NativeButton _Button1;
         private NativeWebBrowser _WebBrowser;
@@ -40,22 +42,23 @@ namespace CoreWindowsWrapperWinFormsTest
 
         private void MenuInfo_Click(object sender, MouseClickEventArgs e)
         {
-            CoreWindowsWrapper.MessageBox.Show(nativeWindow.Handle,"MenuInfo!","API");
+            CoreWindowsWrapper.MessageBox.Show(this._NativeWindow.Handle,"MenuInfo!","API");
         }
 
         private void Menu_Exit(object sender, MouseClickEventArgs e)
         {
-            CoreWindowsWrapper.MessageBox.Show(nativeWindow.Handle,"MenuInfo!","API");
+            CoreWindowsWrapper.MessageBox.Show(this._NativeWindow.Handle,"Close Application!","API");
+            this.Close();
         }
 
         private void FileOpen_Click(object sender, MouseClickEventArgs e)
         {
-            CoreWindowsWrapper.MessageBox.Show(nativeWindow.Handle,"MenuInfo!","API");
+            CoreWindowsWrapper.MessageBox.Show(this._NativeWindow.Handle,"MenuInfo!","API");
         }
 
         private void FileSave_Click(object sender, MouseClickEventArgs e)
         {
-            CoreWindowsWrapper.MessageBox.Show(nativeWindow.Handle,"MenuInfo!","API");
+            CoreWindowsWrapper.MessageBox.Show(this._NativeWindow.Handle,"MenuInfo!","API");
         }
 
         protected override void WndProc(ref Message m)
@@ -68,8 +71,10 @@ namespace CoreWindowsWrapperWinFormsTest
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            nativeWindow = new CoreWindowsWrapper.NativeWindow(this.Handle);
-            nativeWindow.Size += OnSize;
+            this._Panel1Window = new CoreWindowsWrapper.NativeWindow(this.panel1.Handle);
+            this._Panel2Window = new CoreWindowsWrapper.NativeWindow(this.panel2.Handle);
+            this._NativeWindow = new CoreWindowsWrapper.NativeWindow(this.Handle);
+            this._Panel2Window.Size += OnSize;
             NativeMenu menuFile = new NativeMenu("mnuFile", "&File");
             
             //Create Sub-Items for File-Menu
@@ -99,72 +104,70 @@ namespace CoreWindowsWrapperWinFormsTest
             menuHelp.Items.Add(menuInfo);
             //Add the Help-Menu to the File-Menu
             menuFile.Items.Add(menuHelp);
-            nativeWindow.Menu = menuFile;
-            nativeWindow.BackColor = CoreWindowsWrapper.Tools.ColorTool.White;
+            this._NativeWindow.Menu = menuFile;
+            this._NativeWindow.BackColor = CoreWindowsWrapper.Tools.ColorTool.White;
 
 
             this._Button = new NativeButton
             {
                 Left = 10,
-                Top = 10,
+                Top = 0,
                 Width = 100,
                 Height = 30,
-                Text = "TestA",
+                Text = "<",
+                Font = new Font(){Name="Segoe UI Symbol", Size= 15},
                 Name = "bnTestA",
                 BackColor = ColorTool.Blue,
                 ForeColor = ColorTool.Green
 
+
             };
+
+            this._Button.Font.Name = "Segoe UI ";
 
             this._Button1 = new NativeButton
             {
                 Left = 150,
-                Top = 10,
+                Top = 0,
                 Width = 100,
                 Height = 30,
-                Text = "TestB",
+                Text = ">",
                 Name = "bnTestB"//,
                 //ControlId = 505
             };
             this._Button.Clicked += button_OnClicked;
-            this._Button.DblClicked += button_OnDblClicked;
+            
             this._Button1.Clicked += button1_OnClicked;
-            this._Button1.DblClicked += button1_OnDblClicked;
-            nativeWindow.Controls.Add(this._Button);
-            nativeWindow.Controls.Add(this._Button1);
+         
+            
             this._WebBrowser = new NativeWebBrowser()
             {
-                Width = nativeWindow.Width,
-                Height = nativeWindow.Height,
+                Width = this._NativeWindow.Width,
+                Height = this._NativeWindow.Height,
                 Url = "http://www.itagnesmeyer.de",
                 IsStatusBarEnabled = true,
-                DefaultContextMenusEnabled = true,
+                DefaultContextMenusEnabled = false,
                 DevToolsEnabled = false
                 
             };
            
-            nativeWindow.Controls.Add(this._WebBrowser);
-            nativeWindow.PostCreateControls();
+            this._Panel2Window.Controls.Add(this._WebBrowser);
+            this._Panel1Window.Controls.Add(this._Button);
+            this._Panel1Window.Controls.Add(this._Button1);
+            this._NativeWindow.PostCreateControls();
         }
 
-        private void button1_OnDblClicked(object sender, EventArgs e)
-        {
-            CoreWindowsWrapper.MessageBox.Show(nativeWindow.Handle,"button1_OnDblClicked!","API");
-        }
-
+      
         private void button1_OnClicked(object sender, EventArgs e)
         {
-            CoreWindowsWrapper.MessageBox.Show(nativeWindow.Handle,"button1_OnClicked!","API");
+            CoreWindowsWrapper.MessageBox.Show(this._NativeWindow.Handle,"button1_OnClicked!","API");
         }
 
-        private void button_OnDblClicked(object sender, EventArgs e)
-        {
-            CoreWindowsWrapper.MessageBox.Show(nativeWindow.Handle,"button_OnDblClicked!","API");
-        }
+       
 
         private void button_OnClicked(object sender, EventArgs e)
         {
-            CoreWindowsWrapper.MessageBox.Show(nativeWindow.Handle,"button_OnClicked!","API");
+            CoreWindowsWrapper.MessageBox.Show(this._NativeWindow.Handle,"button_OnClicked!","API");
         }
     }
 

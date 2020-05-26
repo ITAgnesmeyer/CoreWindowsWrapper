@@ -1,7 +1,6 @@
 ﻿using CoreWindowsWrapper;
-using System;
 
-namespace ConsleCaller
+namespace ConsoleCaller
 {
     class Program
     {

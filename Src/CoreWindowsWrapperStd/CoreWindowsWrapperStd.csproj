@@ -109,6 +109,7 @@
     <Compile Include="..\CoreWindowsWrapper\OpenFileDialog.cs" Link="OpenFileDialog.cs" />
     <Compile Include="..\CoreWindowsWrapper\SaveFileDialog.cs" Link="SaveFileDialog.cs" />
     <Compile Include="..\CoreWindowsWrapper\SizeEventArgs.cs" Link="SizeEventArgs.cs" />
+    <Compile Include="..\CoreWindowsWrapper\TaskQueue.cs" Link="TaskQueue.cs" />
     <Compile Include="..\CoreWindowsWrapper\Tools\ColorTool.cs" Link="Tools\ColorTool.cs" />
     <Compile Include="..\CoreWindowsWrapper\Tools\FontTool.cs" Link="Tools\FontTool.cs" />
     <Compile Include="..\CoreWindowsWrapper\Tools\ImageTool.cs" Link="Tools\ImageTool.cs" />
@@ -127,8 +128,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Diga.WebView2.Interop" Version="1.0.3" />
-    <PackageReference Include="Diga.WebView2.Wrapper" Version="1.0.3" />
+    <PackageReference Include="Diga.WebView2.Interop" Version="2.0.3" />
+    <PackageReference Include="Diga.WebView2.Wrapper" Version="2.0.3" />
     <PackageReference Include="MimeTypeExtension" Version="1.0.1" />
   </ItemGroup>
 

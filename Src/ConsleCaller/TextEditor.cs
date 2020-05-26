@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using CoreWindowsWrapper;
 
-namespace ConsleCaller
+namespace ConsoleCaller
 {
     class TextEditor : NativeWindow
     {

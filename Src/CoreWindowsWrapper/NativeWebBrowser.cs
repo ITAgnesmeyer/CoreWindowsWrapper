@@ -5,6 +5,7 @@ using CoreWindowsWrapper.Api.Win32;
 using Diga.WebView2.WinForms;
 using Diga.WebView2.Wrapper;
 using Diga.WebView2.Wrapper.EventArguments;
+using Diga.WebView2.Wrapper.Types;
 using MimeTypeExtension;
 
 namespace CoreWindowsWrapper
@@ -34,7 +35,7 @@ namespace CoreWindowsWrapper
         public event EventHandler<MoveFocusRequestedEventArgs> MoveFocusRequested;
         public event EventHandler<WebView2EventArgs> ZoomFactorChanged;
         public event EventHandler<WebView2EventArgs> DocumentTitleChanged;
-        public event EventHandler<DocumentStateChangedEventArgs> DocumentStateChanged;
+        //public event EventHandler<DocumentStateChangedEventArgs> DocumentStateChanged;
         public event EventHandler<WebView2EventArgs> ContainsFullScreenElementChanged;
         public event EventHandler<NewWindowRequestedEventArgs> NewWindowRequested;
         public event EventHandler<PermissionRequestedEventArgs> PermissionRequested;
@@ -89,7 +90,7 @@ namespace CoreWindowsWrapper
                 this._WebViewControl.AcceleratorKeyPressed += OnAcceleratorKeyPressedIntern;
                 this._WebViewControl.ContainsFullScreenElementChanged += OnContainsFullScreenElementChangedIntern;
                 this._WebViewControl.ContentLoading += OnContentLoadingIntern;
-                this._WebViewControl.DocumentStateChanged += OnDocumentStateChangedIntern;
+                //this._WebViewControl.DocumentStateChanged += OnDocumentStateChangedIntern;
                 this._WebViewControl.DocumentTitleChanged += OnDocumentTitleChangedIntern;
                 this._WebViewControl.ExecuteScriptCompleted += OnExecuteScriptCompletedIntern;
                 this._WebViewControl.FrameNavigationStarting += OnFrameNavigationStartingIntern;
@@ -209,10 +210,10 @@ namespace CoreWindowsWrapper
             OnDocumentTitleChanged(e);
         }
 
-        private void OnDocumentStateChangedIntern(object sender, DocumentStateChangedEventArgs e)
-        {
-            OnDocumentStateChanged(e);
-        }
+        //private void OnDocumentStateChangedIntern(object sender, DocumentStateChangedEventArgs e)
+        //{
+        //    OnDocumentStateChanged(e);
+        //}
 
         private void OnContentLoadingIntern(object sender, ContentLoadingEventArgs e)
         {
@@ -347,7 +348,7 @@ namespace CoreWindowsWrapper
         public void RemoveScriptToExecuteOnDocumentCreated(string id)
         {
             if (this.IsCreated)
-                this._WebViewControl.RemoveScriptToExecuteOnDocumentCreated(id);
+                this._WebViewControl.RemoveRemoteObject(id);
         }
 
         public void PostWebMessageAsJson(string webMessageAsJson)
@@ -649,10 +650,10 @@ namespace CoreWindowsWrapper
             ScriptToExecuteOnDocumentCreatedCompleted?.Invoke(this, e);
         }
 
-        protected virtual void OnDocumentStateChanged(DocumentStateChangedEventArgs e)
-        {
-            DocumentStateChanged?.Invoke(this, e);
-        }
+        //protected virtual void OnDocumentStateChanged(DocumentStateChangedEventArgs e)
+        //{
+        //    DocumentStateChanged?.Invoke(this, e);
+        //}
 
         protected virtual void OnWebViewCreated()
         {

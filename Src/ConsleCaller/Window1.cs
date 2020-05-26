@@ -4,8 +4,7 @@ using System.Globalization;
 using CoreWindowsWrapper;
 using CoreWindowsWrapper.Tools;
 
-
-namespace ConsleCaller
+namespace ConsoleCaller
 {
     class Window1 : NativeWindow
     {

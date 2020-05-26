@@ -1,7 +1,7 @@
 ﻿using System;
 using CoreWindowsWrapper;
 
-namespace ConsleCaller
+namespace ConsoleCaller
 {
     public class Window2 : NativeWindow
     {
@@ -78,13 +78,13 @@ namespace ConsleCaller
         private void Button_AddButton(object sender, EventArgs e)
         {
             NativeButton bn = new NativeButton();
-            bn.Left = lastLeft;
-            bn.Top = LastTop;
+            bn.Left = this.lastLeft;
+            bn.Top = this.LastTop;
             bn.Height = 30;
             bn.Width = 100;
-            lastLeft += bn.Width + 5;
-            LastTop += bn.Height + 5;
-            bn.Text = "Button" + lastLeft;
+            this.lastLeft += bn.Width + 5;
+            this.LastTop += bn.Height + 5;
+            bn.Text = "Button" + this.lastLeft;
             bn.ForeColor = CoreWindowsWrapper.Tools.ColorTool.Blue;
             bn.BackColor = CoreWindowsWrapper.Tools.ColorTool.White;
             bn.Name = bn.Text;
