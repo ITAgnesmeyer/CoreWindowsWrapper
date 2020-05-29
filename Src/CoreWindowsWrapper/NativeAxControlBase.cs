@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Net.Http.Headers;
-using System.Runtime.InteropServices;
-using CoreWindowsWrapper.Api.Ole;
 using CoreWindowsWrapper.Win32ApiForm;
 
 namespace CoreWindowsWrapper

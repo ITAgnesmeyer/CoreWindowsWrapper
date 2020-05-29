@@ -57,11 +57,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\CoreWindowsWrapper\Api\Ole\IUnknown.cs">
-      <Link>Api\Ole\IUnknown.cs</Link>
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\ACTCTX.cs">
+      <Link>ACTCTX.cs</Link>
     </Compile>
-    <Compile Include="..\CoreWindowsWrapper\Api\Ole\NativeMethods.cs">
-      <Link>Api\Ole\NativeMethods.cs</Link>
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\ACTCX_FALGS.cs">
+      <Link>ACTCX_FALGS.cs</Link>
     </Compile>
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\ButtonMessages.cs">
       <Link>Api\Win32\ButtonMessages.cs</Link>
@@ -86,6 +86,12 @@
     </Compile>
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\ComboBoxStyles.cs">
       <Link>Api\Win32\ComboBoxStyles.cs</Link>
+    </Compile>
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\ComCtl32.cs">
+      <Link>Api\Win32\ComCtl32.cs</Link>
+    </Compile>
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\ComDlg32.cs">
+      <Link>Api\Win32\ComDlg32.cs</Link>
     </Compile>
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\CommonControls.cs">
       <Link>Api\Win32\CommonControls.cs</Link>
@@ -117,6 +123,9 @@
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\FonWeight.cs">
       <Link>Api\Win32\FonWeight.cs</Link>
     </Compile>
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\Gdi32.cs">
+      <Link>Api\Win32\Gdi32.cs</Link>
+    </Compile>
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\GETTEXTEX.cs">
       <Link>Api\Win32\GETTEXTEX.cs</Link>
     </Compile>
@@ -131,6 +140,9 @@
     </Compile>
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\INITCOMMONCONTROLSEX.cs">
       <Link>Api\Win32\INITCOMMONCONTROLSEX.cs</Link>
+    </Compile>
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\Kernel32.cs">
+      <Link>Api\Win32\Kernel32.cs</Link>
     </Compile>
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\ListBoxMessages.cs">
       <Link>Api\Win32\ListBoxMessages.cs</Link>
@@ -173,6 +185,9 @@
     </Compile>
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\OFSTRUCT.cs">
       <Link>Api\Win32\OFSTRUCT.cs</Link>
+    </Compile>
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\Ole32.cs">
+      <Link>Api\Win32\Ole32.cs</Link>
     </Compile>
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\PAINTSTRUCT.cs">
       <Link>Api\Win32\PAINTSTRUCT.cs</Link>
@@ -224,6 +239,9 @@
     </Compile>
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\TBBUTTON.cs">
       <Link>Api\Win32\TBBUTTON.cs</Link>
+    </Compile>
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\User32.cs">
+      <Link>Api\Win32\User32.cs</Link>
     </Compile>
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\Win32Api.cs">
       <Link>Api\Win32\Win32Api.cs</Link>

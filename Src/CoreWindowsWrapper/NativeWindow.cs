@@ -140,7 +140,7 @@ namespace CoreWindowsWrapper
             {
                 this._Window.Text = value;
                 if (this.Handle != IntPtr.Zero)
-                    Win32Api.SetWindowText(this.Handle, this._Window.Text);
+                    User32.SetWindowText(this.Handle, this._Window.Text);
             }
         }
 

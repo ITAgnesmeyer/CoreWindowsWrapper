@@ -26,7 +26,7 @@ namespace CoreWindowsWrapper
         {
             if (parent != null)
                 this._OFNW.hwndOwner = parent.Handle;
-            return Win32Api.GetOpenFileName(ref this._OFNW);
+            return ComDlg32.GetOpenFileName(ref this._OFNW);
            
         }
 

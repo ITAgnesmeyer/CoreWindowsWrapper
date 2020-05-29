@@ -9,7 +9,7 @@ namespace CoreWindowsWrapper
         private string _Text;
         protected override void Initialize()
         {
-            Win32Api.LoadLibrary("Msftedit.dll");
+            Kernel32.LoadLibrary("Msftedit.dll");
             base.Initialize();
             this.TypeIdentifier = "RICHEDIT50W";
 
@@ -23,10 +23,10 @@ namespace CoreWindowsWrapper
             {
                 if (this.Handle != IntPtr.Zero)
                 {
-                    IntPtr size = Win32Api.SendMessage(this.Handle, WindowsMessages.WM_GETTEXTLENGTH, 0, 0);
+                    IntPtr size = User32.SendMessage(this.Handle, WindowsMessages.WM_GETTEXTLENGTH, 0, 0);
                     int len = size.ToInt32();
                     StringBuilder sb = new StringBuilder(len + 1);
-                    Win32Api.SendMessage(this.Handle, (int)WindowsMessages.WM_GETTEXT, sb.Capacity, sb);
+                    User32.SendMessage(this.Handle, (int)WindowsMessages.WM_GETTEXT, sb.Capacity, sb);
                     this._Text = sb.ToString();
                 }
                 return this._Text;
@@ -36,7 +36,7 @@ namespace CoreWindowsWrapper
                 this._Text = value;
                 if (this.Handle != IntPtr.Zero)
                 {
-                    Win32Api.SendMessage(this.Handle, (int)WindowsMessages.WM_SETTEXT, IntPtr.Zero, this._Text);
+                    User32.SendMessage(this.Handle, (int)WindowsMessages.WM_SETTEXT, IntPtr.Zero, this._Text);
                 }
             }
         }
@@ -44,7 +44,7 @@ namespace CoreWindowsWrapper
         public override bool Create(IntPtr parentId)
         {
             bool retVal = base.Create(parentId);
-            Win32Api.SendMessage(this.Handle, RichEditMessages.EM_EXLIMITTEXT, 0, uint.MaxValue);
+            User32.SendMessage(this.Handle, RichEditMessages.EM_EXLIMITTEXT, 0, uint.MaxValue);
             return retVal;
 
         }

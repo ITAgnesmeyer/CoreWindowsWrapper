@@ -26,7 +26,7 @@ namespace CoreWindowsWrapper
         {
             if (parent != null)
                 this._OFNW.hwndOwner = parent.Handle;
-            return Win32Api.GetSaveFileName(ref this._OFNW);           
+            return ComDlg32.GetSaveFileName(ref this._OFNW);           
         }
 
         public int DefaultFilterIndex

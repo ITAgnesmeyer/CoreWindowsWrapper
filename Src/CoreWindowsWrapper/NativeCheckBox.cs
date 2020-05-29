@@ -22,11 +22,11 @@ namespace CoreWindowsWrapper
 
         protected override bool ControlProc(IntPtr hWndParent, IntPtr hWndControl, int controlId, uint command, IntPtr wParam, IntPtr lParam)
         {
-            uint check = Win32Api.IsDlgButtonChecked(hWndParent, controlId);
+            uint check = User32.IsDlgButtonChecked(hWndParent, controlId);
             if(check == 1)
-                Win32Api.CheckDlgButton(hWndParent, controlId,0);
+                User32.CheckDlgButton(hWndParent, controlId,0);
             else
-                Win32Api.CheckDlgButton(hWndParent,controlId,1);
+                User32.CheckDlgButton(hWndParent,controlId,1);
             
             return base.ControlProc(hWndParent, hWndControl, controlId, command, wParam, lParam);
 
@@ -38,7 +38,7 @@ namespace CoreWindowsWrapper
             {
                 if(this.ParentHandle != IntPtr.Zero)
                 {
-                    uint check = Win32Api.IsDlgButtonChecked(this.ParentHandle, this.ControlId);
+                    uint check = User32.IsDlgButtonChecked(this.ParentHandle, this.ControlId);
                     if(check==1) 
                         this._Checked = true;
                     else
@@ -56,7 +56,7 @@ namespace CoreWindowsWrapper
                 {
                     uint check = 0;
                     if(this._Checked) check = 1;
-                    Win32Api.CheckDlgButton(this.ParentHandle,this.ControlId, check);
+                    User32.CheckDlgButton(this.ParentHandle,this.ControlId, check);
                 }
             }
         }

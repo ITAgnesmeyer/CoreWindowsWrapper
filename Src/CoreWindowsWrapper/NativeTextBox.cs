@@ -20,11 +20,11 @@ namespace CoreWindowsWrapper
 
         public override string Text
         {
-            get => Win32Api.GetWindowTextRaw(this.Handle);
+            get => User32.GetWindowTextRaw(this.Handle);
             set
             {
                 base.Text = value;
-                Win32Api.SetWindowTextsRaw(this.Handle, value);
+                User32.SetWindowTextsRaw(this.Handle, value);
 
             }
         }

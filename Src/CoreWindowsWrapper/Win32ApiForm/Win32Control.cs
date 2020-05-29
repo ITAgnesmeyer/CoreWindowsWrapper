@@ -22,7 +22,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 this._Enabled = value;
                 if (this.Handle != IntPtr.Zero)
                 {
-                    Win32Api.EnableWindow(this.Handle, this._Enabled);
+                    User32.EnableWindow(this.Handle, this._Enabled);
                 }
             }
         }
@@ -92,13 +92,13 @@ namespace CoreWindowsWrapper.Win32ApiForm
         private void MoveMyWindow()
         {
             if (this.Handle == IntPtr.Zero) return;
-            Win32Api.MoveWindow(this.Handle, this.Left, this.Top, this.Width, this.Height, true);
+            User32.MoveWindow(this.Handle, this.Left, this.Top, this.Width, this.Height, true);
         }
 
         private static IntPtr MyWndProc(IntPtr hwnd, uint msg, IntPtr wparam, IntPtr lparam)
         {
            
-            return Win32Api.DefWindowProc(hwnd, msg, wparam, lparam);
+            return User32.DefWindowProc(hwnd, msg, wparam, lparam);
         }
 
         public void PreCreate(IntPtr hWnd)
@@ -127,7 +127,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
             if (this.CommonControType != CommonControls.ICC_UNDEFINED)
             {
                 INITCOMMONCONTROLSEX ccInit = new INITCOMMONCONTROLSEX(this.CommonControType);
-                Win32Api.InitCommonControlsEx(ref ccInit);
+                ComCtl32.InitCommonControlsEx(ref ccInit);
             }
 
             this.ParentHandle = parentHandle;
@@ -138,7 +138,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
             if (this.ClientEdge)
                 edged = (int) WindowStyles.WS_EX_CLIENTEDGE;
 
-            this.Handle = Win32Api.CreateWindowEx(edged,
+            this.Handle = User32.CreateWindowEx(edged,
                 this.TypeIdentifyer, this.Text,
                 this.Style, this.Left,
                 this.Top,
@@ -150,8 +150,8 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 this.Font.FromLogFont(this.Handle);
 
                 LogFont f = this.Font.ToLogFont(this.Handle);
-                IntPtr hFont = Win32Api.CreateFontIndirect(ref f);
-                IntPtr retVal = Win32Api.SendMessage(this.Handle, WindowsMessages.WM_SETFONT, hFont, 0);
+                IntPtr hFont = Gdi32.CreateFontIndirect(ref f);
+                IntPtr retVal = User32.SendMessage(this.Handle, WindowsMessages.WM_SETFONT, hFont, 0);
             }
 
            

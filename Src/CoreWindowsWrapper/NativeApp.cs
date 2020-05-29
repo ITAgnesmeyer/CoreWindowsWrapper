@@ -23,13 +23,13 @@ namespace CoreWindowsWrapper
 
         private static void TaskAction()
         {
-            Api.Win32.Win32Api.OleInitialize(IntPtr.Zero);
+            Api.Win32.Ole32.OleInitialize(IntPtr.Zero);
             while (_mainWindow.Handle != IntPtr.Zero)
             {
                 _mainWindow.Dispatch();
             }
 
-            Api.Win32.Win32Api.OleUninitialize();
+            Api.Win32.Ole32.OleUninitialize();
         }
     }
 }

@@ -18,7 +18,7 @@ namespace CoreWindowsWrapper
         public override bool Create(IntPtr parentId)
         {
             bool retVal= base.Create(parentId);
-            Win32Api.SendMessage(this.Handle, EditBoxMessages.EM_SETLIMITTEXT, 0, int.MaxValue);
+            User32.SendMessage(this.Handle, EditBoxMessages.EM_SETLIMITTEXT, 0, int.MaxValue);
             return retVal;
 
         }

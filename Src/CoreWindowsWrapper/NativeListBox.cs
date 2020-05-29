@@ -22,12 +22,12 @@ namespace CoreWindowsWrapper
 
         public void AddText(string textToAdd)
         {
-            Win32Api.SendMessage(this.Handle, ListBoxMessages.LB_ADDSTRING, 0, textToAdd);
+            User32.SendMessage(this.Handle, ListBoxMessages.LB_ADDSTRING, 0, textToAdd);
         }
 
         public void Clear()
         {
-            Win32Api.SendMessage(this.Handle, ListBoxMessages.LB_RESETCONTENT, 0, 0);
+            User32.SendMessage(this.Handle, ListBoxMessages.LB_RESETCONTENT, 0, 0);
         }
     }
 }

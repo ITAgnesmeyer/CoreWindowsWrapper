@@ -29,7 +29,7 @@ namespace CoreWindowsWrapper
                 else
                 {
                     int lP = Win32Api.LoWord(1);
-                    Win32Api.SendMessage(this.Handle, (int) ProgressBarMessages.PBM_GETRANGE,lP, out var hiLow);
+                    User32.SendMessage(this.Handle, (int) ProgressBarMessages.PBM_GETRANGE,lP, out var hiLow);
 
 
 
@@ -41,7 +41,7 @@ namespace CoreWindowsWrapper
             {
                 this._MaxValue = value;
                 HighLow hiLow = new HighLow {iHigh = this.MaxValue, iLow = 0};
-                Win32Api.SendMessage(this.Handle, (int) ProgressBarMessages.PBM_SETRANGE, 0, hiLow);
+                User32.SendMessage(this.Handle, (int) ProgressBarMessages.PBM_SETRANGE, 0, hiLow);
 
             }
         }
@@ -56,7 +56,7 @@ namespace CoreWindowsWrapper
                 else
                 {
 
-                    IntPtr v = Win32Api.SendMessage(this.Handle, (int) ProgressBarMessages.PBM_GETPOS, 0,
+                    IntPtr v = User32.SendMessage(this.Handle, (int) ProgressBarMessages.PBM_GETPOS, 0,
                         IntPtr.Zero);
                     this._Value = (int) v;
                     return this._Value;
@@ -65,7 +65,7 @@ namespace CoreWindowsWrapper
             set
             {
                 this._Value = value;
-                Win32Api.SendMessage(this.Handle, (int) ProgressBarMessages.PBM_SETPOS, value, IntPtr.Zero);
+                User32.SendMessage(this.Handle, (int) ProgressBarMessages.PBM_SETPOS, value, IntPtr.Zero);
 
             }
         }

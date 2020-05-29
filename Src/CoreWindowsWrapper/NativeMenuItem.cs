@@ -44,9 +44,9 @@ namespace CoreWindowsWrapper
             this.ParentMenuHandle = parentMenuHandle;
             if (this.ParentMenuHandle == IntPtr.Zero)
             {
-                this.Handle = Win32Api.CreateMenu();
+                this.Handle = User32.CreateMenu();
                
-                Win32Api.AppendMenu(this.Handle, flag, (uint) this.Id, this.Text);
+                User32.AppendMenu(this.Handle, flag, (uint) this.Id, this.Text);
                 foreach (IMenuItem subItemns in this.Items.Values)
                 {
                     subItemns.Create(this.Handle);
@@ -55,7 +55,7 @@ namespace CoreWindowsWrapper
             }
             else
             {
-                Win32Api.AppendMenu(this.ParentMenuHandle,flag, (uint) this.Id, this.Text);
+                User32.AppendMenu(this.ParentMenuHandle,flag, (uint) this.Id, this.Text);
                 foreach (IMenuItem subItems in this.Items.Values)
                 {
                     subItems.Create(this.ParentMenuHandle);

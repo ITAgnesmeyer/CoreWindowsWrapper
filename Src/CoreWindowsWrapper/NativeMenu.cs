@@ -40,14 +40,14 @@ namespace CoreWindowsWrapper
         public virtual void Create(IntPtr parentMenuHandle)
         {
             this.ParentMenuHandle = parentMenuHandle;
-            this.Handle = Win32Api.CreateMenu();
+            this.Handle = User32.CreateMenu();
             if (this.ParentMenuHandle == IntPtr.Zero)
             {
-                this.ParentMenuHandle = Win32Api.CreateMenu();
+                this.ParentMenuHandle = User32.CreateMenu();
             }
 
 
-            Win32Api.AppendMenu(this.ParentMenuHandle, MenuStyles.MF_STRING | MenuStyles.MF_POPUP , (uint) this.Handle, this.Text);
+            User32.AppendMenu(this.ParentMenuHandle, MenuStyles.MF_STRING | MenuStyles.MF_POPUP , (uint) this.Handle, this.Text);
             foreach (IMenuItem itemsValue in this.Items.Values)
             {
                 if (itemsValue is NativeMenu )

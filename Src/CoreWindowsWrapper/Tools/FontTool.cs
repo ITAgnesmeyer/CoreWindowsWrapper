@@ -7,20 +7,20 @@ namespace CoreWindowsWrapper.Tools
     {
         internal static int FontSizeToHeight(int size, IntPtr hDc)
         {
-            int devCap = Win32Api.GetDeviceCaps(hDc, LogPixels.LOGPIXELSY);
+            int devCap = Gdi32.GetDeviceCaps(hDc, LogPixels.LOGPIXELSY);
             return -Win32Api.MulDiv(size, devCap, 72);
         }
 
         internal static int FontHeightToSize(int height, IntPtr hDc)
         {
-            int devCap = Win32Api.GetDeviceCaps(hDc, LogPixels.LOGPIXELSY);
+            int devCap = Gdi32.GetDeviceCaps(hDc, LogPixels.LOGPIXELSY);
             return -Win32Api.MulDivReverse(height, devCap, 72);
         }
 
         internal static LogFont GetDefaultLogFont()
         {
             LogFont lf;
-            Win32Api.GetDefaultLogFont(out lf);
+            User32.GetDefaultLogFont(out lf);
             return lf;
         }
     }

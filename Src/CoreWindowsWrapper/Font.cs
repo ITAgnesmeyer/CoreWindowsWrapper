@@ -26,7 +26,7 @@ namespace CoreWindowsWrapper
         }
         internal void FromLogFont(IntPtr hWnd, bool overwrite = false)
         {
-            IntPtr hDc = Win32Api.GetDC(hWnd);
+            IntPtr hDc = User32.GetDC(hWnd);
             if(overwrite)
             {
                     this.Name = this._LogFont.lfFaceName;
@@ -59,7 +59,7 @@ namespace CoreWindowsWrapper
 
             }
             
-            Win32Api.ReleaseDC(hWnd, hDc);
+            User32.ReleaseDC(hWnd, hDc);
 
         }
 
@@ -73,7 +73,7 @@ namespace CoreWindowsWrapper
 
         internal LogFont ToLogFont(IntPtr hWnd)
         {
-            IntPtr hDc = Win32Api.GetDC(hWnd);
+            IntPtr hDc = User32.GetDC(hWnd);
             this._LogFont = new LogFont();
             this._LogFont.lfFaceName = this.Name;
             
@@ -85,7 +85,7 @@ namespace CoreWindowsWrapper
 
             this._LogFont.lfHeight = Tools.FontTool.FontSizeToHeight(this.Size, hDc);
 
-            Win32Api.ReleaseDC(hWnd, hDc);
+            User32.ReleaseDC(hWnd, hDc);
             return this._LogFont;
         }
 

@@ -47,7 +47,7 @@ namespace CoreWindowsWrapper.Tools
                 blue = 255;
             }
 
-            return Api.Win32.Win32Api.RGB(red, green, blue);
+            return Api.Win32.Gdi32.RGB(red, green, blue);
         }
     }
 }

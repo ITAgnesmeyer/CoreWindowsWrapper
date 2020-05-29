@@ -42,9 +42,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Api\Ole\**" />
     <Compile Remove="packages\**" />
+    <EmbeddedResource Remove="Api\Ole\**" />
     <EmbeddedResource Remove="packages\**" />
+    <None Remove="Api\Ole\**" />
     <None Remove="packages\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Api\Win32\UxTheme.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -37,31 +37,31 @@ namespace CoreWindowsWrapper
 
         public void Add(string addString)
         {
-            Win32Api.SendMessage(this.Handle, ComboBoxCommands.CB_ADDSTRING, 0, addString);
+            User32.SendMessage(this.Handle, ComboBoxCommands.CB_ADDSTRING, 0, addString);
         }
 
         public int SelectedIndex
         {
             get
             {
-                int selected = Win32Api.SendMessage(this.Handle, ComboBoxCommands.CB_GETCURSEL, 0, 0).ToInt32();
+                int selected = User32.SendMessage(this.Handle, ComboBoxCommands.CB_GETCURSEL, 0, 0).ToInt32();
                 return selected;
             }
             set
             {
-                Win32Api.SendMessage(this.Handle, ComboBoxCommands.CB_SETCURSEL, value, (int)0);
+                User32.SendMessage(this.Handle, ComboBoxCommands.CB_SETCURSEL, value, (int)0);
             }
         }
 
         public int ItemsCount()
         {
-            return Win32Api.SendMessage(this.Handle, ComboBoxCommands.CB_GETCOUNT, 0, 0).ToInt32();
+            return User32.SendMessage(this.Handle, ComboBoxCommands.CB_GETCOUNT, 0, 0).ToInt32();
         }
 
         public string ItemText(int index)
         {
             StringBuilder sb = new StringBuilder();
-            Win32Api.SendMessage(this.Handle, ComboBoxCommands.CB_GETLBTEXT, index, sb);
+            User32.SendMessage(this.Handle, ComboBoxCommands.CB_GETLBTEXT, index, sb);
             return sb.ToString();
         }
 

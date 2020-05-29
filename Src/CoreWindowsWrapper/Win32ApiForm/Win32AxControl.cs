@@ -15,11 +15,11 @@ namespace CoreWindowsWrapper.Win32ApiForm
             if (this.CommonControType != CommonControls.ICC_UNDEFINED)
             {
                 INITCOMMONCONTROLSEX ccInit = new INITCOMMONCONTROLSEX(this.CommonControType);
-                Win32Api.InitCommonControlsEx(ref ccInit);
+                ComCtl32.InitCommonControlsEx(ref ccInit);
             }
 
             this.ParentHandle = parentHandle;
-            this.Handle = Win32Api.CreateWindowEx(0,
+            this.Handle = User32.CreateWindowEx(0,
                 "static", this.Text,
                 this.Style, this.Left,
                 this.Top,
