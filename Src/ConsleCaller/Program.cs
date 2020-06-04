@@ -7,7 +7,7 @@ namespace ConsoleCaller
        
         public static int Main(string[] args)
         {
-            Window1 nw = new Window1();
+            BrowserWindow nw = new BrowserWindow();
             NativeApp.Run(nw);
             return 0;
         }
