@@ -24,7 +24,7 @@ namespace CoreWindowsWrapper
             switch (command)
             {
                 case NM_CLICK:
-                    Api.Win32.NMLINK link = Marshal.PtrToStructure<Api.Win32.NMLINK>(lParam);
+                    Api.Win32.NmlInk link = Marshal.PtrToStructure<Api.Win32.NmlInk>(lParam);
                     if (link != null)
                     {
                         if (link.item != null)

@@ -1,4 +1,5 @@
 ﻿using System;
+// ReSharper disable CheckNamespace
 
 namespace CoreWindowsWrapper.Tools
 {
@@ -13,7 +14,6 @@ namespace CoreWindowsWrapper.Tools
         public static int LightGray => Rgb(224, 224, 224);
         public static int Gray => Rgb(128, 128, 128);
         public static int ControlBackground => 0xF0F0F0;
-
 
         public static int Rgb(int red, int green, int blue)
         {

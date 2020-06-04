@@ -4,10 +4,10 @@ namespace CoreWindowsWrapper.Api.Win32
 {
     internal struct DialogTemplate
     {
-        public DLGTEMPLATE header;
-        public DLGITEMTEMPLATE[] items;
+        public DlgTemplate header;
+        public DlgItemTemplate[] items;
 
-        public DialogTemplate(DLGTEMPLATE header, DLGITEMTEMPLATE[] items)
+        public DialogTemplate(DlgTemplate header, DlgItemTemplate[] items)
         {
             this.header = header;
             this.items = items ?? throw new ArgumentNullException(nameof(items));

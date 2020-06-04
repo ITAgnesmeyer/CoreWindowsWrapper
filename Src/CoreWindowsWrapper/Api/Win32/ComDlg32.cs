@@ -10,12 +10,12 @@ namespace CoreWindowsWrapper.Api.Win32
         ///param0: LPOPENFILENAMEW->tagOFNW*
         [DllImport(COMDLG32, EntryPoint = "GetOpenFileName", CharSet = CHARSET)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool GetOpenFileName(ref OFNW param0);
+        public static extern bool GetOpenFileName(ref OfNw param0);
 
         /// Return Type: BOOL->int
         ///param0: LPOPENFILENAMEW->tagOFNW*
         [DllImport(COMDLG32, EntryPoint = "GetSaveFileName", CharSet = CHARSET)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool GetSaveFileName(ref OFNW param0);
+        public static extern bool GetSaveFileName(ref OfNw param0);
     }
 }

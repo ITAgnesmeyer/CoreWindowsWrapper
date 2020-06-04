@@ -2,10 +2,10 @@
 
 namespace CoreWindowsWrapper.Api.Win32
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public class NMLINK
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+    public class NmlInk
     {
-        public NMHDR hdr = new NMHDR();
-        public LITEM item = new LITEM();
+        public NmHdr hdr = new NmHdr();
+        public LItem item = new LItem();
     }
 }

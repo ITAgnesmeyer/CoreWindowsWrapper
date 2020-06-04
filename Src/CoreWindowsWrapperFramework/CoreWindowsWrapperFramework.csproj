@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CoreWindowsWrapper</RootNamespace>
-    <AssemblyName>CoreWindowsWrapper</AssemblyName>
+    <AssemblyName>CoreWindowsWrapperFramework</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -45,10 +45,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\ACTCTX.cs">
-      <Link>ACTCTX.cs</Link>
+      <Link>Api\Win32\ACTCTX.cs</Link>
     </Compile>
-    <Compile Include="..\CoreWindowsWrapper\Api\Win32\ACTCX_FALGS.cs">
-      <Link>ACTCX_FALGS.cs</Link>
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\ActCtxFlags.cs">
+      <Link>Api\Win32\ActCtxFlags.cs</Link>
     </Compile>
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\ButtonMessages.cs">
       <Link>Api\Win32\ButtonMessages.cs</Link>
@@ -95,6 +95,9 @@
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\DLGITEMTEMPLATE.cs">
       <Link>Api\Win32\DLGITEMTEMPLATE.cs</Link>
     </Compile>
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\DlgProc.cs">
+      <Link>Api\Win32\DlgProc.cs</Link>
+    </Compile>
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\DLGTEMPLATE.cs">
       <Link>Api\Win32\DLGTEMPLATE.cs</Link>
     </Compile>
@@ -140,11 +143,11 @@
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\LoadResourceConst.cs">
       <Link>Api\Win32\LoadResourceConst.cs</Link>
     </Compile>
-    <Compile Include="..\CoreWindowsWrapper\Api\Win32\LOGFONTW.cs">
-      <Link>Api\Win32\LOGFONTW.cs</Link>
-    </Compile>
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\LogPixels.cs">
       <Link>Api\Win32\LogPixels.cs</Link>
+    </Compile>
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\LpOfNHookProc.cs">
+      <Link>Api\Win32\LpOfNHookProc.cs</Link>
     </Compile>
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\MenuFlags.cs">
       <Link>Api\Win32\MenuFlags.cs</Link>
@@ -191,6 +194,9 @@
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\ProgressBarStyles.cs">
       <Link>Api\Win32\ProgressBarStyles.cs</Link>
     </Compile>
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\Rect.cs">
+      <Link>Api\Win32\Rect.cs</Link>
+    </Compile>
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\RichEditMessages.cs">
       <Link>Api\Win32\RichEditMessages.cs</Link>
     </Compile>
@@ -226,6 +232,9 @@
     </Compile>
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\TBBUTTON.cs">
       <Link>Api\Win32\TBBUTTON.cs</Link>
+    </Compile>
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\Timerproc.cs">
+      <Link>Api\Win32\Timerproc.cs</Link>
     </Compile>
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\User32.cs">
       <Link>Api\Win32\User32.cs</Link>
@@ -395,6 +404,7 @@
     <Compile Include="..\CoreWindowsWrapper\WindowsStartupPosition.cs">
       <Link>WindowsStartupPosition.cs</Link>
     </Compile>
+    <Compile Include="Api\Win32\LogFont.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

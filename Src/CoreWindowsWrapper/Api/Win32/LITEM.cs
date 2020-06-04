@@ -2,8 +2,8 @@
 
 namespace CoreWindowsWrapper.Api.Win32
 {
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    public class LITEM
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+    public class LItem
     {
         public uint mask;
         public int iLink;

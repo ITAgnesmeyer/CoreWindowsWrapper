@@ -1,6 +1,6 @@
 ﻿namespace CoreWindowsWrapper.Api.Win32
 {
-    internal struct DLGITEMTEMPLATE
+    internal struct DlgItemTemplate
     {
         public uint style;
         public uint dwExtendedStyle;
@@ -10,7 +10,7 @@
         public short cy;
         public ushort id;
 
-        public DLGITEMTEMPLATE(uint style, uint dwExtendedStyle, short x, short y, short cx, short cy, ushort id)
+        public DlgItemTemplate(uint style, uint dwExtendedStyle, short x, short y, short cx, short cy, ushort id)
         {
             this.style = style;
             this.dwExtendedStyle = dwExtendedStyle;

@@ -6,11 +6,9 @@ using System.Runtime.InteropServices;
 
 namespace CoreWindowsWrapper.Api.Win32
 {
-    [StructLayout(LayoutKind.Sequential)]
-    internal struct ACTCTX
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+    internal struct ActCtx
     {
-
-
         public int cbSize;
         public uint dwFlags;
         public string lpSource;

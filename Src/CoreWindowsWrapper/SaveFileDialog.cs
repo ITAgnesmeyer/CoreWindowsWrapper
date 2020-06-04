@@ -6,11 +6,11 @@ namespace CoreWindowsWrapper
 {
     public class SaveFileDialog
     {
-        private OFNW _OFNW;
+        private OfNw _OFNW;
 
         public SaveFileDialog()
         {
-            this._OFNW = new OFNW {hInstance = Process.GetCurrentProcess().Handle};
+            this._OFNW = new OfNw {hInstance = Process.GetCurrentProcess().Handle};
             this._OFNW.lStructSize = (uint) Marshal.SizeOf(this._OFNW);
             this._OFNW.lpstrFilter = "All Files\0*.*\0";
             this._OFNW.lpstrFile = new string(new char[257]);

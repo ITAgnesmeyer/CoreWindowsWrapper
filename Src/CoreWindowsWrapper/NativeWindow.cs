@@ -176,8 +176,8 @@ namespace CoreWindowsWrapper
 
         public bool StatusBar
         {
-            get => this._Window.Statusbar;
-            set => this._Window.Statusbar = value;
+            get => this._Window.StatusBar;
+            set => this._Window.StatusBar = value;
         }
 
         public WindowsStartupPosition StartUpPosition

@@ -12,9 +12,9 @@ namespace CoreWindowsWrapper.Win32ApiForm
             //    LastControlId +=1;
             //    this.ControlId = LastControlId;
             //}
-            if (this.CommonControType != CommonControls.ICC_UNDEFINED)
+            if (this.CommonControlType != CommonControls.ICC_UNDEFINED)
             {
-                INITCOMMONCONTROLSEX ccInit = new INITCOMMONCONTROLSEX(this.CommonControType);
+                InitCommonControlsEx ccInit = new InitCommonControlsEx(this.CommonControlType);
                 ComCtl32.InitCommonControlsEx(ref ccInit);
             }
 

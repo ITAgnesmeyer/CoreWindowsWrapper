@@ -15,7 +15,7 @@ namespace CoreWindowsWrapper
 
         public void StartTimer()
         {
-            Api.Win32.User32.Timerproc proc = OnTimerProc;
+            Api.Win32.TimerProc proc = OnTimerProc;
             UIntPtr id = (UIntPtr)this.ControlId;
             uint intVal = System.Convert.ToUInt32(this.Interval);
             if(this.Interval > 0)

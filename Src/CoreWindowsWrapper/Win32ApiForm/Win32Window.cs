@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using CoreWindowsWrapper.Api.Win32;
 using Point = CoreWindowsWrapper.Api.Win32.Point;
+// ReSharper disable CheckNamespace
 
 namespace CoreWindowsWrapper.Win32ApiForm
 {
@@ -23,23 +25,23 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
         internal static readonly Dictionary<IntPtr, Win32Window> WindowList = new Dictionary<IntPtr, Win32Window>();
         private static readonly Stack<Win32Window> WindowStack = new Stack<Win32Window>();
-        public static IntPtr InstanceHandle { get; set; } = IntPtr.Zero;
-        public ControlCollection Controls;
-        public MenuItemCollection FlatMenuItems;
+        private static IntPtr InstanceHandle { get; set; } = IntPtr.Zero;
+        public ControlCollection Controls { get; private set; }
+        private readonly MenuItemCollection _FlatMenuItems;
         public IntPtr Handle { get; private set; }
         public IntPtr ParentHandle { get; set; }
         public int Color { get; set; }
         public string Text { get; set; }
         public string Name { get; set; }
-        internal string WindowClassName { get; set; }
-        internal IntPtr StatusBarHandle { get; set; } = IntPtr.Zero;
-        internal IntPtr ToolBarHandle { get; set; } = IntPtr.Zero;
+        private string WindowClassName { get; set; }
+        private IntPtr StatusBarHandle { get; set; } = IntPtr.Zero;
+        private IntPtr ToolBarHandle { get; set; } = IntPtr.Zero;
 
-        private Task DispatchTask;
+        private Task _DispatchTask;
 
         public Point Location
         {
-            get => new Point() { X = this.Left, Y = this.Top };
+            get => new Point() {X = this.Left, Y = this.Top};
             set
             {
                 this.Left = value.X;
@@ -91,24 +93,26 @@ namespace CoreWindowsWrapper.Win32ApiForm
         public bool CenterForm { get; set; }
         public bool MaximizeForm { get; set; }
         public bool MinimizeForm { get; set; }
-        public bool Statusbar { get; set; } = false;
+        public bool StatusBar { get; set; }
         public bool ToolBar { get; set; } = false;
+
         public bool Enable
         {
             get => User32.IsWindowEnabled(this.Handle);
             set => User32.EnableWindow(this.Handle, value);
         }
+
         private static IntPtr _lastMessageReturn = IntPtr.Zero;
-        private readonly WndProc _DelegateWndProc = MyWndProc;
+        private readonly WndProc _DelegateWndProc = WndProc;
         private readonly WndProc _HookWndProc = HookWndProc;
         private readonly IntPtr _OrgWndProc = IntPtr.Zero;
-        public bool IsHookedWindow { get; set; } = false;
-        private int _Left = unchecked((int)0x80000000);
-        private int _Top = unchecked((int)0x80000000);
-        private int _Width = unchecked((int)0x80000000);
-        private int _Height = unchecked((int)0x80000000);
+        public bool IsHookedWindow { get; set; }
+        private int _Left = unchecked((int) 0x80000000);
+        private int _Top = unchecked((int) 0x80000000);
+        private int _Width = unchecked((int) 0x80000000);
+        private int _Height = unchecked((int) 0x80000000);
         public IMenuItem Menu { get; set; }
-        public uint Style { get; set; } = WindowStylesConst.WS_OVERLAPPEDWINDOW | WindowStylesConst.WS_VISIBLE;
+        private uint Style { get; set; } = WindowStylesConst.WS_OVERLAPPEDWINDOW | WindowStylesConst.WS_VISIBLE;
 
         public static Win32Window CreateAsHook(IntPtr hookHandle)
         {
@@ -119,29 +123,29 @@ namespace CoreWindowsWrapper.Win32ApiForm
         {
             this.Handle = hookHandle;
             this.Controls = new ControlCollection(this);
-            this.FlatMenuItems = new MenuItemCollection();
+            this._FlatMenuItems = new MenuItemCollection();
             this.IsMainWindow = false;
             this.IsHookedWindow = true;
             IntPtr windProcPtr = Marshal.GetFunctionPointerForDelegate(this._HookWndProc);
             string className = User32.GetClassName(hookHandle);
 
             this.Name = className;
-            Win32Window.InstanceHandle = User32.GetWindowLongPtr(hookHandle, GWL.GWL_HINSTANCE);
+
+            Win32Window.InstanceHandle = Process.GetCurrentProcess().Handle;
+
             User32.GetClassInfoEx(Win32Window.InstanceHandle, className, out WndclassEx wclass);
             this.WindowClass = wclass;
 
             this.ParentHandle = User32.GetWindowLongPtr(hookHandle, GWL.GWL_HWNDPARENT);
             IntPtr stylePtr = User32.GetWindowLongPtr(hookHandle, GWL.GWL_EXSTYLE);
-            this.Style = (uint)(stylePtr.ToInt32());
+            this.Style = (uint) (stylePtr.ToInt32());
             if (User32.GetWindowRect(hookHandle, out Rect rect))
             {
                 this._Left = rect.Left;
                 this._Top = rect.Top;
                 this._Width = rect.Width;
                 this._Height = rect.Height;
-
             }
-
 
 
             if (WindowList.ContainsKey(this.Handle))
@@ -150,16 +154,12 @@ namespace CoreWindowsWrapper.Win32ApiForm
             WindowList.Add(this.Handle, this);
 
             this._OrgWndProc = User32.SetWindowLongPtr(hookHandle, GWL.GWL_WNDPROC, windProcPtr);
-
-
-
-
-
         }
+
         public Win32Window(bool isMainWindow = false)
         {
             this.Controls = new ControlCollection(this);
-            this.FlatMenuItems = new MenuItemCollection();
+            this._FlatMenuItems = new MenuItemCollection();
             this.IsMainWindow = isMainWindow;
             this.Name = "Win32WindowClass";
             this.Text = this.Name;
@@ -169,7 +169,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
         public Win32Window(IntPtr parentHandle, bool isMainWindow = false)
         {
             this.Controls = new ControlCollection(this);
-            this.FlatMenuItems = new MenuItemCollection();
+            this._FlatMenuItems = new MenuItemCollection();
             this.IsMainWindow = isMainWindow;
             this.ParentHandle = parentHandle;
             this.Name = "Win32WindowClass";
@@ -194,13 +194,13 @@ namespace CoreWindowsWrapper.Win32ApiForm
             WndclassEx windClass = new WndclassEx
             {
                 cbSize = Marshal.SizeOf(typeof(WndclassEx)),
-                style = (int)(ClassStyles.CS_HREDRAW | ClassStyles.CS_VREDRAW | ClassStyles.CS_DBLCLKS),
+                style = (int) (ClassStyles.CS_HREDRAW | ClassStyles.CS_VREDRAW | ClassStyles.CS_DBLCLKS),
                 hbrBackground = Gdi32.GetStockObject(StockObjects.WHITE_BRUSH),
                 cbClsExtra = 0,
                 cbWndExtra = 0,
                 hInstance = Process.GetCurrentProcess().Handle,
                 hIcon = Tools.ImageTool.SaveLoadIconFromFile(this.IconFile),
-                hCursor = User32.LoadCursor(IntPtr.Zero, (int)Win32ApiCursors.IDC_ARROW),
+                hCursor = User32.LoadCursor(IntPtr.Zero, (int) Win32ApiCursors.IDC_ARROW),
                 lpszMenuName = null,
                 lpszClassName = this.WindowClassName,
                 //lpfnWndProc = Marshal.GetFunctionPointerForDelegate(this._DelegateWndProc),
@@ -221,7 +221,6 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 hMenu = this.Menu.ParentMenuHandle;
 
                 FillFlatMenuItemList(this.Menu);
-
             }
 
             List<int> keys = new List<int>();
@@ -234,6 +233,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
             {
                 FlattenControlItems(this.Controls[item]);
             }
+
             windClass.hbrBackground = Gdi32.CreateSolidBrush(this.Color);
             this.WindowClass = windClass;
             ushort regResult = User32.RegisterClassEx(ref windClass);
@@ -264,20 +264,20 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 this.Top = yPos;
             }
 
-            IntPtr hWnd = User32.CreateWindowEx((int)(WindowStylesConst.WS_EX_APPWINDOW | WindowStylesConst.WS_EX_CLIENTEDGE),
+            IntPtr hWnd = User32.CreateWindowEx(
+                (int) (WindowStylesConst.WS_EX_APPWINDOW | WindowStylesConst.WS_EX_CLIENTEDGE),
                 this.WindowClassName,
                 this.Text, this.Style
                 , this.Left, this.Top, this.Width, this.Height, this.ParentHandle, hMenu
                 , windClass.hInstance, IntPtr.Zero);
 
 
-
             this.Handle = hWnd;
-            if (hWnd == ((IntPtr)0))
+            if (hWnd == ((IntPtr) 0))
             {
                 // ReSharper disable once UnusedVariable
                 uint error = Kernel32.GetLastError();
-                Win32Exception ex = new Win32Exception((int)error);
+                Win32Exception ex = new Win32Exception((int) error);
                 Debug.Print(ex.Message);
                 return false;
             }
@@ -286,18 +286,17 @@ namespace CoreWindowsWrapper.Win32ApiForm
             {
                 if (this.ParentHandle != IntPtr.Zero)
                     User32.SetParent(this.Handle, this.ParentHandle);
-
             }
 
             if (WindowList.ContainsKey(this.Handle))
                 WindowList.Remove(this.Handle);
 
             WindowList.Add(this.Handle, this);
-            int cmdShow = (int)ShowWindowCommands.ShowDefault;
+            int cmdShow = (int) ShowWindowCommands.ShowDefault;
             if (this.MaximizeForm)
-                cmdShow = (int)(ShowWindowCommands.Maximize);
+                cmdShow = (int) (ShowWindowCommands.Maximize);
             if (this.MinimizeForm)
-                cmdShow = (int)(ShowWindowCommands.Minimize);
+                cmdShow = (int) (ShowWindowCommands.Minimize);
             User32.ShowWindowAsync(hWnd, cmdShow);
 
 
@@ -306,39 +305,18 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
             OnCreate();
 
-            //Win32Api.SetWindowPos(this.Handle, (IntPtr) 0,xPos,yPos,0,0,(uint)(SetWindowPosFlags.IgnoreResize | SetWindowPosFlags.IgnoreZOrder));
-
-
-
             if (!this.IsMainWindow)
             {
-                ////The explicit message pump is not necessary, messages are obviously dispatched by the framework.
-                ////However, if the while loop is implemented, the functions are called... Windows mysteries...
-                //while (Win32Api.GetMessage(out var msg, IntPtr.Zero, 0, 0) != 0)
-                //{
-                //    Win32Api.TranslateMessage(ref msg);
-                //    try
-                //    {
-                //    Win32Api.DispatchMessage(ref msg);
-                //    }
-                //    catch(Exception e)
-                //    {
-                //        Console.WriteLine(e.StackTrace);
-                //    }
-                //    if(WindowList.Count == 0) break;
-
-                //}
-                CreateDsipatchTask();
+                CreateDispatchTask();
             }
 
             return true;
         }
 
-        private void CreateDsipatchTask()
+        private void CreateDispatchTask()
         {
-            this.DispatchTask = new Task(Dispatch);
-            this.DispatchTask.Start();
-
+            this._DispatchTask = new Task(Dispatch);
+            this._DispatchTask.Start();
         }
 
         private void FlattenControlItems(IControl control)
@@ -348,7 +326,6 @@ namespace CoreWindowsWrapper.Win32ApiForm
             foreach (var controlControl in control.Controls.Values)
             {
                 FlattenControlItems(controlControl);
-
             }
 
             control.Controls.Clear();
@@ -368,7 +345,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
             else
             {
                 NativeMenuItem men = menu as NativeMenuItem;
-                this.FlatMenuItems.Add(men);
+                this._FlatMenuItems.Add(men);
                 if (men != null)
                     foreach (var menuItem in men.Items.Values)
                     {
@@ -379,12 +356,6 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
         public void Dispatch()
         {
-            //if (Win32Api.GetMessage(out var msg, IntPtr.Zero, 0, 0) != 0)
-            //{
-            //    Win32Api.TranslateMessage(ref msg);
-
-            //    Win32Api.DispatchMessage(ref msg);
-            //}
             lock (this)
             {
                 while (User32.GetMessage(out var msg, IntPtr.Zero, 0, 0) != 0)
@@ -398,10 +369,9 @@ namespace CoreWindowsWrapper.Win32ApiForm
                     {
                         Console.WriteLine(e.StackTrace);
                     }
+
                     if (WindowList.Count == 0) break;
-
                 }
-
             }
         }
 
@@ -412,23 +382,21 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 var win = WindowList[hWnd];
                 if (win.IsHookedWindow)
                 {
-                    IntPtr rsult = MyWndProc(hWnd, msg, wParam, lParam);
+                    IntPtr rsult = WndProc(hWnd, msg, wParam, lParam);
                     if (rsult.ToInt32() == 0)
                     {
-                        return User32.CallWindowProc(win._OrgWndProc, hWnd, (int)msg, wParam, lParam);
+                        return User32.CallWindowProc(win._OrgWndProc, hWnd, (int) msg, wParam, lParam);
                     }
 
                     return rsult;
-
                 }
             }
-            return User32.DefWindowProc(hWnd, msg, wParam, lParam);
 
+            return User32.DefWindowProc(hWnd, msg, wParam, lParam);
         }
 
-        private static IntPtr MyWndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
+        private static IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
         {
-
             switch (msg)
             {
                 case WindowsMessages.WM_CLOSE:
@@ -464,12 +432,9 @@ namespace CoreWindowsWrapper.Win32ApiForm
                             {
                                 return new IntPtr(0);
                             }
-
                         }
 
                         return User32.DefWindowProc(hWnd, msg, wParam, lParam);
-
-
                     }
                     else if (_lastMessageReturn != IntPtr.Zero)
                         return _lastMessageReturn;
@@ -507,7 +472,6 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 {
                     foreach (var window in WindowList.Values)
                     {
-
                         IntPtr childHand = window.Handle;
                         if (childHand != hWnd)
                         {
@@ -519,8 +483,6 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
                 win32Window.Destroy();
                 WindowList.Remove(hWnd);
-
-
             }
         }
 
@@ -544,24 +506,27 @@ namespace CoreWindowsWrapper.Win32ApiForm
             switch (eventType)
             {
                 case WindowsMessages.WM_NOTIFY:
-                    NMHDR hdr = null;
+                    NmHdr hdr = null;
                     try
                     {
-                        object obj = Marshal.PtrToStructure(lParam, typeof(NMHDR));
-                        hdr = (NMHDR)obj;
+                        hdr = Marshal.PtrToStructure<NmHdr>(lParam);
                     }
                     catch (Exception e)
                     {
                         Debug.Print(e.Message);
-
-
                     }
 
-                    uint test = unchecked((0U - 0U) - 2);
-                    if (hdr != null && hdr.code == test)
+                    if (hdr != null)
                     {
-                        int cId = Convert.ToInt32(hdr.idFrom);
-                        uint cCmd = hdr.code;
+                        uint id = hdr.idFrom;
+                        Debug.Print("WM_NOTIFY=>" + id + ",Code=" + hdr.code);
+                    }
+                        
+                    uint test = unchecked((0U - 0U) - 2);
+                    if (hdr != null && hdr.code ==test)
+                    {
+                        int cId = (int)hdr.idFrom;
+                        uint cCmd = (uint)hdr.code;
                         IntPtr hCWndControl = hdr.hwndFrom;
                         if (window.Controls.ContainsKey(cId))
                         {
@@ -569,10 +534,11 @@ namespace CoreWindowsWrapper.Win32ApiForm
                             handled = cControl.HandleEvents(hWnd, hCWndControl, cId, cCmd, wParam, lParam);
                         }
                     }
+
                     break;
                 case WindowsMessages.WM_COMMAND:
                     int controlId = Win32Api.LoWord(wParam.ToInt32());
-                    uint command = (uint)Win32Api.HiWord(wParam.ToInt32());
+                    uint command = (uint) Win32Api.HiWord(wParam.ToInt32());
                     IntPtr hWndControl = lParam;
                     if (window.Controls.ContainsKey(controlId))
                     {
@@ -581,46 +547,42 @@ namespace CoreWindowsWrapper.Win32ApiForm
                     }
                     else
                     {
-                        if (window.FlatMenuItems.ContainsKey(controlId))
+                        if (window._FlatMenuItems.ContainsKey(controlId))
                         {
-                            IMenuItem menu = window.FlatMenuItems[controlId];
+                            IMenuItem menu = window._FlatMenuItems[controlId];
                             handled = menu.HandleEvents(hWnd, hWndControl, controlId, command, wParam, lParam);
                         }
                         else
                         {
                             handled = false;
                         }
-
                     }
 
 
                     break;
                 case WindowsMessages.WM_CREATE:
 
-                    if (window.Statusbar)
+                    if (window.StatusBar)
                     {
-
                         IntPtr sbId = new IntPtr(100);
                         window.StatusBarHandle = User32.CreateWindowEx(0, "msctls_statusbar32", null,
-                            (uint)(WindowStyles.WS_VISIBLE | WindowStyles.WS_CHILD), 0, 0, 0, 0, hWnd, sbId,
+                            (uint) (WindowStyles.WS_VISIBLE | WindowStyles.WS_CHILD), 0, 0, 0, 0, hWnd, sbId,
                             Win32Window.InstanceHandle, IntPtr.Zero);
-                        User32.ShowWindow(window.StatusBarHandle, (int)ShowWindowCommands.Show);
+                        User32.ShowWindow(window.StatusBarHandle, (int) ShowWindowCommands.Show);
                     }
 
 
                     if (window.ToolBar)
                     {
-                        IntPtr tbId = new IntPtr(101);
+                        //IntPtr tbId = new IntPtr(101);
                         window.ToolBarHandle = User32.CreateWindowEx(0, "ToolbarWindow32", null,
-                             WindowStylesConst.WS_CHILD | 512, 0,
+                            WindowStylesConst.WS_CHILD | 512, 0,
                             0, 0, 0, hWnd, IntPtr.Zero, Win32Window.InstanceHandle, IntPtr.Zero);
 
                         User32.AddTbButton(window.ToolBarHandle, "Test", 50);
                         //Win32Api.AddTbButton(window.ToolBarHandle, "Test2", 51);
-                        User32.ShowWindow(window.ToolBarHandle, (int)Api.Win32.ShowWindowCommands.Show);
-
+                        User32.ShowWindow(window.ToolBarHandle, (int) ShowWindowCommands.Show);
                     }
-
 
 
                     foreach (IControl windowControl in window.Controls.Values)
@@ -634,7 +596,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
 
                 case WindowsMessages.WM_PAINT:
-                    Paintstruct ps;
+                    PaintStruct ps;
                     // ReSharper disable once UnusedVariable
                     IntPtr hdc = User32.BeginPaint(hWnd, out ps);
                     window.OnPaint(hWnd, ps);
@@ -692,15 +654,16 @@ namespace CoreWindowsWrapper.Win32ApiForm
                     break;
 
                 case WindowsMessages.WM_SIZE:
-                    if (window.Statusbar)
+                    if (window.StatusBar)
                     {
-                        User32.SendMessage(window.StatusBarHandle, WindowsMessages.WM_SIZE, 0, 0);
+                        User32.SendMessage(window.StatusBarHandle, WindowsMessages.WM_SIZE);
                     }
 
                     if (window.ToolBar)
                     {
-                        User32.SendMessage(window.ToolBarHandle, WindowsMessages.WM_SIZE, 0, 0);
+                        User32.SendMessage(window.ToolBarHandle, WindowsMessages.WM_SIZE);
                     }
+
                     Rect r = window.GetCleanClientRect();
                     window.OnSize(new SizeEventArgs(r.X, r.Y, r.Right - r.Left, r.Bottom - r.Top));
                     //handled = false;
@@ -725,7 +688,6 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
         private static void CtlColors(IntPtr wParam, IntPtr lParam, Win32Window window)
         {
-
             IntPtr editCtlHdc = wParam;
             int editControlId = User32.GetDlgCtrlID(lParam);
             _lastMessageReturn = Gdi32.CreateSolidBrush(Tools.ColorTool.White);
@@ -735,8 +697,8 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
                 if (control.ControlType == ControlType.ComboBox)
                 {
-                    COMBOBOXINFO cinfo = new COMBOBOXINFO();
-                    cinfo.cbSize = (uint)Marshal.SizeOf<COMBOBOXINFO>();
+                    ComboboxInfo cinfo = new ComboboxInfo();
+                    cinfo.cbSize = (uint) Marshal.SizeOf<ComboboxInfo>();
                     if (User32.GetComboBoxInfo(control.Handle, ref cinfo))
                     {
                         Gdi32.SetBkColor(cinfo.hwndCombo, control.BackColor);
@@ -755,13 +717,14 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
                 IntPtr brush = Gdi32.CreateSolidBrush(control.BackColor);
                 _lastMessageReturn = brush;
-
             }
         }
 
-        private void OnPaint(IntPtr hWnd, Paintstruct ps)
-        {
 
+        [SuppressMessage("ReSharper", "UnusedParameter.Local")]
+        private void OnPaint(IntPtr hWnd, PaintStruct ps)
+        {
+            //Do Something?
         }
 
         private void OnCreate()
@@ -806,7 +769,8 @@ namespace CoreWindowsWrapper.Win32ApiForm
                     User32.SetWindowLongPtr(this.Handle, GWL.GWL_WNDPROC, _OrgWndProc);
                 }
             }
-            this.DispatchTask?.Dispose();
+
+            this._DispatchTask?.Dispose();
             this.Controls?.Dispose();
             this.Controls = null;
         }
@@ -826,9 +790,8 @@ namespace CoreWindowsWrapper.Win32ApiForm
         {
             int sbHeigt = 0;
             int tbHeigt = 0;
-            if (this.Statusbar)
+            if (this.StatusBar)
             {
-
                 User32.GetWindowRect(this.StatusBarHandle, out var sbRect);
                 sbHeigt = sbRect.Bottom - sbRect.Top;
             }
@@ -854,24 +817,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 hMenu = this.Menu.ParentMenuHandle;
                 User32.SetMenu(this.Handle, hMenu);
                 FillFlatMenuItemList(this.Menu);
-
             }
-
-            //List<int> keys = new List<int>();
-            //foreach (int controlsKey in this.Controls.Keys)
-            //{
-            //    keys.Add(controlsKey);
-            //}
-
-            //foreach (var item in keys)
-            //{
-            //    FlattenControlItems(this.Controls[item]);
-            //}
-
-            //foreach (IControl windowControl in this.Controls.Values)
-            //{
-            //    windowControl.Create(this.Handle);
-            //}
         }
     }
 }

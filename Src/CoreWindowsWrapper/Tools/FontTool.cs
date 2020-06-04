@@ -1,5 +1,6 @@
 ﻿using CoreWindowsWrapper.Api.Win32;
 using System;
+// ReSharper disable CheckNamespace
 
 namespace CoreWindowsWrapper.Tools
 {
@@ -19,8 +20,7 @@ namespace CoreWindowsWrapper.Tools
 
         internal static LogFont GetDefaultLogFont()
         {
-            LogFont lf;
-            User32.GetDefaultLogFont(out lf);
+            User32.GetDefaultLogFont(out var lf);
             return lf;
         }
     }

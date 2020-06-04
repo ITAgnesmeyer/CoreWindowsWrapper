@@ -13,21 +13,20 @@ namespace CoreWindowsWrapper
         public virtual event EventHandler<EventArgs> Clicked;
         public virtual event EventHandler<EventArgs> DblClicked;
         private Font _Font;
-        private TaskQueue _TaskQueue = new TaskQueue();
+        private readonly TaskQueue _TaskQueue = new TaskQueue();
 
         public NativeControlBase()
         {
             this.Font = new Font();
             this.ControlType = ControlType.DefaultControl;
+            // ReSharper disable once VirtualMemberCallInConstructor
             Initialize();
         }
 
 
         protected virtual void Initialize()
         {
-            this.Control = new Win32Control();
-            this.Control.Font = this._Font;
-            this.Control.BackColor = 0xF0F0F0;
+            this.Control = new Win32Control {Font = this._Font, BackColor = 0xF0F0F0};
 
         }
 
@@ -53,8 +52,8 @@ namespace CoreWindowsWrapper
 
         internal CommonControls CommonControlType
         {
-            get => this.Control.CommonControType;
-            set => this.Control.CommonControType = value;
+            get => this.Control.CommonControlType;
+            set => this.Control.CommonControlType = value;
         }
 
         public IntPtr Handle

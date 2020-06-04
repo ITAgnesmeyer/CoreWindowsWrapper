@@ -5,17 +5,8 @@ using System.Runtime.InteropServices;
 
 namespace CoreWindowsWrapper.Api.Win32
 {
-    /// Return Type: UINT_PTR->unsigned int
-    ///param0: HWND->HWND__*
-    ///param1: UINT->unsigned int
-    ///param2: WPARAM->UINT_PTR->unsigned int
-    ///param3: LPARAM->LONG_PTR->int
-    [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    public delegate uint LPOFNHOOKPROC(IntPtr param0, uint param1, IntPtr param2, IntPtr param3);
-
-
     [StructLayout(LayoutKind.Sequential,CharSet =CharSet.Auto)]
-    public struct OFNW
+    public struct OfNw
     {
         /// DWORD->unsigned int
         public uint lStructSize;
@@ -72,7 +63,7 @@ namespace CoreWindowsWrapper.Api.Win32
         public int lCustData;
 
         /// LPOFNHOOKPROC
-        public LPOFNHOOKPROC lpfnHook;
+        public LpOfNHookProc lpfnHook;
 
         /// LPCWSTR->WCHAR*
         public string lpTemplateName;

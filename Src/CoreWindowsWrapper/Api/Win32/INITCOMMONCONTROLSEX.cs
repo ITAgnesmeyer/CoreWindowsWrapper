@@ -5,9 +5,9 @@
 
 namespace CoreWindowsWrapper.Api.Win32
 {
-    /// <inheritdoc />
+    
     [StructLayout(LayoutKind.Sequential)]
-    internal struct INITCOMMONCONTROLSEX
+    internal struct InitCommonControlsEx
     {
         // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
         private int dwSize;
@@ -18,14 +18,14 @@ namespace CoreWindowsWrapper.Api.Win32
         //    this.dwSize = Marshal.SizeOf(typeof(INITCOMMONCONTROLSEX));
         //    this.dwICC = 0;
         //}
-        public INITCOMMONCONTROLSEX(uint dwICC)
+        public InitCommonControlsEx(uint dwICC)
             : this()
         {
-            this.dwSize = Marshal.SizeOf(typeof(INITCOMMONCONTROLSEX));
+            this.dwSize = Marshal.SizeOf(typeof(InitCommonControlsEx));
             this.dwICC = dwICC;
         }
 
-        public INITCOMMONCONTROLSEX(CommonControls ICC)
+        public InitCommonControlsEx(CommonControls ICC)
             : this((uint) ICC)
         {
         }

@@ -3,17 +3,17 @@ using System.Runtime.InteropServices;
 
 namespace CoreWindowsWrapper.Api.Win32
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct TBBUTTON {
+    [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Auto)]
+    public struct TbButton {
         public int iBitmap;
         public int idCommand;
         [StructLayout(LayoutKind.Explicit)]
-        private struct TBBUTTON_U {
+        private struct TbButtonU {
             [FieldOffset(0)] public byte fsState;
             [FieldOffset(1)] public byte fsStyle;
             [FieldOffset(0)] private IntPtr bReserved;
         }
-        private TBBUTTON_U union;
+        private TbButtonU union;
         public byte fsState { get { return this.union.fsState; } set { this.union.fsState = value; } }
         public byte fsStyle { get { return this.union.fsStyle; } set { this.union.fsStyle = value; } }
         public UIntPtr dwData;

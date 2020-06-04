@@ -3,7 +3,7 @@
 
 namespace CoreWindowsWrapper.Api.Win32
 {
-    internal static class ACTCX_FALGS
+    internal static class ActCtxFlags
     {
 
         public const uint ACTCTX_FLAG_PROCESSOR_ARCHITECTURE_VALID = 0x001;

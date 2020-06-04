@@ -8,7 +8,7 @@ namespace CoreWindowsWrapper.Api.Win32
         private const string COMCTL32 = "comctl32.dll";
 
         [DllImport(COMCTL32, EntryPoint = "InitCommonControlsEx", CallingConvention = CallingConvention.StdCall)]
-        public static extern bool InitCommonControlsEx(ref INITCOMMONCONTROLSEX iccex);
+        public static extern bool InitCommonControlsEx(ref InitCommonControlsEx iccex);
 
         /// Return Type: void*
         ///cx: int
