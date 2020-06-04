@@ -289,7 +289,7 @@ namespace ConsoleCaller
 
         private void Window1_DblClick(object sender, MouseClickEventArgs e)
         {
-            TextEditor win2 = new TextEditor();
+            Window2 win2 = new Window2(this);
             //this.Controls.Add(win2);
             win2.Show();
             MessageBox.Show("Nach Show");

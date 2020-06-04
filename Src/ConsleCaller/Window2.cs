@@ -1,5 +1,6 @@
 ﻿using System;
 using CoreWindowsWrapper;
+using Diga.NativeControls.WebBrowser;
 
 namespace ConsoleCaller
 {
@@ -36,6 +37,7 @@ namespace ConsoleCaller
             this._WebBrowser.Location = new CoreWindowsWrapper.Api.Win32.Point(100,100);
             this._WebBrowser.Width = 200;
             this._WebBrowser.Height = 200;
+            this._WebBrowser.Url = "https://www.google.de";
 
             this._Button = new NativeButton();
             this._Button.Left = 100;

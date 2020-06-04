@@ -159,6 +159,6 @@ namespace CoreWindowsWrapper.Win32ApiForm
             return true;
         }
 
-        public Wndclassex WindowClass { get; set; }
+        public WndclassEx WindowClass { get; set; }
     }
 }

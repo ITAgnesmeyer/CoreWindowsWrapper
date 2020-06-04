@@ -86,6 +86,10 @@
       <Project>{6f2dd37f-8132-4177-b0a1-f4f36c3d2590}</Project>
       <Name>CoreWindowsWrapperFramework</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Diga.NativeControls.WebBrowser\Diga.NativeControls.WebBrowser.csproj">
+      <Project>{5A726955-C418-4DD9-898A-336BE2630BFD}</Project>
+      <Name>Diga.NativeControls.WebBrowser</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

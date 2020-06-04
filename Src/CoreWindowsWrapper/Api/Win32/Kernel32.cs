@@ -14,8 +14,8 @@ namespace CoreWindowsWrapper.Api.Win32
 
         /// Return Type: HMODULE->HINSTANCE->HINSTANCE__*
         ///lpLibFileName: LPCSTR->CHAR*
-        [DllImport("kernel32.dll", EntryPoint = "LoadLibraryW")]
-        public static extern IntPtr LoadLibrary([In, MarshalAs(UnmanagedType.LPWStr)] string lpLibFileName);
+        [DllImport("kernel32.dll", EntryPoint = "LoadLibrary",CharSet =CharSet.Auto)]
+        public static extern IntPtr LoadLibrary([In] string lpLibFileName);
 
         [DllImport("kernel32.dll")]
         public static extern ushort GetSystemDefaultLangID();
@@ -29,8 +29,8 @@ namespace CoreWindowsWrapper.Api.Win32
         ///lpFileName: LPCSTR->CHAR*
         ///lpReOpenBuff: LPOFSTRUCT->_OFSTRUCT*
         ///uStyle: UINT->unsigned int
-        [DllImport("kernel32.dll", EntryPoint = "OpenFile")]
-        public static extern int OpenFile([In, MarshalAs(UnmanagedType.LPStr)] string lpFileName, ref OFSTRUCT lpReOpenBuff, uint uStyle);
+        [DllImport("kernel32.dll", EntryPoint = "OpenFile",CharSet =CharSet.Auto)]
+        public static extern int OpenFile([In] string lpFileName, ref OFSTRUCT lpReOpenBuff, uint uStyle);
 
         [DllImport("kernel32.dll", EntryPoint = "CopyMemory", SetLastError = false)]
         public static extern void CopyMemory(IntPtr dest, IntPtr src, uint count);
@@ -38,14 +38,14 @@ namespace CoreWindowsWrapper.Api.Win32
 
         /// Return Type: int
         ///lpString: LPCWSTR->WCHAR*
-        [DllImport("kernel32.dll", EntryPoint = "lstrlenW")]
-        public static extern int lstrlenW([In, MarshalAs(UnmanagedType.LPWStr)] string lpString);
+        [DllImport("kernel32.dll", EntryPoint = "lstrlen",CharSet =CharSet.Auto)]
+        public static extern int lstrlen([In] string lpString);
 
         /// Return Type: UINT->unsigned int
         ///lpBuffer: LPWSTR->WCHAR*
         ///uSize: UINT->unsigned int
-        [DllImport("kernel32.dll", EntryPoint = "GetSystemDirectoryW")]
-        public static extern uint GetSystemDirectory([Out, MarshalAs(UnmanagedType.LPWStr)]
+        [DllImport("kernel32.dll", EntryPoint = "GetSystemDirectory",CharSet =CharSet.Auto)]
+        public static extern uint GetSystemDirectory([Out]
             StringBuilder lpBuffer, uint uSize);
 
         /// Return Type: BOOL->int

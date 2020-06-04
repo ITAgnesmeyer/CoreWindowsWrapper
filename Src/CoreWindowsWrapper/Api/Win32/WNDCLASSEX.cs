@@ -5,22 +5,13 @@ using System.Runtime.InteropServices;
 
 namespace CoreWindowsWrapper.Api.Win32
 {
-    ///// Return Type: LRESULT->LONG_PTR->int
-    /////param0: HWND->HWND__*
-    /////param1: UINT->unsigned int
-    /////param2: WPARAM->UINT_PTR->unsigned int
-    /////param3: LPARAM->LONG_PTR->int
-    //[System.Runtime.InteropServices.UnmanagedFunctionPointerAttribute(System.Runtime.InteropServices.CallingConvention.StdCall)]
-    //public delegate int Wndproc(System.IntPtr param0, uint param1, System.IntPtr param2, System.IntPtr param3);
 
-
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
-    //[StructLayout(LayoutKind.Sequential)]
-    internal struct Wndclassex
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+    internal struct WndclassEx
     {
-        [MarshalAs(UnmanagedType.U4)] public int cbSize;
-        [MarshalAs(UnmanagedType.U4)] public uint style;
-        public IntPtr lpfnWndProc;
+        public int cbSize;
+        public uint style;
+        public WndProc lpfnWndProc;
         public int cbClsExtra;
         public int cbWndExtra;
         public IntPtr hInstance;
@@ -31,11 +22,9 @@ namespace CoreWindowsWrapper.Api.Win32
         public string lpszClassName;
         public IntPtr hIconSm;
 
-        public static Wndclassex Build()
-        {
-            var nw = new Wndclassex();
-            nw.cbSize = Marshal.SizeOf(typeof(Wndclassex));
-            return nw;
-        }
+
     }
+
+   
+
 }

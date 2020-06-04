@@ -20,4 +20,10 @@
     <ProjectReference Include="..\CoreWindowsWrapper\CoreWindowsWrapper.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="app.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

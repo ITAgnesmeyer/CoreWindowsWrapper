@@ -4,7 +4,7 @@
 
 namespace CoreWindowsWrapper.Api.Win32
 {
-    [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Ansi)]
+    [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Auto)]
     public struct OFSTRUCT {
     
         /// BYTE->unsigned char

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using CoreWindowsWrapper;
 using CoreWindowsWrapper.Tools;
+using Diga.NativeControls.WebBrowser;
 
 namespace CoreWindowsWrapperWinFormsTest
 {
@@ -74,6 +76,7 @@ namespace CoreWindowsWrapperWinFormsTest
             this._Panel1Window = new CoreWindowsWrapper.NativeWindow(this.panel1.Handle);
             this._Panel2Window = new CoreWindowsWrapper.NativeWindow(this.panel2.Handle);
             this._NativeWindow = new CoreWindowsWrapper.NativeWindow(this.Handle);
+            
             this._Panel2Window.Size += OnSize;
             NativeMenu menuFile = new NativeMenu("mnuFile", "&File");
             
@@ -154,6 +157,8 @@ namespace CoreWindowsWrapperWinFormsTest
             this._Panel2Window.Controls.Add(this._WebBrowser);
             this._Panel1Window.Controls.Add(this._Button);
             this._Panel1Window.Controls.Add(this._Button1);
+            
+            
             this._NativeWindow.PostCreateControls();
         }
 

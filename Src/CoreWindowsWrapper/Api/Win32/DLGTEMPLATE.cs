@@ -3,7 +3,8 @@
 namespace CoreWindowsWrapper.Api.Win32
 {
     [StructLayout(LayoutKind.Sequential)]
-    internal struct DLGTEMPLATE {
+    internal struct DLGTEMPLATE 
+    {
     
         /// DWORD->unsigned int
         public uint style;

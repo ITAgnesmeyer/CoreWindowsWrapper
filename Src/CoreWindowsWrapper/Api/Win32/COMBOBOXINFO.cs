@@ -7,7 +7,8 @@ using System.Runtime.InteropServices;
 namespace CoreWindowsWrapper.Api.Win32
 {
     [StructLayout(LayoutKind.Sequential)]
-    internal struct COMBOBOXINFO {
+    internal struct COMBOBOXINFO 
+    {
     
         /// DWORD->unsigned int
         public uint cbSize;

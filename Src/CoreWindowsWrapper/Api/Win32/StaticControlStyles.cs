@@ -3,7 +3,7 @@
 
 namespace CoreWindowsWrapper.Api.Win32
 {
-	internal static class StaticControlStyles
+	public static class StaticControlStyles
 	{
 		public const int SS_LEFT = 0x00000000;
 		public const int SS_CENTER = 0x00000001;

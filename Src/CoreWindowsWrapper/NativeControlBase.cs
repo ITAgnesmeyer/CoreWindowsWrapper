@@ -35,7 +35,7 @@ namespace CoreWindowsWrapper
         {
 
         }
-        internal uint Style
+        public uint Style
         {
             get => this.Control.Style;
             set => this.Control.Style = value;
@@ -45,7 +45,7 @@ namespace CoreWindowsWrapper
             this.Control.Create(parentHandle);
         }
 
-        internal string TypeIdentifier
+        public string TypeIdentifier
         {
             get => this.Control.TypeIdentifyer;
             set => this.Control.TypeIdentifyer = value;

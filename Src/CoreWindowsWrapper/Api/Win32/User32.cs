@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -21,7 +22,7 @@ namespace CoreWindowsWrapper.Api.Win32
         ///uElapse: UINT->unsigned int
         ///lpTimerFunc: TIMERPROC
         [DllImport("user32.dll", EntryPoint = "SetTimer")]
-        public static extern UIntPtr SetTimer([In] IntPtr hWnd, UIntPtr nIDEvent, uint uElapse,
+        public static extern UIntPtr SetTimer([In] IntPtr hWnd, UIntPtr nIdEvent, uint uElapse,
             Timerproc lpTimerFunc);
 
 
@@ -32,21 +33,21 @@ namespace CoreWindowsWrapper.Api.Win32
         ///uIDEvent: UINT_PTR->unsigned int
         [DllImport("user32.dll", EntryPoint = "KillTimer")]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool KillTimer([In] IntPtr hWnd, UIntPtr uIDEvent);
+        public static extern bool KillTimer([In] IntPtr hWnd, UIntPtr uIdEvent);
 
 
-        [DllImport("user32.dll")]
+        [DllImport("user32.dll",EntryPoint ="UpdateWindow")]
         public static extern bool UpdateWindow(IntPtr hWnd);
 
-        [DllImport("user32.dll")]
+        [DllImport("user32.dll",EntryPoint ="ShowWindow")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
-        [DllImport("user32.dll", SetLastError = true)]
+        [DllImport("user32.dll",EntryPoint ="DestroyWindow", SetLastError = true)]
         public static extern bool DestroyWindow(IntPtr hWnd);
 
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        private static extern bool AppendMenu(IntPtr hMenu, MenuFlags uFlags, uint uIDNewItem, string lpNewItem);
+        [DllImport("user32.dll",EntryPoint ="AppendMenu", CharSet = CharSet.Auto)]
+        private static extern bool AppendMenu(IntPtr hMenu, MenuFlags uFlags, uint uIdNewItem, string lpNewItem);
 
 
         //public static IntPtr CreateWindowEx(
@@ -68,7 +69,7 @@ namespace CoreWindowsWrapper.Api.Win32
         //        hMenu, hInstance, lpParam);
         //}
 
-        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Ansi)]
+        [DllImport("user32.dll",EntryPoint = "CreateWindowEx", SetLastError = true, CharSet = CharSet.Auto)]
         public static extern IntPtr CreateWindowEx(
             int dwExStyle,
             string lpClassName,
@@ -127,8 +128,8 @@ namespace CoreWindowsWrapper.Api.Win32
 
         /// Return Type: ATOM->WORD->unsigned short
         ///param0: WNDCLASSEXA*
-        [DllImport("user32.dll", CharSet = CharSet.Ansi)]
-        public static extern ushort RegisterClassEx([In()] ref Wndclassex param0);
+        [DllImport("user32.dll",EntryPoint ="RegisterClassEx", CharSet = CharSet.Auto)]
+        public static extern ushort RegisterClassEx([In()] ref WndclassEx param0);
 
 
         //public static ushort RegisterClassEx([In] ref Wndclassex lpWndClass)
@@ -143,24 +144,24 @@ namespace CoreWindowsWrapper.Api.Win32
 
 
 
-        [DllImport("user32.dll")]
+        [DllImport("user32.dll",EntryPoint ="UnregisterClass",CharSet =CharSet.Auto)]
         public static extern bool UnregisterClass(string lpClassName, IntPtr hInstance);
 
 
 
-        [DllImport("user32.dll")]
+        [DllImport("user32.dll",EntryPoint ="DefWindowProc",CharSet =CharSet.Auto)]
         public static extern IntPtr DefWindowProc(IntPtr hWnd, uint uMsg, IntPtr wParam, IntPtr lParam);
 
-        [DllImport("user32.dll")]
+        [DllImport("user32.dll",EntryPoint ="PostQuitMessage")]
         public static extern void PostQuitMessage(int nExitCode);
 
-        [DllImport("user32.dll")]
+        [DllImport("user32.dll",EntryPoint ="GetMessage",CharSet =CharSet.Auto)]
         public static extern sbyte GetMessage(out MSG lpMsg, IntPtr hWnd, uint wMsgFilterMin,
             uint wMsgFilterMax);
 
 
 
-        [DllImport("user32.dll", EntryPoint = "GetClassName", CharSet = CharSet.Ansi)]
+        [DllImport("user32.dll", EntryPoint = "GetClassName", CharSet = CharSet.Auto)]
         public static extern int GetClassName(IntPtr hWnd, StringBuilder buf, int nMaxCount);
 
 
@@ -176,31 +177,31 @@ namespace CoreWindowsWrapper.Api.Win32
         public static string GetClassName(IntPtr hWnd)
         {
             StringBuilder sb = new StringBuilder(256);
-            int retValue = GetClassName(hWnd, sb, sb.Length);
+            int retValue = GetClassName(hWnd, sb, 256);
             return sb.ToString();
         }
 
 
-        ///// Return Type: BOOL->int
-        /////hInstance: HINSTANCE->HINSTANCE__*
-        /////lpszClass: LPCSTR->CHAR*
-        /////lpwcx: LPWNDCLASSEXA->tagWNDCLASSEXA*
-        //[System.Runtime.InteropServices.DllImportAttribute("user32.dll", EntryPoint="GetClassInfoExA")]
-        //[return: System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.Bool)]
-        //public static extern  bool GetClassInfoExA([System.Runtime.InteropServices.InAttribute()] System.IntPtr hInstance, [System.Runtime.InteropServices.InAttribute()] [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.LPStr)] string lpszClass, ref WndclassexA lpwcx) ;
-
         /// Return Type: BOOL->int
         ///hInstance: HINSTANCE->HINSTANCE__*
-        ///lpszClass: LPCWSTR->WCHAR*
-        ///lpwcx: LPWNDCLASSEXW->tagWNDCLASSEXW*
-        [DllImport("user32.dll", EntryPoint = "GetClassInfoEx", CharSet = CharSet.Ansi)]
+        ///lpszClass: LPCSTR->CHAR*
+        ///lpwcx: LPWNDCLASSEXA->tagWNDCLASSEXA*
+        [DllImport("user32.dll", EntryPoint = "GetClassInfoEx",CallingConvention =CallingConvention.StdCall, CharSet= CharSet.Auto, SetLastError= true,ThrowOnUnmappableChar = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool GetClassInfoExW([In] IntPtr hInstance, [In] string lpszClass, ref Wndclassex lpwcx);
+        public static extern bool GetClassInfoExA([In()] IntPtr hInstance, [In()]string lpszClass, ref WndclassEx lpwcx);
+
+        ///// Return Type: BOOL->int
+        /////hInstance: HINSTANCE->HINSTANCE__*
+        /////lpszClass: LPCWSTR->WCHAR*
+        /////lpwcx: LPWNDCLASSEXW->tagWNDCLASSEXW*
+        //[DllImport("user32.dll", EntryPoint = "GetClassInfoExW", CharSet = CharSet.Ansi)]
+        //[return: MarshalAs(UnmanagedType.Bool)]
+        //public static extern bool GetClassInfoExW([In] IntPtr hInstance, [In] string lpszClass, ref Wndclassex lpwcx);
 
 
+       
 
-
-        [DllImport("user32.dll")]
+        [DllImport("user32.dll",EntryPoint ="LoadCursor",CharSet =CharSet.Auto)]
         public static extern IntPtr LoadCursor(IntPtr hInstance, int lpCursorName);
 
         /// Return Type: HANDLE->void*
@@ -210,8 +211,8 @@ namespace CoreWindowsWrapper.Api.Win32
         ///cx: int
         ///cy: int
         ///fuLoad: UINT->unsigned int
-        [DllImport("user32.dll", EntryPoint = "LoadImageW")]
-        public static extern IntPtr LoadImage([In] IntPtr hInst, [In, MarshalAs(UnmanagedType.LPWStr)] string name, uint type, int cx, int cy, uint fuLoad);
+        [DllImport("user32.dll", EntryPoint = "LoadImage",CharSet =CharSet.Auto)]
+        public static extern IntPtr LoadImage([In] IntPtr hInst, [In] string name, uint type, int cx, int cy, uint fuLoad);
 
         /// Return Type: BOOL->int
         ///hWnd: HWND->HWND__*
@@ -249,10 +250,10 @@ namespace CoreWindowsWrapper.Api.Win32
         public static extern bool EnableWindow([In] IntPtr hWnd, [MarshalAs(UnmanagedType.Bool)] bool bEnable);
 
 
-        [DllImport("user32.dll")]
+        [DllImport("user32.dll",EntryPoint ="TranslateMessage")]
         public static extern bool TranslateMessage([In] ref MSG lpMsg);
 
-        [DllImport("user32.dll", SetLastError = true)]
+        [DllImport("user32.dll",EntryPoint ="DispatchMessage",CharSet =CharSet.Auto, SetLastError = true)]
         public static extern IntPtr DispatchMessage([In] ref MSG lpmsg);
 
         //[DllImport("user32.dll", CharSet = CharSet.Auto)]
@@ -263,7 +264,7 @@ namespace CoreWindowsWrapper.Api.Win32
         //    IntPtr lParam);
 
 
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        [DllImport("user32.dll",EntryPoint = "CallWindowProc", CharSet = CharSet.Auto)]
         public static extern IntPtr CallWindowProc(
             IntPtr wndProc,
             IntPtr hWnd,
@@ -279,17 +280,17 @@ namespace CoreWindowsWrapper.Api.Win32
         /// Return Type: BOOL->int
         ///hWnd: HWND->HWND__*
         ///lpString: LPCWSTR->WCHAR*
-        [DllImport("user32.dll", EntryPoint = "SetWindowText", CharSet = CharSet.Ansi)]
+        [DllImport("user32.dll", EntryPoint = "SetWindowText", CharSet = CharSet.Auto)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool SetWindowText([In] IntPtr hWnd,
             [In] string lpString);
 
 
-        [DllImport("user32.dll")]
+        [DllImport("user32.dll",EntryPoint ="MessageBoxEx",CharSet =CharSet.Auto)]
         public static extern int MessageBoxEx(IntPtr hWnd, string lpText, string lpCaption,
             uint uType, ushort wLanguageId);
 
-        [DllImport("user32.dll", SetLastError = true)]
+        [DllImport("user32.dll",EntryPoint ="MessageBox", SetLastError = true,CharSet =CharSet.Auto)]
         public static extern uint MessageBox(IntPtr hwnd,
             string text,
             string title,
@@ -308,12 +309,12 @@ namespace CoreWindowsWrapper.Api.Win32
         ///uFlags: UINT->unsigned int
         ///uIDNewItem: UINT_PTR->unsigned int
         ///lpNewItem: LPCWSTR->WCHAR*
-        [DllImport("user32.dll", EntryPoint = "AppendMenu", CharSet = CharSet.Ansi)]
+        [DllImport("user32.dll", EntryPoint = "AppendMenu", CharSet = CharSet.Auto)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool AppendMenu([In] IntPtr hMenu, uint uFlags, uint uIDNewItem,
             [In] string lpNewItem);
 
-        [DllImport("user32.dll", EntryPoint = "AppendMenu", CharSet = CharSet.Ansi)]
+        [DllImport("user32.dll", EntryPoint = "AppendMenu", CharSet = CharSet.Auto)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool AppendMenu([In] IntPtr hMenu, IntPtr uFlags, uint uIDNewItem,
             [In] string lpNewItem);
@@ -324,15 +325,15 @@ namespace CoreWindowsWrapper.Api.Win32
         ///uFlags: UINT->unsigned int
         ///uIDNewItem: UINT_PTR->unsigned int
         ///lpNewItem: LPCWSTR->WCHAR*
-        [DllImport("user32.dll", EntryPoint = "InsertMenuW")]
+        [DllImport("user32.dll", EntryPoint = "InsertMenu",CharSet =CharSet.Auto)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool InsertMenu([In] IntPtr hMenu, uint uPosition, uint uFlags, uint uIDNewItem,
-            [In, MarshalAs(UnmanagedType.LPWStr)] string lpNewItem);
+            [In] string lpNewItem);
 
         /// Return Type: HMENU->HMENU__*
         ///lpMenuTemplate: MENUTEMPLATEW*
-        [DllImport("user32.dll", EntryPoint = "LoadMenuIndirectW")]
-        public static extern IntPtr LoadMenuIndirectW([In] IntPtr lpMenuTemplate);
+        [DllImport("user32.dll", EntryPoint = "LoadMenuIndirect",CharSet =CharSet.Auto)]
+        public static extern IntPtr LoadMenuIndirect([In] IntPtr lpMenuTemplate);
 
 
 
@@ -363,11 +364,11 @@ namespace CoreWindowsWrapper.Api.Win32
         ///uiParam: UINT->unsigned int
         ///pvParam: PVOID->void*
         ///fWinIni: UINT->unsigned int
-        [DllImport("user32.dll", EntryPoint = "SystemParametersInfo", CharSet = CharSet.Ansi)]
+        [DllImport("user32.dll", EntryPoint = "SystemParametersInfo", CharSet = CharSet.Auto)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool SystemParametersInfoW(uint uiAction, uint uiParam, IntPtr pvParam, uint fWinIni);
 
-        [DllImport("user32.dll", EntryPoint = "SystemParametersInfo", CharSet = CharSet.Ansi)]
+        [DllImport("user32.dll", EntryPoint = "SystemParametersInfo", CharSet = CharSet.Auto)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool SystemParametersInfo(uint uiAction, int uiParam, ref LogFont logFont, int fWinIni);
 
@@ -428,19 +429,23 @@ namespace CoreWindowsWrapper.Api.Win32
 
 
 
-        [DllImport("user32.dll", EntryPoint = "GetWindowLong", CharSet = CharSet.Ansi)]
+        [DllImport("user32.dll", EntryPoint = "GetWindowLong", CharSet =CharSet.Auto)]
         private static extern IntPtr GetWindowLongPtr32(IntPtr hWnd, int nIndex);
 
-        [DllImport("user32.dll", EntryPoint = "GetWindowLongPtr", CharSet = CharSet.Ansi)]
+        [DllImport("user32.dll", EntryPoint = "GetWindowLongPtr", CharSet =CharSet.Auto)]
         private static extern IntPtr GetWindowLongPtr64(IntPtr hWnd, int nIndex);
 
 
 
         public static IntPtr GetWindowLongPtr(IntPtr hWnd, int nIndex)
         {
-            return IntPtr.Size == 8 ?
-                GetWindowLongPtr64(hWnd, nIndex) :
-                GetWindowLongPtr32(hWnd, nIndex);
+            bool is64 = IntPtr.Size == 8;
+
+            if (is64)
+                return GetWindowLongPtr64(hWnd, nIndex);
+            else
+                return GetWindowLongPtr32(hWnd, nIndex);
+            
         }
 
         public static IntPtr GetWindowLongPtr(IntPtr hWnd, GWL gwl)
@@ -450,10 +455,10 @@ namespace CoreWindowsWrapper.Api.Win32
         }
 
 
-        [DllImport("user32.dll", EntryPoint = "SetWindowLong", CharSet = CharSet.Ansi)]
+        [DllImport("user32.dll", EntryPoint = "SetWindowLong", CharSet = CharSet.Auto)]
         public static extern int SetWindowLongPrt32([In] IntPtr hWnd, int nIndex, int dwNewLong);
 
-        [DllImport("user32.dll", EntryPoint = "SetWindowLongPtr", CharSet = CharSet.Ansi)]
+        [DllImport("user32.dll", EntryPoint = "SetWindowLongPtr", CharSet = CharSet.Auto)]
         private static extern IntPtr SetWindowLongPtr64(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
 
         public static IntPtr SetWindowLongPtr(IntPtr hWnd, int nIndex, IntPtr dwNewLong)
@@ -511,11 +516,11 @@ namespace CoreWindowsWrapper.Api.Win32
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         public static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wParam,
-            [MarshalAs(UnmanagedType.LPWStr)] string lParam);
+             string lParam);
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         public static extern IntPtr SendMessage(IntPtr hWnd, int msg, int wParam,
-            [MarshalAs(UnmanagedType.LPWStr)] string lParam);
+             string lParam);
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         public static extern IntPtr SendMessage(IntPtr hWnd, int msg, int wParam, ref IntPtr lParam);
@@ -749,23 +754,33 @@ namespace CoreWindowsWrapper.Api.Win32
         /// WINEVENT_INCONTEXT -> 0x0004
         private const uint WINEVENT_INCONTEXT = 0x0004;
 
-        public static bool GetClassInfoEx(IntPtr instanceHandle, string className, out Wndclassex wndclassex)
+        public static bool GetClassInfoEx(IntPtr instanceHandle, string className, out WndclassEx wndclassex)
         {
-            Wndclassex wnd = Wndclassex.Build();
+            WndclassEx wnd = new WndclassEx();
+            wnd.cbSize = Marshal.SizeOf(typeof(WndclassEx));
+            bool val = false;
+            try
+            {
+                //val = GetClassInfoExW(instanceHandle, className,ref wnd);
+            }
+            catch (Exception e)
+            {
+                Debug.Print(e.Message);
 
-            bool val = GetClassInfoExW(instanceHandle, className, ref wnd);
-            wndclassex = new Wndclassex();
+            }
+            
+            wndclassex = new WndclassEx();
             if (val)
             {
                 wndclassex.cbClsExtra = wnd.cbClsExtra;
-                wndclassex.cbSize = (int)wnd.cbSize;
+                wndclassex.cbSize = (int) wnd.cbSize;
                 wndclassex.cbWndExtra = wnd.cbWndExtra;
                 wndclassex.hbrBackground = wnd.hbrBackground;
                 wndclassex.hCursor = wnd.hCursor;
                 wndclassex.hIcon = wnd.hIcon;
                 wndclassex.hIconSm = wnd.hIconSm;
                 wndclassex.hInstance = wnd.hInstance;
-                wndclassex.lpfnWndProc = Marshal.GetFunctionPointerForDelegate(wnd.lpfnWndProc);
+                wndclassex.lpfnWndProc = wnd.lpfnWndProc;
                 wndclassex.lpszClassName = wnd.lpszClassName;
                 wndclassex.lpszMenuName = wnd.lpszMenuName;
                 wndclassex.style = wnd.style;

@@ -4,6 +4,6 @@ namespace CoreWindowsWrapper
 {
     internal interface IWindowClass
     {
-        Wndclassex WindowClass { get; set; }
+        WndclassEx WindowClass { get; set; }
     }
 }

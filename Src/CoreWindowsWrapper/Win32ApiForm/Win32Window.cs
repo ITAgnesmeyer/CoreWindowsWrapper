@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -126,7 +127,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
             this.Name = className;
             Win32Window.InstanceHandle = User32.GetWindowLongPtr(hookHandle, GWL.GWL_HINSTANCE);
-            User32.GetClassInfoEx(Win32Window.InstanceHandle, className, out Wndclassex wclass);
+            User32.GetClassInfoEx(Win32Window.InstanceHandle, className, out WndclassEx wclass);
             this.WindowClass = wclass;
 
             this.ParentHandle = User32.GetWindowLongPtr(hookHandle, GWL.GWL_HWNDPARENT);
@@ -190,9 +191,9 @@ namespace CoreWindowsWrapper.Win32ApiForm
         internal bool Create(bool asControl = false)
         {
             this.WindowClassName = this.Name + "_" + WindowList.Count;
-            Wndclassex windClass = new Wndclassex
+            WndclassEx windClass = new WndclassEx
             {
-                cbSize = Marshal.SizeOf(typeof(Wndclassex)),
+                cbSize = Marshal.SizeOf(typeof(WndclassEx)),
                 style = (int)(ClassStyles.CS_HREDRAW | ClassStyles.CS_VREDRAW | ClassStyles.CS_DBLCLKS),
                 hbrBackground = Gdi32.GetStockObject(StockObjects.WHITE_BRUSH),
                 cbClsExtra = 0,
@@ -202,7 +203,8 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 hCursor = User32.LoadCursor(IntPtr.Zero, (int)Win32ApiCursors.IDC_ARROW),
                 lpszMenuName = null,
                 lpszClassName = this.WindowClassName,
-                lpfnWndProc = Marshal.GetFunctionPointerForDelegate(this._DelegateWndProc),
+                //lpfnWndProc = Marshal.GetFunctionPointerForDelegate(this._DelegateWndProc),
+                lpfnWndProc = this._DelegateWndProc,
                 hIconSm = IntPtr.Zero
             };
             //Doubleclicks are active
@@ -240,6 +242,8 @@ namespace CoreWindowsWrapper.Win32ApiForm
             {
                 // ReSharper disable once UnusedVariable
                 uint error = Kernel32.GetLastError();
+                Win32Exception ex = new Win32Exception((int) error);
+                Debug.Print(ex.Message);
                 return false;
             }
 
@@ -273,6 +277,8 @@ namespace CoreWindowsWrapper.Win32ApiForm
             {
                 // ReSharper disable once UnusedVariable
                 uint error = Kernel32.GetLastError();
+                Win32Exception ex = new Win32Exception((int)error);
+                Debug.Print(ex.Message);
                 return false;
             }
 
@@ -789,7 +795,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
             Destroyed?.Invoke(this, e);
         }
 
-        public Wndclassex WindowClass { get; set; }
+        public WndclassEx WindowClass { get; set; }
 
         public void Dispose()
         {

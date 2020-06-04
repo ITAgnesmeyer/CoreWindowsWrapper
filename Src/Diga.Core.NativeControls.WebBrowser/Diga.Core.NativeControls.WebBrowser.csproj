@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>Diga.NativeControls.WebBrowser</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Diga.WebView2.Wrapper" Version="2.0.3" />
+    <PackageReference Include="MimeTypeExtension" Version="1.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CoreWindowsWrapper\CoreWindowsWrapper.csproj" />
+  </ItemGroup>
+
+</Project>

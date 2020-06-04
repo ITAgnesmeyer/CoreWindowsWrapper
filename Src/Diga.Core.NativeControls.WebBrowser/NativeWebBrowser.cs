@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using CoreWindowsWrapper;
 using CoreWindowsWrapper.Api.Win32;
 using Diga.WebView2.WinForms;
 using Diga.WebView2.Wrapper;
@@ -8,10 +9,8 @@ using Diga.WebView2.Wrapper.EventArguments;
 using Diga.WebView2.Wrapper.Types;
 using MimeTypeExtension;
 
-namespace CoreWindowsWrapper
+namespace Diga.NativeControls.WebBrowser
 {
-
-
     public class NativeWebBrowser : NativeControlBase
     {
         private WebView2Control _WebViewControl;
@@ -20,7 +19,7 @@ namespace CoreWindowsWrapper
         private bool _DefaultScriptDialogsEnabled = true;
         private bool _DevToolsEnabled = true;
         private bool _IsWebMessageEnabled = true;
-        private bool _IsStatusBarEnabled ;
+        private bool _IsStatusBarEnabled;
         private bool _IsScriptEnabled = true;
         private string _Url;
         public event EventHandler<NavigationStartingEventArgs> NavigationStart;
@@ -60,7 +59,7 @@ namespace CoreWindowsWrapper
         }
         public string HtmlContent
         {
-            get => _HtmlContent;
+            get => this._HtmlContent;
             set
             {
 
@@ -71,11 +70,11 @@ namespace CoreWindowsWrapper
         protected override void Initialize()
         {
             base.Initialize();
-            this.ControlType = Win32ApiForm.ControlType.Label;
+            this.ControlType = CoreWindowsWrapper.Win32ApiForm.ControlType.Label;
             this.TypeIdentifier = "static";
             this.Style = WindowStylesConst.WS_VISIBLE | WindowStylesConst.WS_CHILD | StaticControlStyles.SS_NOTIFY;
-            this.BackColor = Tools.ColorTool.White;
-            this.ForeColor = Tools.ColorTool.Black;
+            this.BackColor = CoreWindowsWrapper.Tools.ColorTool.White;
+            this.ForeColor = CoreWindowsWrapper.Tools.ColorTool.Black;
         }
 
 
@@ -94,9 +93,9 @@ namespace CoreWindowsWrapper
                 this._WebViewControl.DocumentTitleChanged += OnDocumentTitleChangedIntern;
                 this._WebViewControl.ExecuteScriptCompleted += OnExecuteScriptCompletedIntern;
                 this._WebViewControl.FrameNavigationStarting += OnFrameNavigationStartingIntern;
-                this._WebViewControl.GotFocus+=OnWebViewGotFocusIntern;
+                this._WebViewControl.GotFocus += OnWebViewGotFocusIntern;
                 this._WebViewControl.HistoryChanged += OnHistoryChangedIntern;
-                this._WebViewControl.LostFocus+=OnWebViewLostFocusIntern;
+                this._WebViewControl.LostFocus += OnWebViewLostFocusIntern;
                 this._WebViewControl.MoveFocusRequested += OnMoveFocusRequestedIntern;
                 this._WebViewControl.NavigateStart += OnNavigateStartIntern;
                 this._WebViewControl.NavigationCompleted += OnNavigationCompletedIntern;
@@ -255,7 +254,7 @@ namespace CoreWindowsWrapper
                 this.Navigate(this.Url);
             if (!string.IsNullOrEmpty(this._HtmlContent))
                 this.NavigateToString(this._HtmlContent);
-            
+
             OnWebViewCreated();
         }
 
@@ -270,7 +269,7 @@ namespace CoreWindowsWrapper
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show(this.Handle, e.Message, "Navigation Error!",MessageBoxOptions.OkOnly | MessageBoxOptions.IconError);
+                    MessageBox.Show(this.Handle, e.Message, "Navigation Error!", MessageBoxOptions.OkOnly | MessageBoxOptions.IconError);
 
                 }
 
@@ -280,12 +279,12 @@ namespace CoreWindowsWrapper
 
         public void NavigateToString(string htmlContent)
         {
-            _HtmlContent = htmlContent;
+            this._HtmlContent = htmlContent;
             if (this.IsCreated && !string.IsNullOrEmpty(this._HtmlContent))
             {
                 try
                 {
-                    this._WebViewControl.NavigateToString(_HtmlContent);
+                    this._WebViewControl.NavigateToString(this._HtmlContent);
                 }
                 catch (Exception e)
                 {
@@ -395,10 +394,10 @@ namespace CoreWindowsWrapper
 
         public bool IsWebMessageEnabled
         {
-            get => _IsWebMessageEnabled;
+            get => this._IsWebMessageEnabled;
             set
             {
-                _IsWebMessageEnabled = value;
+                this._IsWebMessageEnabled = value;
                 if (this.IsCreated)
                 {
                     this._WebViewControl.Settings.IsWebMessageEnabled = new CBOOL(value);
@@ -406,14 +405,14 @@ namespace CoreWindowsWrapper
             }
         }
 
-       
+
 
         public bool IsStatusBarEnabled
         {
-            get => _IsStatusBarEnabled;
+            get => this._IsStatusBarEnabled;
             set
             {
-                _IsStatusBarEnabled = value;
+                this._IsStatusBarEnabled = value;
                 if (this.IsCreated)
                 {
                     this._WebViewControl.Settings.IsStatusBarEnabled = new CBOOL(value);
@@ -423,10 +422,10 @@ namespace CoreWindowsWrapper
 
         public bool IsScriptEnabled
         {
-            get => _IsScriptEnabled;
+            get => this._IsScriptEnabled;
             set
             {
-                _IsScriptEnabled = value;
+                this._IsScriptEnabled = value;
                 if (this.IsCreated)
                 {
                     this._WebViewControl.Settings.IsScriptEnabled = new CBOOL(value);
@@ -437,10 +436,10 @@ namespace CoreWindowsWrapper
 
         public bool DevToolsEnabled
         {
-            get => _DevToolsEnabled;
+            get => this._DevToolsEnabled;
             set
             {
-                _DevToolsEnabled = value;
+                this._DevToolsEnabled = value;
                 if (this.IsCreated)
                 {
                     this._WebViewControl.Settings.AreDevToolsEnabled = new CBOOL(value);
@@ -450,10 +449,10 @@ namespace CoreWindowsWrapper
 
         public bool DefaultScriptDialogsEnabled
         {
-            get => _DefaultScriptDialogsEnabled;
+            get => this._DefaultScriptDialogsEnabled;
             set
             {
-                _DefaultScriptDialogsEnabled = value;
+                this._DefaultScriptDialogsEnabled = value;
                 if (this.IsCreated)
                 {
                     this._WebViewControl.Settings.AreDefaultScriptDialogsEnabled = new CBOOL(value);
@@ -463,10 +462,10 @@ namespace CoreWindowsWrapper
 
         public bool DefaultContextMenusEnabled
         {
-            get => _DefaultContextMenusEnabled;
+            get => this._DefaultContextMenusEnabled;
             set
             {
-                _DefaultContextMenusEnabled = value;
+                this._DefaultContextMenusEnabled = value;
                 if (this.IsCreated)
                 {
                     this._WebViewControl.Settings.AreDefaultContextMenusEnabled = new CBOOL(value);
@@ -501,7 +500,7 @@ namespace CoreWindowsWrapper
 
         protected virtual void OnWebResourceRequested(WebResourceRequestedEventArgs e)
         {
-            if(this.EnableMonitoring)
+            if (this.EnableMonitoring)
             {
                 if (GetFileStream(e.Request.Uri, out var responseInfo))
                 {

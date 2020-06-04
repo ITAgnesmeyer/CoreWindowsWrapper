@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using CoreWindowsWrapper;
+using Diga.NativeControls.WebBrowser;
 using Diga.WebView2.Wrapper.EventArguments;
 
 namespace ConsoleCaller

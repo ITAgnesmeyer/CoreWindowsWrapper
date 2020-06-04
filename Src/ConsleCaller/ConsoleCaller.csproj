@@ -29,6 +29,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CoreWindowsWrapper\CoreWindowsWrapper.csproj" />
+    <ProjectReference Include="..\Diga.Core.NativeControls.WebBrowser\Diga.Core.NativeControls.WebBrowser.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -48,6 +49,12 @@
 
   <ItemGroup>
     <Folder Include="Properties\PublishProfiles\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Skype.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

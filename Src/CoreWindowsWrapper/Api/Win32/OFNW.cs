@@ -1,6 +1,6 @@
 ﻿// ReSharper disable InconsistentNaming
 // ReSharper disable UnusedMember.Local
-
+using System;
 using System.Runtime.InteropServices;
 
 namespace CoreWindowsWrapper.Api.Win32
@@ -11,26 +11,26 @@ namespace CoreWindowsWrapper.Api.Win32
     ///param2: WPARAM->UINT_PTR->unsigned int
     ///param3: LPARAM->LONG_PTR->int
     [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-    public delegate uint LPOFNHOOKPROC(System.IntPtr param0, uint param1, System.IntPtr param2, System.IntPtr param3);
+    public delegate uint LPOFNHOOKPROC(IntPtr param0, uint param1, IntPtr param2, IntPtr param3);
 
 
-    [StructLayout(LayoutKind.Sequential)]
+    [StructLayout(LayoutKind.Sequential,CharSet =CharSet.Auto)]
     public struct OFNW
     {
         /// DWORD->unsigned int
         public uint lStructSize;
 
         /// HWND->HWND__*
-        public System.IntPtr hwndOwner;
+        public IntPtr hwndOwner;
 
         /// HINSTANCE->HINSTANCE__*
-        public System.IntPtr hInstance;
+        public IntPtr hInstance;
 
         /// LPCWSTR->WCHAR*
-        [MarshalAs(UnmanagedType.LPWStr)] public string lpstrFilter;
+        public string lpstrFilter;
 
         /// LPWSTR->WCHAR*
-        [MarshalAs(UnmanagedType.LPWStr)] public string lpstrCustomFilter;
+        public string lpstrCustomFilter;
 
         /// DWORD->unsigned int
         public uint nMaxCustFilter;
@@ -39,22 +39,22 @@ namespace CoreWindowsWrapper.Api.Win32
         public uint nFilterIndex;
 
         /// LPWSTR->WCHAR*
-        [MarshalAs(UnmanagedType.LPWStr)] public string lpstrFile;
+        public string lpstrFile;
 
         /// DWORD->unsigned int
         public uint nMaxFile;
 
         /// LPWSTR->WCHAR*
-        [MarshalAs(UnmanagedType.LPWStr)] public string lpstrFileTitle;
+        public string lpstrFileTitle;
 
         /// DWORD->unsigned int
         public uint nMaxFileTitle;
 
         /// LPCWSTR->WCHAR*
-        [MarshalAs(UnmanagedType.LPWStr)] public string lpstrInitialDir;
+        public string lpstrInitialDir;
 
         /// LPCWSTR->WCHAR*
-        [MarshalAs(UnmanagedType.LPWStr)] public string lpstrTitle;
+        public string lpstrTitle;
 
         /// DWORD->unsigned int
         public uint Flags;
@@ -66,7 +66,7 @@ namespace CoreWindowsWrapper.Api.Win32
         public ushort nFileExtension;
 
         /// LPCWSTR->WCHAR*
-        [MarshalAs(UnmanagedType.LPWStr)] public string lpstrDefExt;
+        public string lpstrDefExt;
 
         /// LPARAM->LONG_PTR->int
         public int lCustData;
@@ -75,10 +75,10 @@ namespace CoreWindowsWrapper.Api.Win32
         public LPOFNHOOKPROC lpfnHook;
 
         /// LPCWSTR->WCHAR*
-        [MarshalAs(UnmanagedType.LPWStr)] public string lpTemplateName;
+        public string lpTemplateName;
 
         /// void*
-        public System.IntPtr pvReserved;
+        public IntPtr pvReserved;
 
         /// DWORD->unsigned int
         public uint dwReserved;
