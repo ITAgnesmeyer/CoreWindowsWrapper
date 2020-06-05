@@ -137,6 +137,12 @@
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\ListBoxMessages.cs">
       <Link>Api\Win32\ListBoxMessages.cs</Link>
     </Compile>
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\ListBoxNotify.cs">
+      <Link>Api\Win32\ListBoxNotify.cs</Link>
+    </Compile>
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\ListBoxStyle.cs">
+      <Link>Api\Win32\ListBoxStyle.cs</Link>
+    </Compile>
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\LITEM.cs">
       <Link>Api\Win32\LITEM.cs</Link>
     </Compile>

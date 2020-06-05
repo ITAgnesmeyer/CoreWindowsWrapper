@@ -156,7 +156,10 @@ namespace ConsoleCaller
             this._ListBox.BackColor = ColorTool.Yellow;
             this._ListBox.ForeColor = ColorTool.Read;
             this._ListBox.Font = new Font() { Name = "Arial", Size = 16 };
-
+            this._ListBox.MultiSelect = true;
+            this._ListBox.DblClicked+=ListBox_DblClicked;
+            
+            this._ListBox.SelChange+=ListBox_SelChange;
 
             this._ProgressBar = new NativeProgress
             {
@@ -186,6 +189,34 @@ namespace ConsoleCaller
             Click += Window1_Click;
             DoubleClick += Window1_DblClick;
             Create += Window1_Create;
+        }
+
+        private void ListBox_SelChange(object sender, EventArgs e)
+        {
+            int selCount = this._ListBox.GetSelCount();
+            this._TextBox2.Text = selCount.ToString();
+            int currSel = this._ListBox.CurrentSelected();
+            string text = this._ListBox.GetItemText(currSel);
+            this._TextBox2.Text = this._TextBox2.Text + ";" + text;
+        }
+
+        private void ListBox_DblClicked(object sender, EventArgs e)
+        {
+            int value = this._ListBox.CurrentSelected();
+      
+            bool isSelected = this._ListBox.IsItemSelected(value);
+
+            MessageBox.Show("Listbox selected=>" + isSelected);
+
+            value += 1;
+            try
+            {
+                this._ListBox.SetCurrentSelected(value);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show("Error=>" + exception.Message);
+            }
         }
 
         private void ComboBox_SelChange(object sender, NativeComboBoxSelChangeEventArgs e)

@@ -538,6 +538,9 @@ namespace CoreWindowsWrapper.Win32ApiForm
                     break;
                 case WindowsMessages.WM_COMMAND:
                     int controlId = Win32Api.LoWord(wParam.ToInt32());
+                    int cmdInt = Win32Api.HiWord(wParam.ToInt32());
+                    if (cmdInt <= 0)
+                        Debug.Print($"ControlId({controlId}) command-int({cmdInt})");
                     uint command = (uint) Win32Api.HiWord(wParam.ToInt32());
                     IntPtr hWndControl = lParam;
                     if (window.Controls.ContainsKey(controlId))
