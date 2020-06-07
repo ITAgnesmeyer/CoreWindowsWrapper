@@ -18,6 +18,10 @@ namespace CoreWindowsWrapper.Api.Win32
         [DllImport(GDI32, EntryPoint="AddFontResourceEx",CharSet =CHARSET)]
         public static extern  int AddFontResourceEx([In]  string name, uint fl, IntPtr res) ;
 
+        [DllImportAttribute(GDI32, EntryPoint="DeleteObject")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern  bool DeleteObject([In] IntPtr ho) ;
+
 
         [DllImport(GDI32, EntryPoint = "GetDeviceCaps")]
         public static extern int GetDeviceCaps([In] IntPtr hdc, int index);

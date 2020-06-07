@@ -103,6 +103,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
         }
 
         private static IntPtr _lastMessageReturn = IntPtr.Zero;
+        private static bool _lastMessageResultWasGdi = false;
         private readonly WndProc _DelegateWndProc = WndProc;
         private readonly WndProc _HookWndProc = HookWndProc;
         private readonly IntPtr _OrgWndProc = IntPtr.Zero;
@@ -507,6 +508,11 @@ namespace CoreWindowsWrapper.Win32ApiForm
         private static bool InvokeEvent(uint eventType, IntPtr hWnd, IntPtr wParam, IntPtr lParam)
         {
             bool handled = true;
+            if (_lastMessageResultWasGdi)
+            {
+                Gdi32.DeleteObject(_lastMessageReturn);
+            }
+            _lastMessageResultWasGdi = false;
             _lastMessageReturn = IntPtr.Zero;
             Win32Window window;
             if (eventType == WindowsMessages.WM_CREATE)
@@ -622,6 +628,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
                     IntPtr hdc = User32.BeginPaint(hWnd, out ps);
                     window.OnPaint(hWnd, ps);
                     User32.EndPaint(hWnd, ref ps);
+                    User32.ReleaseDC(hWnd, hdc);
                     break;
                 case WindowsMessages.WM_LBUTTONDBLCLK:
                     window.OnDoubleClick(new MouseClickEventArgs(MouseButton.Left, hWnd));
@@ -711,9 +718,11 @@ namespace CoreWindowsWrapper.Win32ApiForm
         {
             IntPtr editCtlHdc = wParam;
             int editControlId = User32.GetDlgCtrlID(lParam);
+            _lastMessageResultWasGdi = true;
             _lastMessageReturn = Gdi32.CreateSolidBrush(Tools.ColorTool.White);
             if (window.Controls.ContainsKey(editControlId))
             {
+
                 IControl control = window.Controls[editControlId];
 
                 if (control.ControlType == ControlType.ComboBox)
@@ -736,8 +745,10 @@ namespace CoreWindowsWrapper.Win32ApiForm
                     Gdi32.SetBkColor(editCtlHdc, control.BackColor);
                 }
 
+                Gdi32.DeleteObject(_lastMessageReturn);
                 IntPtr brush = Gdi32.CreateSolidBrush(control.BackColor);
                 _lastMessageReturn = brush;
+
             }
         }
 
