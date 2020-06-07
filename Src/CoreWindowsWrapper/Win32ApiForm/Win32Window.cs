@@ -22,9 +22,11 @@ namespace CoreWindowsWrapper.Win32ApiForm
         public event EventHandler<MouseClickEventArgs> MouseUp;
         public event EventHandler<CreateEventArgs> Destroyed;
         public event EventHandler<SizeEventArgs> Size;
+        public event EventHandler<PaintEventArgs> Paint;
 
         internal static readonly Dictionary<IntPtr, Win32Window> WindowList = new Dictionary<IntPtr, Win32Window>();
         private static readonly Stack<Win32Window> WindowStack = new Stack<Win32Window>();
+        private static readonly Stack<IntPtr> GdiObjects = new Stack<IntPtr>();
         private static IntPtr InstanceHandle { get; set; } = IntPtr.Zero;
         public ControlCollection Controls { get; private set; }
         private readonly MenuItemCollection _FlatMenuItems;
@@ -103,7 +105,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
         }
 
         private static IntPtr _lastMessageReturn = IntPtr.Zero;
-        private static bool _lastMessageResultWasGdi = false;
+      
         private readonly WndProc _DelegateWndProc = WndProc;
         private readonly WndProc _HookWndProc = HookWndProc;
         private readonly IntPtr _OrgWndProc = IntPtr.Zero;
@@ -415,6 +417,9 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
         private static IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
         {
+            
+           
+
             switch (msg)
             {
                 case WindowsMessages.WM_CLOSE:
@@ -508,11 +513,13 @@ namespace CoreWindowsWrapper.Win32ApiForm
         private static bool InvokeEvent(uint eventType, IntPtr hWnd, IntPtr wParam, IntPtr lParam)
         {
             bool handled = true;
-            if (_lastMessageResultWasGdi)
+            while(GdiObjects.Count > 0)
             {
-                Gdi32.DeleteObject(_lastMessageReturn);
+                IntPtr gdiObj = GdiObjects.Pop();
+                Gdi32.DeleteObject(gdiObj);
             }
-            _lastMessageResultWasGdi = false;
+
+
             _lastMessageReturn = IntPtr.Zero;
             Win32Window window;
             if (eventType == WindowsMessages.WM_CREATE)
@@ -718,7 +725,6 @@ namespace CoreWindowsWrapper.Win32ApiForm
         {
             IntPtr editCtlHdc = wParam;
             int editControlId = User32.GetDlgCtrlID(lParam);
-            _lastMessageResultWasGdi = true;
             _lastMessageReturn = Gdi32.CreateSolidBrush(Tools.ColorTool.White);
             if (window.Controls.ContainsKey(editControlId))
             {
@@ -748,8 +754,9 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 Gdi32.DeleteObject(_lastMessageReturn);
                 IntPtr brush = Gdi32.CreateSolidBrush(control.BackColor);
                 _lastMessageReturn = brush;
-
             }
+
+            GdiObjects.Push(_lastMessageReturn);
         }
 
 
@@ -757,6 +764,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
         private void OnPaint(IntPtr hWnd, PaintStruct ps)
         {
             //Do Something?
+            OnPaint(new PaintEventArgs(new PaintObject(ps)));
         }
 
         private void OnCreate()
@@ -850,6 +858,11 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 User32.SetMenu(this.Handle, hMenu);
                 FillFlatMenuItemList(this.Menu);
             }
+        }
+
+        private void OnPaint(PaintEventArgs e)
+        {
+            Paint?.Invoke(this, e);
         }
     }
 }

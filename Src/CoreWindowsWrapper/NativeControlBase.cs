@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using CoreWindowsWrapper.Api.Win32;
 using CoreWindowsWrapper.Win32ApiForm;

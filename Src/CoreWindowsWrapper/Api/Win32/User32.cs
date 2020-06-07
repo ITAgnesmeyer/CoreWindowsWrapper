@@ -260,15 +260,10 @@ namespace CoreWindowsWrapper.Api.Win32
         public static extern IntPtr GetDC(IntPtr hWnd);
 
         [DllImport(USER32, EntryPoint = "ReleaseDC", SetLastError = true)]
-        public static extern int ReleaseDC(IntPtr hWnd, IntPtr hDC);
+        public static extern int ReleaseDC(IntPtr hWnd, IntPtr hDc);
 
         [DllImport(USER32)]
         public static extern int GetDlgCtrlID(IntPtr hwndCtl);
-
-
-
-
-
 
         public static void SetWindowTextsRaw(IntPtr hWnd, string text)
         {

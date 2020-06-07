@@ -273,8 +273,15 @@ namespace CoreWindowsWrapper
             this._Window.MouseDown += OnFormMouseDown;
             this._Window.MouseUp += OnFormMouseUp;
             this._Window.Size += OnFormSize;
+            this._Window.Paint += OnPaint;
 
         }
+
+        private void OnPaint(object sender, PaintEventArgs e)
+        {
+            
+        }
+
         private void InitDefaults()
         {
             this.StartUpPosition = WindowsStartupPosition.Normal;
