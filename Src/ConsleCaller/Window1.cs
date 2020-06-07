@@ -211,7 +211,7 @@ namespace ConsoleCaller
             value += 1;
             try
             {
-                this._ListBox.SetCurrentSelected(value);
+                this._ListBox.SetSelectionRange(value - 2,value);
             }
             catch (Exception exception)
             {
@@ -227,12 +227,20 @@ namespace ConsoleCaller
 
         private void Timer_OnTick(object sender, EventArgs e)
         {
-            this._Label1.Text = DateTime.Now.ToString(CultureInfo.InvariantCulture);
-            int value = this._ProgressBar.Value;
-            value += 1;
-            if (value > 100)
-                value = 1;
-            this._ProgressBar.Value = value;
+            try
+            {
+                this._Label1.Text = DateTime.Now.ToString(CultureInfo.InvariantCulture);
+                int value = this._ProgressBar.Value;
+                value += 1;
+                if (value > 100)
+                    value = 1;
+                this._ProgressBar.Value = value;
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show("Timer Proc Error=>" + exception.Message);
+            }
+
         }
 
         private void Label1_Click(object sender, EventArgs e)

@@ -33,6 +33,13 @@ namespace CoreWindowsWrapper.Api.Win32
         [DllImport(USER32, EntryPoint = "DestroyWindow", SetLastError = true)]
         public static extern bool DestroyWindow(IntPtr hWnd);
 
+
+        [DllImport(USER32, EntryPoint="DestroyMenu")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern  bool DestroyMenu([In] IntPtr hMenu) ;
+
+
+
         [DllImport(USER32, EntryPoint = "AppendMenu", CharSet = CHARSET)]
         private static extern bool AppendMenu(IntPtr hMenu, MenuFlags uFlags, uint uIdNewItem, string lpNewItem);
 

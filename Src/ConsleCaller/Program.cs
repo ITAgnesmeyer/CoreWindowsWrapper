@@ -1,10 +1,11 @@
 ﻿using CoreWindowsWrapper;
+using System;
 
 namespace ConsoleCaller
 {
     class Program
     {
-       
+       [STAThread]
         public static int Main(string[] args)
         {
             Window1 nw = new Window1();

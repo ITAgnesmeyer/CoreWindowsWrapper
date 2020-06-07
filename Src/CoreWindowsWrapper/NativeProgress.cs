@@ -33,14 +33,14 @@ namespace CoreWindowsWrapper
 
 
 
-                    this._MaxValue = Win32Api.LoWord(hiLow.iHigh);
+                    this._MaxValue = Win32Api.LoWord((int)hiLow.iHigh);
                     return this._MaxValue;
                 }
             }
             set
             {
                 this._MaxValue = value;
-                HighLow hiLow = new HighLow {iHigh = this.MaxValue, iLow = 0};
+                HighLow hiLow = new HighLow {iHigh =this.MaxValue, iLow = 0};
                 User32.SendMessage(this.Handle, (int) ProgressBarMessages.PBM_SETRANGE, 0, hiLow);
 
             }

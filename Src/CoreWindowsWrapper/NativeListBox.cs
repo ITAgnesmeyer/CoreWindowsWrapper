@@ -52,11 +52,40 @@ namespace CoreWindowsWrapper
             return index;
         }
 
+        public void SetSelectionRange(int firstIndex, int lastIndex)
+        {
+            if (this.MultiSelect)
+            {
+                IntPtr retVal = User32.SendMessage(this.Handle, ListBoxMessages.LB_SELITEMRANGEEX , firstIndex,lastIndex);
+                if (retVal.ToInt32() == ListBoxMessages.LB_ERR)
+                    throw new Exception("Cannot select the Index");
+            }
+            else
+            {
+                IntPtr retVal = User32.SendMessage(this.Handle, ListBoxMessages.LB_SETCURSEL, lastIndex, 0);
+                if (retVal.ToInt32() == ListBoxMessages.LB_ERR)
+                    throw new Exception("Cannot select the Index");
+            }
+        }
         public void SetCurrentSelected(int index)
         {
-            IntPtr retVal = User32.SendMessage(this.Handle, ListBoxMessages.LB_SETCURSEL, index, IntPtr.Zero);
-            if (retVal.ToInt32() == ListBoxMessages.LB_ERR)
-                throw new Exception("Cannot select the Index");
+            if (this.MultiSelect)
+            {
+                IntPtr retVal = User32.SendMessage(this.Handle, ListBoxMessages.LB_SELITEMRANGEEX , index-1,index);
+                if (retVal.ToInt32() == ListBoxMessages.LB_ERR)
+                    throw new Exception("Cannot select the Index");
+                retVal = User32.SendMessage(this.Handle, ListBoxMessages.LB_SELITEMRANGEEX, index - 1, index - 1);
+                if (retVal.ToInt32() == ListBoxMessages.LB_ERR)
+                    throw new Exception("Cannot select the Index");
+                
+            }
+            else
+            {
+                IntPtr retVal = User32.SendMessage(this.Handle, ListBoxMessages.LB_SETCURSEL, index, 0);
+                if (retVal.ToInt32() == ListBoxMessages.LB_ERR)
+                    throw new Exception("Cannot select the Index");
+
+            }
         }
         public string GetItemText(int index)
         {

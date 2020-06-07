@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using CoreWindowsWrapper.Api.Win32;
 
@@ -78,6 +79,15 @@ namespace CoreWindowsWrapper
         public virtual void Destroy()
         {
            //
+           bool retVAl = User32.DestroyMenu(this.Handle);
+           if (retVAl == false)
+           {
+               Debug.Print("Menu destroy=> false");
+           }
+           else
+           {
+               Debug.Print("Menu destroy=>OK");
+           }
         }
     }
 }

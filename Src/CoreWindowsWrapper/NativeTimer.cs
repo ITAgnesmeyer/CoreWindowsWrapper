@@ -30,7 +30,7 @@ namespace CoreWindowsWrapper
         protected virtual void OnTick()
         {
             //this.Tick?.Invoke(this,new EventArgs());
-            SafeInvokeAsync(this.Tick, EventArgs.Empty);
+            SafeInvoke(this.Tick, EventArgs.Empty);
         }
 
         public void StopTimer()

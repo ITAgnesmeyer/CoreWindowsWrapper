@@ -356,20 +356,37 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
         public void Dispatch()
         {
+            
             lock (this)
             {
-                while (User32.GetMessage(out var msg, IntPtr.Zero, 0, 0) != 0)
+                int br = 0;
+                while ((br = User32.GetMessage(out var msg, IntPtr.Zero, 0, 0)) != 0)
                 {
-                    User32.TranslateMessage(ref msg);
+                    
                     try
                     {
-                        User32.DispatchMessage(ref msg);
+                        if (br == -1)
+                        {
+                            // handle the error and possibly exit
+                            Debug.Print("GetMessage returns -1");
+                        }
+                        else
+                        {
+                            User32.TranslateMessage(ref msg);
+                            User32.DispatchMessage(ref msg);    
+                        }
+                        
+                    }
+#pragma warning disable 618
+                    catch (ExecutionEngineException e)
+#pragma warning restore 618
+                    {
+                        Console.WriteLine(e.StackTrace);
                     }
                     catch (Exception e)
                     {
                         Console.WriteLine(e.StackTrace);
                     }
-
                     if (WindowList.Count == 0) break;
                 }
             }
@@ -453,6 +470,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 item.Value.Destroy();
             }
 
+            this.Menu?.Destroy();
             User32.DestroyWindow(this.Handle);
             if (User32.UnregisterClass(this.WindowClassName, Process.GetCurrentProcess().Handle))
                 Debug.WriteLine("Windows unreigistered!:" + this.WindowClassName);
