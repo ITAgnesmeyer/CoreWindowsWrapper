@@ -11,6 +11,14 @@ namespace CoreWindowsWrapper.Api.Win32
         private const string GDI32 = "gdi32.dll";
         private const CharSet CHARSET = CharSet.Auto;
 
+
+        [DllImport(GDI32, EntryPoint="AddFontResource",CharSet =CHARSET)]
+        public static extern  int AddFontResource([In] string param0) ;
+
+        [DllImport(GDI32, EntryPoint="AddFontResourceEx",CharSet =CHARSET)]
+        public static extern  int AddFontResourceEx([In]  string name, uint fl, IntPtr res) ;
+
+
         [DllImport(GDI32, EntryPoint = "GetDeviceCaps")]
         public static extern int GetDeviceCaps([In] IntPtr hdc, int index);
 
@@ -40,6 +48,12 @@ namespace CoreWindowsWrapper.Api.Win32
 
         [DllImport(GDI32, EntryPoint = "GetStockObject", SetLastError = true)]
         public static extern IntPtr GetStockObject(StockObjects fnObject);
+
+        [DllImport("gdi32.dll", EntryPoint="RemoveFontResourceEx",CharSet =CharSet.Auto)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern  bool RemoveFontResourceEx([In]  string name, uint fl, IntPtr pdv) ;
+
+
 
         public static int RGB(int r, int g, int b) => checked(checked(checked(b * 65536) + checked(g * 256)) + r);
     }

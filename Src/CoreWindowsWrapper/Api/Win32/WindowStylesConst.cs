@@ -43,9 +43,9 @@ namespace CoreWindowsWrapper.Api.Win32
                          WS_MAXIMIZEBOX);
 
                 public const uint WS_POPUPWINDOW =
-                        (WS_POPUP |
-                         WS_BORDER |
-                         WS_SYSMENU);
+                    WS_POPUP |
+                    WS_BORDER |
+                    WS_SYSMENU;
 
                 public const uint WS_CHILDWINDOW = WS_CHILD;
 

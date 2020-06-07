@@ -155,6 +155,9 @@
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\LpOfNHookProc.cs">
       <Link>Api\Win32\LpOfNHookProc.cs</Link>
     </Compile>
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\MEMORY_RESOURCE_NOTIFICATION_TYPE.cs">
+      <Link>Api\Win32\MEMORY_RESOURCE_NOTIFICATION_TYPE.cs</Link>
+    </Compile>
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\MenuFlags.cs">
       <Link>Api\Win32\MenuFlags.cs</Link>
     </Compile>
@@ -286,6 +289,9 @@
     </Compile>
     <Compile Include="..\CoreWindowsWrapper\IWindowClass.cs">
       <Link>IWindowClass.cs</Link>
+    </Compile>
+    <Compile Include="..\CoreWindowsWrapper\MenuItemCollection.cs">
+      <Link>MenuItemCollection.cs</Link>
     </Compile>
     <Compile Include="..\CoreWindowsWrapper\MessageBox.cs">
       <Link>MessageBox.cs</Link>

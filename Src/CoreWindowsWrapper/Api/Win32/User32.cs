@@ -586,5 +586,10 @@ namespace CoreWindowsWrapper.Api.Win32
 
             return val;
         }
+
+
+        [DllImport(USER32, EntryPoint="GetGuiResources")]
+        public static extern  uint GetGuiResources([In] IntPtr hProcess, uint uiFlags) ;
+
     }
 }

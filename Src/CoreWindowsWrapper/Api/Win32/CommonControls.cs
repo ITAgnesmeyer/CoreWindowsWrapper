@@ -2,7 +2,7 @@
 
 namespace CoreWindowsWrapper.Api.Win32
 {
-    /// <inheritdoc />
+   
     internal enum CommonControls : uint
     {
         ICC_UNDEFINED = 0,
