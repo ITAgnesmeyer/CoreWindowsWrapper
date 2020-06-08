@@ -1,6 +1,4 @@
 ﻿using System.Diagnostics;
-using System.IO;
-using System.Reflection;
 using CoreWindowsWrapper;
 using Diga.NativeControls.WebBrowser;
 using Diga.WebView2.Wrapper.EventArguments;
@@ -15,7 +13,7 @@ namespace ConsoleCaller
             this.Text = "WebBrowser";
             this.Name = "BrowserWindow";
             this.StatusBar = true;
-            this.IconFile = "Firmen_Emblem.ico";
+            this.IconFile = "Browser.ico";
             this.Width = 600;
             this.Height = 400;
             
