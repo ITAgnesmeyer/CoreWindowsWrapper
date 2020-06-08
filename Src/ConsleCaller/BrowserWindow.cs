@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics;
+using System.IO;
+using System.Reflection;
 using CoreWindowsWrapper;
 using Diga.NativeControls.WebBrowser;
 using Diga.WebView2.Wrapper.EventArguments;
@@ -16,6 +18,8 @@ namespace ConsoleCaller
             this.IconFile = "Firmen_Emblem.ico";
             this.Width = 600;
             this.Height = 400;
+            
+            
             this._Browser = new NativeWebBrowser()
             {
                 Width = this.Width,
@@ -25,7 +29,7 @@ namespace ConsoleCaller
                 DefaultContextMenusEnabled = false,
                 DevToolsEnabled = false,
                 EnableMonitoring = true,
-                MonitoringFolder = "C:\\test_exe\\wwwroot",
+                MonitoringFolder = ".\\wwwroot",
                 MonitoringUrl = "http://localhost:1/"
             };
             this._Browser.DocumentTitleChanged += OnDocumentTitleChanged;

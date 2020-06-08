@@ -5,62 +5,62 @@ namespace CoreWindowsWrapper
 {
     public class OpenFileDialog
     {
-        private OfNw _OFNW;
+        private OfNw _OfNw;
 
         public OpenFileDialog()
         {
-            this._OFNW = new OfNw {hInstance = Process.GetCurrentProcess().Handle};
-            this._OFNW.lStructSize = (uint) Marshal.SizeOf(this._OFNW);
-            this._OFNW.lpstrFilter = "All Files\0*.*\0";
-            this._OFNW.lpstrFile = new string(new char[257]);
-            this._OFNW.nMaxFile = (uint) this._OFNW.lpstrFile.Length;
-            this._OFNW.lpstrFileTitle = new string(new char[65]);
-            this._OFNW.nMaxFileTitle = (uint) this._OFNW.lpstrFileTitle.Length;
-            this._OFNW.lpstrInitialDir = "C:\\";
-            this._OFNW.lpstrTitle = "Open File...";
-            this._OFNW.lpstrDefExt = "*";
+            this._OfNw = new OfNw {hInstance = Process.GetCurrentProcess().Handle};
+            this._OfNw.lStructSize = (uint) Marshal.SizeOf(this._OfNw);
+            this._OfNw.lpstrFilter = "All Files\0*.*\0";
+            this._OfNw.lpstrFile = new string(new char[257]);
+            this._OfNw.nMaxFile = (uint) this._OfNw.lpstrFile.Length;
+            this._OfNw.lpstrFileTitle = new string(new char[65]);
+            this._OfNw.nMaxFileTitle = (uint) this._OfNw.lpstrFileTitle.Length;
+            this._OfNw.lpstrInitialDir = "C:\\";
+            this._OfNw.lpstrTitle = "Open File...";
+            this._OfNw.lpstrDefExt = "*";
             
         }
 
         public bool Show(IControl parent = null)
         {
             if (parent != null)
-                this._OFNW.hwndOwner = parent.Handle;
-            return ComDlg32.GetOpenFileName(ref this._OFNW);
+                this._OfNw.hwndOwner = parent.Handle;
+            return ComDlg32.GetOpenFileName(ref this._OfNw);
            
         }
 
         public int DefaultFilterIndex
         {
-            get => (int)this._OFNW.nFilterIndex;
-            set => this._OFNW.nFilterIndex = (uint)value;
+            get => (int)this._OfNw.nFilterIndex;
+            set => this._OfNw.nFilterIndex = (uint)value;
         }
         public string File
         {
-            get => this._OFNW.lpstrFile;
+            get => this._OfNw.lpstrFile;
         }
 
         public string InitialDir
         {
-            get => this._OFNW.lpstrInitialDir;
-            set => this._OFNW.lpstrInitialDir = value;
+            get => this._OfNw.lpstrInitialDir;
+            set => this._OfNw.lpstrInitialDir = value;
         }
 
         public string DefaultExtension
         {
-            get => this._OFNW.lpstrDefExt;
-            set => this._OFNW.lpstrDefExt = value;
+            get => this._OfNw.lpstrDefExt;
+            set => this._OfNw.lpstrDefExt = value;
         }
         public string Title
         {
-            get => this._OFNW.lpstrTitle;
-            set => this._OFNW.lpstrTitle = value;
+            get => this._OfNw.lpstrTitle;
+            set => this._OfNw.lpstrTitle = value;
         }
 
         public string Filter
         {
-            get => this._OFNW.lpstrFilter;
-            set => this._OFNW.lpstrFilter = value;
+            get => this._OfNw.lpstrFilter;
+            set => this._OfNw.lpstrFilter = value;
         }
 
 
