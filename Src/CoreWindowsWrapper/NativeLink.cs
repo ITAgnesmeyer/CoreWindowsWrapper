@@ -1,12 +1,12 @@
-﻿using System;
+﻿using CoreWindowsWrapper.Api.Win32;
+using System;
 using System.Runtime.InteropServices;
 
 namespace CoreWindowsWrapper
 {
     public class NativeLink : NativeControlBase
     {
-        private const uint NM_FIRST = unchecked(0U - 0U);
-        private const uint NM_CLICK = unchecked(NM_FIRST - 2);
+      
         public event EventHandler<NativeLinkClickEventArgs> LinkClicked;
         protected override void Initialize()
         {
@@ -23,7 +23,7 @@ namespace CoreWindowsWrapper
             bool handled = false;
             switch (command)
             {
-                case NM_CLICK:
+                case NotifyMessageConst.NM_CLICK:
                     Api.Win32.NmlInk link = Marshal.PtrToStructure<Api.Win32.NmlInk>(lParam);
                     if (link != null)
                     {

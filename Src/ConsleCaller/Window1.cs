@@ -34,7 +34,7 @@ namespace ConsoleCaller
             //this.Top = 100;
             this.Width = 600;
             this.Height = 400;
-
+            
             this._ControlTest = new ControlTest();
             this._ControlTest.Width = 200;
             this._ControlTest.Height = 30;

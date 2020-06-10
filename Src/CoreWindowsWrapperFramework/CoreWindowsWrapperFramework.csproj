@@ -170,6 +170,12 @@
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\MessageBoxOptionsConst.cs">
       <Link>Api\Win32\MessageBoxOptionsConst.cs</Link>
     </Compile>
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\MouseKey.cs">
+      <Link>Api\Win32\MouseKey.cs</Link>
+    </Compile>
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\MouseKeyConst.cs">
+      <Link>Api\Win32\MouseKeyConst.cs</Link>
+    </Compile>
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\MSG.cs">
       <Link>Api\Win32\MSG.cs</Link>
     </Compile>
@@ -178,6 +184,9 @@
     </Compile>
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\NMLINK.cs">
       <Link>Api\Win32\NMLINK.cs</Link>
+    </Compile>
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\NotifyMessageConst.cs">
+      <Link>Api\Win32\NotifyMessageConst.cs</Link>
     </Compile>
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\OFNW.cs">
       <Link>Api\Win32\OFNW.cs</Link>
@@ -307,6 +316,9 @@
     </Compile>
     <Compile Include="..\CoreWindowsWrapper\MouseClickEventArgs.cs">
       <Link>MouseClickEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\CoreWindowsWrapper\MouseMoveEventArgs.cs">
+      <Link>MouseMoveEventArgs.cs</Link>
     </Compile>
     <Compile Include="..\CoreWindowsWrapper\NativeApp.cs">
       <Link>NativeApp.cs</Link>

@@ -93,8 +93,7 @@ namespace CoreWindowsWrapper.Api.Win32
         [DllImport(USER32, EntryPoint = "GetClassName", CharSet = CHARSET)]
         public static extern int GetClassName(IntPtr hWnd, StringBuilder buf, int nMaxCount);
 
-        [DllImport(USER32, EntryPoint = "GetClassName", CharSet = CharSet.Unicode)]
-        public static extern int GetClassNameW(IntPtr hWnd, StringBuilder buf, int nMaxCount);
+        
 
 
 
@@ -102,7 +101,7 @@ namespace CoreWindowsWrapper.Api.Win32
         public static string GetClassName(IntPtr hWnd)
         {
             StringBuilder sb = new StringBuilder(256);
-            int retValue = GetClassNameW(hWnd, sb, 256);
+            int retValue = GetClassName(hWnd, sb, 256);
             return sb.ToString();
         }
 

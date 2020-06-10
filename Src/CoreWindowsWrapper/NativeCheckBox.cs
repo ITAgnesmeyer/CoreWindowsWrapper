@@ -22,13 +22,23 @@ namespace CoreWindowsWrapper
 
         protected override bool ControlProc(IntPtr hWndParent, IntPtr hWndControl, int controlId, uint command, IntPtr wParam, IntPtr lParam)
         {
-            uint check = User32.IsDlgButtonChecked(hWndParent, controlId);
-            if(check == 1)
-                User32.CheckDlgButton(hWndParent, controlId,0);
-            else
-                User32.CheckDlgButton(hWndParent,controlId,1);
-            
-            return base.ControlProc(hWndParent, hWndControl, controlId, command, wParam, lParam);
+            bool handled = false;
+            switch (command)
+            {
+                case 0:
+                    uint check = User32.IsDlgButtonChecked(hWndParent, controlId);
+                    if(check == 1)
+                        User32.CheckDlgButton(hWndParent, controlId,0);
+                    else
+                        User32.CheckDlgButton(hWndParent,controlId,1);
+                    handled = true;
+                    break;
+                default:
+                    handled = base.ControlProc(hWndParent, hWndControl, controlId, command, wParam, lParam);
+                    break;
+            }
+
+            return handled;
 
         }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using CoreWindowsWrapper.Api.Win32;
 using CoreWindowsWrapper.Win32ApiForm;
 
@@ -65,10 +66,12 @@ namespace CoreWindowsWrapper
         public event EventHandler<CreateEventArgs> Create;
         public event EventHandler<MouseClickEventArgs> DoubleClick;
         public event EventHandler<MouseClickEventArgs> Click;
-        public event EventHandler<CreateEventArgs> Destroed;
+        public event EventHandler<CreateEventArgs> Destroyed;
         public event EventHandler<MouseClickEventArgs> MouseDown;
         public event EventHandler<MouseClickEventArgs> MouseUp;
+        public event EventHandler<MouseMoveEventArgs> MouseMove;
         public event EventHandler<SizeEventArgs> Size;
+        public event EventHandler<PaintEventArgs> Paint;
 
         public NativeWindow()
         {
@@ -180,6 +183,11 @@ namespace CoreWindowsWrapper
             set => this._Window.StatusBar = value;
         }
 
+        //public bool ToolBar
+        //{
+        //    get => this._Window.ToolBar;
+        //    set => this._Window.ToolBar = value;
+        //}
         public WindowsStartupPosition StartUpPosition
         {
             get
@@ -273,13 +281,23 @@ namespace CoreWindowsWrapper
             this._Window.MouseDown += OnFormMouseDown;
             this._Window.MouseUp += OnFormMouseUp;
             this._Window.Size += OnFormSize;
-            this._Window.Paint += OnPaint;
+            this._Window.Paint += OnPaintIntern;
+            this._Window.MouseMove += OnMouseMoveIntern;
 
         }
 
-        private void OnPaint(object sender, PaintEventArgs e)
+        private void OnMouseMoveIntern(object sender, MouseMoveEventArgs e)
         {
-            
+            //Do something
+            OnMouseMove(e);
+
+        }
+
+        private void OnPaintIntern(object sender, PaintEventArgs e)
+        {
+            //Do some paint
+            Debug.Print("OnPaint in window=>" + this.Name);
+            OnPaint(e);
         }
 
         private void InitDefaults()
@@ -322,7 +340,7 @@ namespace CoreWindowsWrapper
 
         private void OnDestroyed(object sender, CreateEventArgs e)
         {
-            Destroed?.Invoke(this, e);
+            Destroyed?.Invoke(this, e);
             this.Destroy();
         }
 
@@ -416,7 +434,7 @@ namespace CoreWindowsWrapper
             {
 
                 this.ParentWindow.Create -= OnParentCreate;
-                this.ParentWindow.Destroed -= OnParentDestroyed;
+                this.ParentWindow.Destroyed -= OnParentDestroyed;
                 this.ParentWindow.Enabled = true;
                 this.ParentWindow = null;
                 //this._Window.Close();
@@ -448,6 +466,16 @@ namespace CoreWindowsWrapper
         public void Dispose()
         {
             this._Window?.Dispose();
+        }
+
+        protected virtual void OnMouseMove(MouseMoveEventArgs e)
+        {
+            MouseMove?.Invoke(this, e);
+        }
+
+        protected virtual void OnPaint(PaintEventArgs e)
+        {
+            Paint?.Invoke(this, e);
         }
     }
 }

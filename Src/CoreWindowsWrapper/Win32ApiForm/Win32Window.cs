@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using CoreWindowsWrapper.Api.Win32;
@@ -23,6 +24,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
         public event EventHandler<CreateEventArgs> Destroyed;
         public event EventHandler<SizeEventArgs> Size;
         public event EventHandler<PaintEventArgs> Paint;
+        public event EventHandler<MouseMoveEventArgs> MouseMove;
 
         internal static readonly Dictionary<IntPtr, Win32Window> WindowList = new Dictionary<IntPtr, Win32Window>();
         private static readonly Stack<Win32Window> WindowStack = new Stack<Win32Window>();
@@ -132,9 +134,10 @@ namespace CoreWindowsWrapper.Win32ApiForm
             IntPtr windProcPtr = Marshal.GetFunctionPointerForDelegate(this._HookWndProc);
             string className = User32.GetClassName(hookHandle);
 
+            this.WindowClassName = className;
             this.Name = className;
 
-            Win32Window.InstanceHandle = Process.GetCurrentProcess().Handle;
+            Win32Window.InstanceHandle = Marshal.GetHINSTANCE(GetType().Module);
 
             User32.GetClassInfoEx(Win32Window.InstanceHandle, className, out WndclassEx wclass);
             this.WindowClass = wclass;
@@ -402,8 +405,9 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 var win = WindowList[hWnd];
                 if (win.IsHookedWindow)
                 {
+                   
                     IntPtr rsult = WndProc(hWnd, msg, wParam, lParam);
-                    if (rsult.ToInt32() == 0)
+                    if (Win32Api.GetIntPtrUInt(rsult) == 0)
                     {
                         return User32.CallWindowProc(win._OrgWndProc, hWnd, (int) msg, wParam, lParam);
                     }
@@ -446,6 +450,8 @@ namespace CoreWindowsWrapper.Win32ApiForm
                     break;
 
                 default:
+                    if (msg == WindowsMessages.WM_PAINT)
+                        Debug.Print("Paint");
                     if (!InvokeEvent(msg, hWnd, wParam, lParam))
                     {
                         if (WindowList.ContainsKey(hWnd))
@@ -477,7 +483,10 @@ namespace CoreWindowsWrapper.Win32ApiForm
             }
 
             this.Menu?.Destroy();
+            if(this.ToolBarHandle != IntPtr.Zero)  User32.DestroyWindow(this.ToolBarHandle);
+            if(this.StatusBarHandle != IntPtr.Zero) User32.DestroyWindow(this.StatusBarHandle);
             User32.DestroyWindow(this.Handle);
+            
             if (User32.UnregisterClass(this.WindowClassName, Process.GetCurrentProcess().Handle))
                 Debug.WriteLine("Windows unreigistered!:" + this.WindowClassName);
             else
@@ -546,23 +555,19 @@ namespace CoreWindowsWrapper.Win32ApiForm
                     {
                         Debug.Print(e.Message);
                     }
-
+                    
                     if (hdr != null)
                     {
-                        uint id = hdr.idFrom;
-                        Debug.Print("WM_NOTIFY=>" + id + ",Code=" + hdr.code);
-                    }
-                        
-                    uint test = unchecked((0U - 0U) - 2);
-                    if (hdr != null && hdr.code ==test)
-                    {
                         int cId = (int)hdr.idFrom;
-                        uint cCmd = (uint)hdr.code;
+                        uint cCmd = Win32Api.GetIntPtrUInt( hdr.code);
                         IntPtr hCWndControl = hdr.hwndFrom;
+
                         if (window.Controls.ContainsKey(cId))
                         {
                             IControl cControl = window.Controls[cId];
+                            Debug.Print("Control Type=>" + cControl.ControlType + ",ID=>" + cId + ",cmd=>" + cCmd);
                             handled = cControl.HandleEvents(hWnd, hCWndControl, cId, cCmd, wParam, lParam);
+                            
                         }
                     }
 
@@ -667,6 +672,11 @@ namespace CoreWindowsWrapper.Win32ApiForm
                     break;
                 case WindowsMessages.WM_MBUTTONUP:
                     window.OnMouseUp(new MouseClickEventArgs(MouseButton.Middle, hWnd));
+                    break;
+                case WindowsMessages.WM_MOUSEMOVE:
+                    HighLow hl = Win32Api.MakeHiLo(lParam);
+                    uint mouseButtons = Win32Api.GetIntPtrUInt(wParam);
+                    window.OnMouseMove(new MouseMoveEventArgs(new Point(hl.iLow, hl.iHigh), (MouseKey) mouseButtons));
                     break;
                 case WindowsMessages.WM_HANDHELDFIRST:
                     window.OnCreate();
@@ -863,6 +873,11 @@ namespace CoreWindowsWrapper.Win32ApiForm
         private void OnPaint(PaintEventArgs e)
         {
             Paint?.Invoke(this, e);
+        }
+
+        private void OnMouseMove(MouseMoveEventArgs e)
+        {
+            MouseMove?.Invoke(this, e);
         }
     }
 }

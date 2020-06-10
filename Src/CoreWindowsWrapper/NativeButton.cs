@@ -30,6 +30,7 @@ namespace CoreWindowsWrapper
                     break;
                 case ButtonMessages.BN_DBLCLK:
                     OnDblClicked();
+                    handeld = true;
                     break;
             }
 

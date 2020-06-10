@@ -8,6 +8,7 @@ namespace CoreWindowsWrapper.Api.Win32
     {
         public IntPtr hwndFrom;
         public uint idFrom;
-        public long code;
+        
+        public IntPtr code;
     }
 }
