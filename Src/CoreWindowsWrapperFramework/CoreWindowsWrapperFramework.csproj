@@ -215,6 +215,9 @@
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\Rect.cs">
       <Link>Api\Win32\Rect.cs</Link>
     </Compile>
+    <Compile Include="..\CoreWindowsWrapper\Api\Win32\RedrawConstants.cs">
+      <Link>Api\Win32\RedrawConstants.cs</Link>
+    </Compile>
     <Compile Include="..\CoreWindowsWrapper\Api\Win32\RichEditMessages.cs">
       <Link>Api\Win32\RichEditMessages.cs</Link>
     </Compile>

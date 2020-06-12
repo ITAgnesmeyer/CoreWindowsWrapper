@@ -25,7 +25,7 @@ namespace CoreWindowsWrapper.Api.Win32
         }
         public static implicit operator System.Drawing.Point(Point input)
         {
-            return new System.Drawing.Point(input.X, input.X);
+            return new System.Drawing.Point(input.X, input.Y);
         }
 
         public static implicit operator Point(System.Drawing.Point input)

@@ -585,5 +585,16 @@ namespace CoreWindowsWrapper.Api.Win32
         [DllImport(USER32, EntryPoint="GetGuiResources")]
         public static extern  uint GetGuiResources([In] IntPtr hProcess, uint uiFlags) ;
 
+
+        /// Return Type: BOOL->int
+        ///hWnd: HWND->HWND__*
+        ///lprcUpdate: RECT*
+        ///hrgnUpdate: HRGN->HRGN__*
+        ///flags: UINT->unsigned int
+        [DllImport("user32.dll", EntryPoint="RedrawWindow")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern  bool RedrawWindow([In] IntPtr hWnd, [In] IntPtr lprcUpdate, [In] IntPtr hrgnUpdate, uint flags) ;
+
+
     }
 }

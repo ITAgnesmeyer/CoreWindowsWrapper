@@ -67,8 +67,8 @@ namespace CoreWindowsWrapper
         public event EventHandler<MouseClickEventArgs> DoubleClick;
         public event EventHandler<MouseClickEventArgs> Click;
         public event EventHandler<CreateEventArgs> Destroyed;
-        public event EventHandler<MouseClickEventArgs> MouseDown;
-        public event EventHandler<MouseClickEventArgs> MouseUp;
+        public event EventHandler<MouseClickPositionEventArgs> MouseDown;
+        public event EventHandler<MouseClickPositionEventArgs> MouseUp;
         public event EventHandler<MouseMoveEventArgs> MouseMove;
         public event EventHandler<SizeEventArgs> Size;
         public event EventHandler<PaintEventArgs> Paint;
@@ -183,6 +183,14 @@ namespace CoreWindowsWrapper
             set => this._Window.StatusBar = value;
         }
 
+        public void Invalidate()
+        {
+            this._Window.Invlidate();
+        }
+        public void Redraw()
+        {
+            this._Window.Redraw();
+        }
         //public bool ToolBar
         //{
         //    get => this._Window.ToolBar;
@@ -316,23 +324,23 @@ namespace CoreWindowsWrapper
             this.OnSize(e);
         }
 
-        private void OnFormMouseUp(object sender, MouseClickEventArgs e)
+        private void OnFormMouseUp(object sender, MouseClickPositionEventArgs e)
         {
             this.OnMouseUp(e);
         }
 
-        private void OnFormMouseDown(object sender, MouseClickEventArgs e)
+        private void OnFormMouseDown(object sender, MouseClickPositionEventArgs e)
         {
             this.OnMouseDown(e);
         }
 
-        private void OnMouseUp(MouseClickEventArgs e)
+        private void OnMouseUp(MouseClickPositionEventArgs e)
         {
             SafeInvoke(this.MouseUp, e);
             //this.MouseUp?.Invoke(this,e);
         }
 
-        private void OnMouseDown(MouseClickEventArgs e)
+        private void OnMouseDown(MouseClickPositionEventArgs e)
         {
             SafeInvoke(this.MouseDown, e);
 
