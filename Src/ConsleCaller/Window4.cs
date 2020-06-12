@@ -59,7 +59,7 @@ namespace ConsoleCaller
         protected override void OnPaint( PaintEventArgs e)
         {
             if(!this._DoDraw) return;
-            Color c = Color.FromArgb(this.BackColor);
+
             Color fc = Color.Black;
             
             using (Graphics g = Graphics.FromHdc(e.PaintObject.Hdc))
