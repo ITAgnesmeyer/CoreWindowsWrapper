@@ -53,7 +53,7 @@ namespace Diga.Core.Api.Win32
         [DllImport(GDI32, EntryPoint = "GetStockObject", SetLastError = true)]
         public static extern IntPtr GetStockObject(StockObjects fnObject);
 
-        [DllImport("gdi32.dll", EntryPoint="RemoveFontResourceEx",CharSet =CharSet.Auto)]
+        [DllImport(GDI32, EntryPoint="RemoveFontResourceEx",CharSet =CHARSET)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern  bool RemoveFontResourceEx([In]  string name, uint fl, IntPtr pdv) ;
 
