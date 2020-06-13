@@ -1,4 +1,4 @@
-﻿using CoreWindowsWrapper.Api.Win32;
+﻿using Diga.Core.Api.Win32;
 using System;
 using System.Diagnostics;
 using System.Text;

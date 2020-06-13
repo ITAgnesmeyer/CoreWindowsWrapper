@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using CoreWindowsWrapper;
-using CoreWindowsWrapper.Api.Win32;
+using Diga.Core.Api.Win32;
 using Diga.WebView2.WinForms;
 using Diga.WebView2.Wrapper;
 using Diga.WebView2.Wrapper.EventArguments;

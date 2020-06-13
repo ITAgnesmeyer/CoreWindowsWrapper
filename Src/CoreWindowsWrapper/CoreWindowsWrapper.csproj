@@ -42,16 +42,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Api\Ole\**" />
+    <Compile Remove="Api\**" />
     <Compile Remove="packages\**" />
-    <EmbeddedResource Remove="Api\Ole\**" />
+    <EmbeddedResource Remove="Api\**" />
     <EmbeddedResource Remove="packages\**" />
-    <None Remove="Api\Ole\**" />
+    <None Remove="Api\**" />
     <None Remove="packages\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Api\Win32\UxTheme.cs" />
+    <ProjectReference Include="..\Diga.Core.Api.Win32.Std\Diga.Core.Api.Win32.Std.csproj" />
   </ItemGroup>
 
   <ItemGroup>

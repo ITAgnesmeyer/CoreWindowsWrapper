@@ -14,11 +14,7 @@ namespace ConsoleCaller
             this.Text = "Little Editor";
             this.Name = "MainWindow";
             this.StatusBar = true;
-            this._TextBox = new NativeMultiLineTextBox();
-            this._TextBox.Left = 0;
-            this._TextBox.Top = 0;
-            this._TextBox.Width = 480;
-            this._TextBox.Height = 380;
+            this._TextBox = new NativeMultiLineTextBox {Left = 0, Top = 0, Width = 480, Height = 380};
             this.Width = 500;
             this.Height = 400;
             this.StartUpPosition = WindowsStartupPosition.CenterScreen;
@@ -63,10 +59,12 @@ namespace ConsoleCaller
         {
             if (string.IsNullOrEmpty(this._CurrentFileName))
             {
-                SaveFileDialog sfd = new SaveFileDialog();
-                sfd.Title = "Save file as...";
-                sfd.Filter = "All Files(*.*)\0*.*\0Text(*.txt)\0*.txt\0";
-                sfd.DefaultFilterIndex = 2;
+                SaveFileDialog sfd = new SaveFileDialog
+                {
+                    Title = "Save file as...",
+                    Filter = "All Files(*.*)\0*.*\0Text(*.txt)\0*.txt\0",
+                    DefaultFilterIndex = 2
+                };
                 if (sfd.Show(this))
                 {
                     this._CurrentFileName = sfd.File;
@@ -88,16 +86,18 @@ namespace ConsoleCaller
 
         private async void FileOpen_Click(object sender, MouseClickEventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
+            OpenFileDialog ofd = new OpenFileDialog
+            {
+                Title = "Open a Text File...",
+                Filter = "All File(*.*)\0*.*\0Text(*.txt)\0*.txt\0",
+                DefaultFilterIndex = 2
+            };
 
             //Title of the Dialog
-            ofd.Title = "Open a Text File...";
 
             //All Values have to be separated with \0 
-            ofd.Filter = "All File(*.*)\0*.*\0Text(*.txt)\0*.txt\0";
 
             //Shows Text(*.txt) as default
-            ofd.DefaultFilterIndex = 2;
 
             //Show the Dialog modal to the current Form.
             if (ofd.Show(this))
@@ -128,7 +128,7 @@ namespace ConsoleCaller
         protected override void OnCreate(CreateEventArgs e)
         {
             base.OnCreate(e);
-            CoreWindowsWrapper.Api.Win32.Rect rect = this.GetClientRect();
+            Diga.Core.Api.Win32.Rect rect = this.GetClientRect();
             this._TextBox.Left = rect.Left;
             this._TextBox.Top = rect.Top;
             this._TextBox.Width = rect.Width;

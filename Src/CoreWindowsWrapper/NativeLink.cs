@@ -1,4 +1,4 @@
-﻿using CoreWindowsWrapper.Api.Win32;
+﻿using Diga.Core.Api.Win32;
 using System;
 using System.Runtime.InteropServices;
 
@@ -13,7 +13,7 @@ namespace CoreWindowsWrapper
             base.Initialize();
             this.ControlType = Win32ApiForm.ControlType.Link;
             this.TypeIdentifier = "SysLink";
-            this.CommonControlType = Api.Win32.CommonControls.ICC_LINK_CLASS;
+            this.CommonControlType = CommonControls.ICC_LINK_CLASS;
            
 
         }
@@ -24,7 +24,7 @@ namespace CoreWindowsWrapper
             switch (command)
             {
                 case NotifyMessageConst.NM_CLICK:
-                    Api.Win32.NmlInk link = Marshal.PtrToStructure<Api.Win32.NmlInk>(lParam);
+                    NmlInk link = Marshal.PtrToStructure<NmlInk>(lParam);
                     if (link != null)
                     {
                         if (link.item != null)

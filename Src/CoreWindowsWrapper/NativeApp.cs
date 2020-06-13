@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
-
+using Diga.Core.Api.Win32;
 namespace CoreWindowsWrapper
 {
     public static class NativeApp
@@ -24,7 +24,7 @@ namespace CoreWindowsWrapper
 
         private static void TaskAction()
         {
-            Api.Win32.Ole32.OleInitialize(IntPtr.Zero);
+            Ole32.OleInitialize(IntPtr.Zero);
             while (_mainWindow.Handle != IntPtr.Zero)
             {
                 try
@@ -38,7 +38,7 @@ namespace CoreWindowsWrapper
                 
             }
 
-            Api.Win32.Ole32.OleUninitialize();
+            Ole32.OleUninitialize();
         }
     }
 }

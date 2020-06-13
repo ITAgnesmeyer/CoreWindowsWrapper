@@ -1,4 +1,6 @@
 ﻿using System;
+using Diga.Core.Api.Win32;
+
 // ReSharper disable CheckNamespace
 
 namespace CoreWindowsWrapper.Tools
@@ -47,7 +49,7 @@ namespace CoreWindowsWrapper.Tools
                 blue = 255;
             }
 
-            return Api.Win32.Gdi32.RGB(red, green, blue);
+            return Gdi32.RGB(red, green, blue);
         }
     }
 }

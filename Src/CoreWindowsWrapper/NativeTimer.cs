@@ -1,5 +1,5 @@
 ﻿using System;
-
+using Diga.Core.Api.Win32;
 namespace CoreWindowsWrapper
 {
     public class NativeTimer:NativeNoCreateControlBase
@@ -15,11 +15,11 @@ namespace CoreWindowsWrapper
 
         public void StartTimer()
         {
-            Api.Win32.TimerProc proc = OnTimerProc;
+            TimerProc proc = OnTimerProc;
             UIntPtr id = (UIntPtr)this.ControlId;
             uint intVal = System.Convert.ToUInt32(this.Interval);
             if(this.Interval > 0)
-                Api.Win32.User32.SetTimer(this.ParentHandle, id,intVal,proc);
+                User32.SetTimer(this.ParentHandle, id,intVal,proc);
         }
 
         private void OnTimerProc(IntPtr param0, uint param1, IntPtr param2, uint param3)
@@ -37,7 +37,7 @@ namespace CoreWindowsWrapper
         {
            
             UIntPtr id = (UIntPtr)this.ControlId;
-            Api.Win32.User32.KillTimer(this.ParentHandle, id);
+            User32.KillTimer(this.ParentHandle, id);
         }
 
         public override void Destroy()

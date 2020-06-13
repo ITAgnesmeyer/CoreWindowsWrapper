@@ -3,10 +3,10 @@
 // ReSharper disable InconsistentNaming
 // ReSharper disable UnusedMember.Local
 
-namespace CoreWindowsWrapper.Api.Win32
+namespace Diga.Core.Api.Win32
 {
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-    internal struct LogFont
+    public struct LogFont
     {
         /// LONG->int
         public int lfHeight;

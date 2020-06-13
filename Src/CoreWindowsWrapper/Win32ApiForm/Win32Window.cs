@@ -6,8 +6,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using CoreWindowsWrapper.Api.Win32;
-using Point = CoreWindowsWrapper.Api.Win32.Point;
+using Diga.Core.Api.Win32;
+using Point = Diga.Core.Api.Win32.Point;
 // ReSharper disable CheckNamespace
 
 namespace CoreWindowsWrapper.Win32ApiForm

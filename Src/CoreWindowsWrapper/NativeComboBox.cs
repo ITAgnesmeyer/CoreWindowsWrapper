@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Text;
-using CoreWindowsWrapper.Api.Win32;
+using Diga.Core.Api.Win32;
 
 namespace CoreWindowsWrapper
 {

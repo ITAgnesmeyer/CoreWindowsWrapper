@@ -34,7 +34,7 @@ namespace ConsoleCaller
             this.DoubleClick += Window2_DblClick;
             this.Create += Window2_Create;
             this._WebBrowser = new NativeWebBrowser();
-            this._WebBrowser.Location = new CoreWindowsWrapper.Api.Win32.Point(100,100);
+            this._WebBrowser.Location = new Diga.Core.Api.Win32.Point(100,100);
             this._WebBrowser.Width = 200;
             this._WebBrowser.Height = 200;
             this._WebBrowser.Url = "https://www.google.de";
