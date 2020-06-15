@@ -5,7 +5,7 @@ namespace ConsoleCaller
 {
     class TextEditor : NativeWindow
     {
-        private NativeMultiLineTextBox _TextBox;
+        private NativeRichTextBox _TextBox;
         private string _CurrentFileName;
 
 
@@ -14,7 +14,7 @@ namespace ConsoleCaller
             this.Text = "Little Editor";
             this.Name = "MainWindow";
             this.StatusBar = true;
-            this._TextBox = new NativeMultiLineTextBox {Left = 0, Top = 0, Width = 480, Height = 380};
+            this._TextBox = new NativeRichTextBox {Left = 0, Top = 0, Width = 480, Height = 380};
             this.Width = 500;
             this.Height = 400;
             this.StartUpPosition = WindowsStartupPosition.CenterScreen;
