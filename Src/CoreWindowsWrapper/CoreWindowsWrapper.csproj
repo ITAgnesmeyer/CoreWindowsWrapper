@@ -42,16 +42,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Api\**" />
     <Compile Remove="packages\**" />
-    <EmbeddedResource Remove="Api\**" />
     <EmbeddedResource Remove="packages\**" />
-    <None Remove="Api\**" />
     <None Remove="packages\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Diga.Core.Api.Win32.Std\Diga.Core.Api.Win32.Std.csproj" />
+    <ProjectReference Include="..\Diga.Core.Api.Win32.Core\Diga.Core.Api.Win32.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

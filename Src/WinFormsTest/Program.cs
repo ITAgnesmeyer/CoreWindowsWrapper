@@ -1,7 +1,8 @@
-﻿using System;
+﻿using WinFormsTest;
+using System;
 using System.Windows.Forms;
 
-namespace CoreWindowsWrapperWinFormsTest
+namespace WinFormsTest
 {
     static class Program
     {
@@ -11,7 +12,7 @@ namespace CoreWindowsWrapperWinFormsTest
         [STAThread]
         static void Main()
         {
-           
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());

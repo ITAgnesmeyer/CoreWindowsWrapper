@@ -1,4 +1,4 @@
-﻿namespace CoreWindowsWrapperWinFormsTest
+﻿namespace WinFormsTest
 {
     partial class MainForm
     {

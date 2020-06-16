@@ -35,7 +35,7 @@
   <ItemGroup>
     <Reference Include="Diga.WebView2.Interop.V9430, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\CoreWindowsWrapper\packages\Diga.WebView2.Interop.2.0.4\lib\net472\Diga.WebView2.Interop.V9430.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="Diga.WebView2.Wrapper.V9430, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\CoreWindowsWrapper\packages\Diga.WebView2.Wrapper.2.0.4\lib\net472\Diga.WebView2.Wrapper.V9430.dll</HintPath>
@@ -56,7 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Diga.Core.NativeControls.WebBrowser\NativeWebBrowser.cs">
+    <Compile Include="..\Diga.NativeControls.WebBrowser.Core\NativeWebBrowser.cs">
       <Link>NativeWebBrowser.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -65,9 +65,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CoreWindowsWrapperFramework\CoreWindowsWrapperFramework.csproj">
+    <ProjectReference Include="..\CoreWindowsWrapper.FW\CoreWindowsWrapper.FW.csproj">
       <Project>{6f2dd37f-8132-4177-b0a1-f4f36c3d2590}</Project>
-      <Name>CoreWindowsWrapperFramework</Name>
+      <Name>CoreWindowsWrapper.FW</Name>
     </ProjectReference>
     <ProjectReference Include="..\Diga.Core.Api.Win32\Diga.Core.Api.Win32.csproj">
       <Project>{5318af90-e3ed-4eb1-80f6-42d217653ace}</Project>

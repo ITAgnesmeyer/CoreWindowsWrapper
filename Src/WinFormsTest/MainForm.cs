@@ -1,12 +1,11 @@
-﻿using System;
-using System.Diagnostics;
-using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
-using CoreWindowsWrapper;
+﻿using CoreWindowsWrapper;
 using CoreWindowsWrapper.Tools;
 using Diga.NativeControls.WebBrowser;
+using System;
+using System.Diagnostics;
+using System.Windows.Forms;
 
-namespace CoreWindowsWrapperWinFormsTest
+namespace WinFormsTest
 {
     public partial class MainForm : Form
     {

@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{13FE7929-0133-4E47-9C58-B7697DE283AC}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>CoreWindowsWrapperWinFormsTest</RootNamespace>
-    <AssemblyName>CoreWindowsWrapperWinFormsTest</AssemblyName>
+    <RootNamespace>WinFormsTest</RootNamespace>
+    <AssemblyName>WinFormsTest</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -83,9 +83,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CoreWindowsWrapperFramework\CoreWindowsWrapperFramework.csproj">
+    <ProjectReference Include="..\CoreWindowsWrapper.FW\CoreWindowsWrapper.FW.csproj">
       <Project>{6f2dd37f-8132-4177-b0a1-f4f36c3d2590}</Project>
-      <Name>CoreWindowsWrapperFramework</Name>
+      <Name>CoreWindowsWrapper.FW</Name>
     </ProjectReference>
     <ProjectReference Include="..\Diga.NativeControls.WebBrowser\Diga.NativeControls.WebBrowser.csproj">
       <Project>{5A726955-C418-4DD9-898A-336BE2630BFD}</Project>
