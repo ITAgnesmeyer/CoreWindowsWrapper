@@ -3,15 +3,21 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>Diga.NativeControls.WebBrowser</RootNamespace>
+    <PackageId>Diga.NativeControls.WebBrowser</PackageId>
+    <Authors>Dipl.-Ing.(FH) Guido Agnesmeyer</Authors>
+    <Description>Diga.NativeControls.WebBrowser.Core</Description>
+    <Copyright>Copyright © 2020 Dipl.-Ing.(FH) Guido Agnesmeyer</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>net-core; WebView2, CoreWindowsWrapper</PackageTags>
+    <PackageReleaseNotes>WebBrowserControl build with WebView2 and CoreWindowsWrapper</PackageReleaseNotes>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <AssemblyName>Diga.NativeControls.WebBrowser</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CoreWindowsWrapper" Version="1.0.41" />
     <PackageReference Include="Diga.WebView2.Wrapper" Version="2.0.4" />
     <PackageReference Include="MimeTypeExtension" Version="1.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\CoreWindowsWrapper\CoreWindowsWrapper.csproj" />
   </ItemGroup>
 
 </Project>

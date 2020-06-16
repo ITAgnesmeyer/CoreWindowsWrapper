@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>CoreWindowsWrapper</id>
+    <version>1.0.41</version>
+    <authors>Dipl.-Ing.(FH) Guido Agnesmeyer</authors>
+    <owners></owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/ITAgnesmeyer/CoreWindowsWrapper</projectUrl>
+    <description>CoreWindowsWrapper is a DLL you can use to create Core Applications showing Dialogs without using System.Windows.Forms. The Project uses the Windows - API to create Native Windows.</description>
+    <releaseNotes>BugFixes</releaseNotes>
+    <copyright>2019 Dipl.-Ing.(FH) Guido Agnesmeyer</copyright>
+    <tags>dotnet-core</tags>
+    <repository type="GitHub" url="https://github.com/ITAgnesmeyer/CoreWindowsWrapper.git" />
+    <dependencies>
+      <group targetFramework=".NETCoreApp3.1">
+        <dependency id="Diga.Core.Api.Win32.Core" version="1.0.19" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework=".NETFramework4.7.2">
+        <dependency id="Diga.Core.Api.Win32" version="1.0.19" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="lib\net472\CoreWindowsWrapper.dll" target="lib\net472\CoreWindowsWrapper.dll" />
+    <file src="lib\netcoreapp3.1\CoreWindowsWrapper.dll" target="lib\netcoreapp3.1\CoreWindowsWrapper.dll" />
+  </files>
+</package>

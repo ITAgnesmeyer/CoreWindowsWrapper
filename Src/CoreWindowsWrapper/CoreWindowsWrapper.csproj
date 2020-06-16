@@ -11,7 +11,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Authors>Dipl.-Ing.(FH) Guido Agnesmeyer</Authors>
     <RepositoryUrl>https://github.com/ITAgnesmeyer/CoreWindowsWrapper.git</RepositoryUrl>
     <PackageTags>dotnet-core</PackageTags>
@@ -20,14 +20,14 @@
     <PackageLicenseUrl></PackageLicenseUrl>
     <RepositoryType>GitHub</RepositoryType>
     <PackageProjectUrl>https://github.com/ITAgnesmeyer/CoreWindowsWrapper</PackageProjectUrl>
-    <PackageReleaseNotes>First implementation.
+    <PackageReleaseNotes>BugFixes
 </PackageReleaseNotes>
-    <Version>1.0.3.3</Version>
+    <Version>1.0.4.1</Version>
     <SignAssembly>false</SignAssembly>
     <DelaySign>true</DelaySign>
     <AssemblyOriginatorKeyFile>guido_agnesmeyer_2019.cer</AssemblyOriginatorKeyFile>
-    <AssemblyVersion>1.0.3.3</AssemblyVersion>
-    <FileVersion>1.0.3.3</FileVersion>
+    <AssemblyVersion>1.0.4.1</AssemblyVersion>
+    <FileVersion>1.0.4.1</FileVersion>
     <ApplicationIcon />
     <Win32Resource></Win32Resource>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -48,7 +48,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Diga.Core.Api.Win32.Core\Diga.Core.Api.Win32.Core.csproj" />
+    <PackageReference Include="Diga.Core.Api.Win32.Core" Version="1.0.19" />
   </ItemGroup>
 
   <ItemGroup>
@@ -65,5 +65,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy $(TargetPath) $(SolutionDir)..\package_create\lib\netcoreapp3.1\*" />
+  </Target>
 
 </Project>

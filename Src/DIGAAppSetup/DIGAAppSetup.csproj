@@ -17,7 +17,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CoreWindowsWrapper\CoreWindowsWrapper.csproj" />
+    <PackageReference Include="CoreWindowsWrapper" Version="1.0.41" />
   </ItemGroup>
 
   <ItemGroup>
