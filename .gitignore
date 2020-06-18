@@ -297,3 +297,5 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
+/Src/package_create/lib/net472/CoreWindowsWrapper.dll
+/Src/package_create/lib/netcoreapp3.1/CoreWindowsWrapper.dll
