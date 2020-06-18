@@ -14,6 +14,7 @@ namespace ConsoleCaller
 
         private NativeButton _Button;
         private NativeButton _Button1;
+        private NativeButton _Button3;
         private NativeTextBox _TextBox;
         private NativeTextBox _TextBox2;
         private NativeLabel _Label1;
@@ -26,8 +27,8 @@ namespace ConsoleCaller
         private ControlTest _ControlTest;
         protected override void OnBeforeCreate(BeforeCreateEventArgs e)
         {
-            //e.Styles.Style = WindowStylesConst.WS_VISIBLE|WindowStylesConst.WS_CAPTION | WindowStylesConst.WS_SYSMENU | WindowStylesConst.WS_SIZEBOX;
-            //e.Styles.StyleEx = WindowStylesConst.WS_EX_APPWINDOW;
+            e.Styles.Style = WindowStylesConst.WS_VISIBLE | WindowStylesConst.WS_CAPTION | WindowStylesConst.WS_SYSMENU | WindowStylesConst.WS_SIZEBOX;
+            e.Styles.StyleEx = WindowStylesConst.WS_EX_DLGMODALFRAME;
         }
         protected override void InitControls()
         {
@@ -82,9 +83,18 @@ namespace ConsoleCaller
             this._Button1.Clicked += button1_OnClicked;
             this._Button1.DblClicked += button1_OnDblClicked;
 
+            this._Button3 = new NativeButton
+            {
+                Location = new Point(300, 10),
+                Width = 20,
+                Height = 30,
+                Name = "SelectFolder",
+                Text = "…"
+            };
 
+            this._Button3.Clicked += Button3_Click;
             this._ComboBox = new NativeComboBox();
-            this._ComboBox.Location = new Point(300, 10);
+            this._ComboBox.Location = new Point(350, 10);
             
             this._ComboBox.Height = 30;
             this._ComboBox.Width = 200;
@@ -182,6 +192,7 @@ namespace ConsoleCaller
             //this.Controls.Add(this._ControlTest);
             this.Controls.Add(this._Button);
             this.Controls.Add(this._Button1);
+            this.Controls.Add(this._Button3);
             this.Controls.Add(this._ComboBox);
             this.Controls.Add(this._TextBox);
             this.Controls.Add(this._TextBox2);
@@ -195,6 +206,18 @@ namespace ConsoleCaller
             Click += Window1_Click;
             DoubleClick += Window1_DblClick;
             Create += Window1_Create;
+        }
+
+        private void Button3_Click(object sender, EventArgs e)
+        {
+            OpenFolderDialog ofd = new OpenFolderDialog();
+            ofd.Caption = "Select your Folder";
+            ofd.InitialPath = "C:\\tmp";
+            bool retVal = ofd.Show(this);
+            if(retVal)
+            {
+                this._TextBox.Text = ofd.SelectedPath;
+            }
         }
 
         private void ListBox_SelChange(object sender, EventArgs e)

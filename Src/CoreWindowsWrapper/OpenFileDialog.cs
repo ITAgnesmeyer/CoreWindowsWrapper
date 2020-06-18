@@ -1,8 +1,11 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Text;
 using Diga.Core.Api.Win32;
 namespace CoreWindowsWrapper
 {
+
     public class OpenFileDialog
     {
         private OfNw _OfNw;

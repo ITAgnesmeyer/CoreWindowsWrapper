@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>CoreWindowsWrapper</id>
-    <version>1.0.41</version>
+    <version>1.0.42</version>
     <authors>Dipl.-Ing.(FH) Guido Agnesmeyer</authors>
     <owners></owners>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
@@ -15,10 +15,10 @@
     <repository type="GitHub" url="https://github.com/ITAgnesmeyer/CoreWindowsWrapper.git" />
     <dependencies>
       <group targetFramework=".NETCoreApp3.1">
-        <dependency id="Diga.Core.Api.Win32.Core" version="1.0.19" exclude="Build,Analyzers" />
+        <dependency id="Diga.Core.Api.Win32.Core" version="1.0.20" exclude="Build,Analyzers" />
       </group>
       <group targetFramework=".NETFramework4.7.2">
-        <dependency id="Diga.Core.Api.Win32" version="1.0.19" />
+        <dependency id="Diga.Core.Api.Win32" version="1.0.20" />
       </group>
     </dependencies>
   </metadata>

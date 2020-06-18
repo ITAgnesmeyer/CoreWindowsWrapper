@@ -34,7 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Diga.Core.Api.Win32, Version=1.0.19.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\CoreWindowsWrapper\packages\Diga.Core.Api.Win32.1.0.19\lib\net472\Diga.Core.Api.Win32.dll</HintPath>
+      <HintPath>..\CoreWindowsWrapper\packages\Diga.Core.Api.Win32.1.0.20\lib\net472\Diga.Core.Api.Win32.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -160,6 +160,9 @@
     </Compile>
     <Compile Include="..\CoreWindowsWrapper\OpenFileDialog.cs">
       <Link>OpenFileDialog.cs</Link>
+    </Compile>
+    <Compile Include="..\CoreWindowsWrapper\OpenFolderDialog.cs">
+      <Link>OpenFolderDialog.cs</Link>
     </Compile>
     <Compile Include="..\CoreWindowsWrapper\PaintEventArgs.cs">
       <Link>PaintEventArgs.cs</Link>

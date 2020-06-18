@@ -15,8 +15,8 @@ namespace CoreWindowsWrapper.Win32ApiForm
     internal sealed class Win32Window : IWindowClass, IDisposable
     {
 
-        [DllImport("user32.dll", EntryPoint = "CreateWindowEx", CharSet = CharSet.Auto, SetLastError =true)]
-        public static extern IntPtr CreateWindowEx(uint dwExStyle, [In]string lpClassName, [In] string lpWindowName, uint dwStyle, int X, int Y, int nWidth, int nHeight, [In] IntPtr hWndParent, [In] IntPtr hMenu, [In] IntPtr hInstance, [In] IntPtr lpParam);
+        //[DllImport("user32.dll", EntryPoint = "CreateWindowEx", CharSet = CharSet.Auto, SetLastError =true)]
+        //public static extern IntPtr CreateWindowEx(uint dwExStyle, [In]string lpClassName, [In] string lpWindowName, uint dwStyle, int X, int Y, int nWidth, int nHeight, [In] IntPtr hWndParent, [In] IntPtr hMenu, [In] IntPtr hInstance, [In] IntPtr lpParam);
 
 
         public bool IsMainWindow { get; set; }
@@ -277,7 +277,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 this.Top = yPos;
             }
 
-            IntPtr hWnd = CreateWindowEx(
+            IntPtr hWnd = User32.CreateWindowEx(
                 this.StyleEx,
                 this.WindowClassName,
                 this.Text, this.Style
