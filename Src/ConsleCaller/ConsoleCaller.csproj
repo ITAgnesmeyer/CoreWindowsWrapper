@@ -28,6 +28,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CoreWindowsWrapper\CoreWindowsWrapper.csproj" />
     <ProjectReference Include="..\Diga.NativeControls.WebBrowser.Core\Diga.NativeControls.WebBrowser.Core.csproj" />
   </ItemGroup>
 

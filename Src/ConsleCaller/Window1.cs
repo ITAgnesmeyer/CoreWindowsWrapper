@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Globalization;
 using CoreWindowsWrapper;
 using CoreWindowsWrapper.Tools;
+using Diga.Core.Api.Win32;
 
 namespace ConsoleCaller
 {
@@ -23,6 +24,11 @@ namespace ConsoleCaller
         private NativeListBox _ListBox;
         private NativeComboBox _ComboBox;
         private ControlTest _ControlTest;
+        protected override void OnBeforeCreate(BeforeCreateEventArgs e)
+        {
+            //e.Styles.Style = WindowStylesConst.WS_VISIBLE|WindowStylesConst.WS_CAPTION | WindowStylesConst.WS_SYSMENU | WindowStylesConst.WS_SIZEBOX;
+            //e.Styles.StyleEx = WindowStylesConst.WS_EX_APPWINDOW;
+        }
         protected override void InitControls()
         {
 
@@ -78,8 +84,8 @@ namespace ConsoleCaller
 
 
             this._ComboBox = new NativeComboBox();
-            this._ComboBox.Left = 300;
-            this._ComboBox.Top = 10;
+            this._ComboBox.Location = new Point(300, 10);
+            
             this._ComboBox.Height = 30;
             this._ComboBox.Width = 200;
             this._ComboBox.Name = "cbbTest";

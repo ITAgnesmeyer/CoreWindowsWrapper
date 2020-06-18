@@ -14,8 +14,13 @@ namespace CoreWindowsWrapper.Win32ApiForm
 {
     internal sealed class Win32Window : IWindowClass, IDisposable
     {
-        public bool IsMainWindow { get; set; }
 
+        [DllImport("user32.dll", EntryPoint = "CreateWindowEx", CharSet = CharSet.Auto, SetLastError =true)]
+        public static extern IntPtr CreateWindowEx(uint dwExStyle, [In]string lpClassName, [In] string lpWindowName, uint dwStyle, int X, int Y, int nWidth, int nHeight, [In] IntPtr hWndParent, [In] IntPtr hMenu, [In] IntPtr hInstance, [In] IntPtr lpParam);
+
+
+        public bool IsMainWindow { get; set; }
+        public event EventHandler<BeforeCreateEventArgs> BeforeCreate;
         public event EventHandler<CreateEventArgs> CreateForm;
         public event EventHandler<MouseClickEventArgs> DoubleClick;
         public event EventHandler<MouseClickEventArgs> Click;
@@ -118,7 +123,8 @@ namespace CoreWindowsWrapper.Win32ApiForm
         private int _Height = unchecked((int)0x80000000);
         public IMenuItem Menu { get; set; }
         private uint Style { get; set; } = WindowStylesConst.WS_OVERLAPPEDWINDOW | WindowStylesConst.WS_VISIBLE;
-
+        private uint ClassStyle { get; set; } = (uint)(ClassStyles.CS_HREDRAW | ClassStyles.CS_VREDRAW | ClassStyles.CS_DBLCLKS);
+        private uint StyleEx { get; set; } = (int)(WindowStylesConst.WS_EX_APPWINDOW | WindowStylesConst.WS_EX_CLIENTEDGE);
         public static Win32Window CreateAsHook(IntPtr hookHandle)
         {
             return new Win32Window(hookHandle);
@@ -200,7 +206,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
             WndclassEx windClass = new WndclassEx
             {
                 cbSize = Marshal.SizeOf(typeof(WndclassEx)),
-                style = (int)(ClassStyles.CS_HREDRAW | ClassStyles.CS_VREDRAW | ClassStyles.CS_DBLCLKS),
+                style = this.ClassStyle,
                 hbrBackground = Gdi32.GetStockObject(StockObjects.WHITE_BRUSH),
                 cbClsExtra = 0,
                 cbWndExtra = 0,
@@ -242,6 +248,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
             windClass.hbrBackground = Gdi32.CreateSolidBrush(this.Color);
             this.WindowClass = windClass;
+            OnBeforeFormCreate();
             ushort regResult = User32.RegisterClassEx(ref windClass);
 
             if (regResult == 0)
@@ -270,8 +277,8 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 this.Top = yPos;
             }
 
-            IntPtr hWnd = User32.CreateWindowEx(
-                (int)(WindowStylesConst.WS_EX_APPWINDOW | WindowStylesConst.WS_EX_CLIENTEDGE),
+            IntPtr hWnd = CreateWindowEx(
+                this.StyleEx,
                 this.WindowClassName,
                 this.Text, this.Style
                 , this.Left, this.Top, this.Width, this.Height, this.ParentHandle, hMenu
@@ -317,6 +324,15 @@ namespace CoreWindowsWrapper.Win32ApiForm
             }
 
             return true;
+        }
+
+        private void OnBeforeFormCreate()
+        {
+            BeforeCreateEventArgs ev = new BeforeCreateEventArgs(this.Style, this.StyleEx);
+            OnBeforeCreate(ev);
+            this.Style = ev.Styles.Style;
+            this.StyleEx = ev.Styles.StyleEx;
+            
         }
 
         private void CreateDispatchTask()
@@ -916,7 +932,10 @@ namespace CoreWindowsWrapper.Win32ApiForm
         {
             MouseMove?.Invoke(this, e);
         }
-
+        private void OnBeforeCreate(BeforeCreateEventArgs e)
+        {
+            BeforeCreate?.Invoke(this, e);
+        }
         public void Invlidate()
         {
             User32.RedrawWindow(this.Handle, IntPtr.Zero, IntPtr.Zero, RedrawConstants.RDW_INVALIDATE | RedrawConstants.RDW_ERASE | RedrawConstants.RDW_ALLCHILDREN | RedrawConstants.RDW_UPDATENOW);

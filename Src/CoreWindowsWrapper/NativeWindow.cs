@@ -16,14 +16,14 @@ namespace CoreWindowsWrapper
             this.IsMainWindow = false;
         }
     }
-    public class NativeWindow : IControl,IDisposable
+    public class NativeWindow : IControl, IDisposable
     {
         private Win32Window _Window;
         private bool IsHookWindow
         {
             get
             {
-                if(this._Window == null)
+                if (this._Window == null)
                     return false;
                 return this._Window.IsHookedWindow;
             }
@@ -232,7 +232,12 @@ namespace CoreWindowsWrapper
             }
         }
 
-        public Point Location { get; set; }
+        public Point Location
+        {
+            get => this._Window.Location;
+            set => this._Window.Location = value;
+           
+        }
         int IControl.ControlId { get; set; } = -1;
         string IControl.TypeIdentifyer
         {
@@ -282,6 +287,7 @@ namespace CoreWindowsWrapper
 
         private void InitEvents()
         {
+            this._Window.BeforeCreate += OnBeforeCreateInternal;
             this._Window.CreateForm += OnCreateForm;
             this._Window.DoubleClick += OnFormDoubleClick;
             this._Window.Click += OnFormClick;
@@ -294,6 +300,15 @@ namespace CoreWindowsWrapper
 
         }
 
+        private void OnBeforeCreateInternal(object sender, BeforeCreateEventArgs e)
+        {
+            OnBeforeCreate(e);
+        }
+
+        protected virtual void OnBeforeCreate(BeforeCreateEventArgs e)
+        {
+            //Do something;
+        }
         private void OnMouseMoveIntern(object sender, MouseMoveEventArgs e)
         {
             //Do something

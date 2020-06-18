@@ -229,7 +229,7 @@ namespace Diga.NativeControls.WebBrowser
             OnAcceleratorKeyPressed(e);
         }
 
-        private void OnWebWindowBeforeCreate(object sender, BeforeCreateEventArgs e)
+        private void OnWebWindowBeforeCreate(object sender,Diga.WebView2.Wrapper.EventArguments.BeforeCreateEventArgs e)
         {
             e.Settings.AreDefaultContextMenusEnabled = new CBOOL(this._DefaultContextMenusEnabled);
             e.Settings.AreDefaultScriptDialogsEnabled = new CBOOL(this._DefaultScriptDialogsEnabled);

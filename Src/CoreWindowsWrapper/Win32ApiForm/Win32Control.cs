@@ -11,7 +11,15 @@ namespace CoreWindowsWrapper.Win32ApiForm
         public IntPtr ParentHandle { get; internal set; }
         public string Text { get; set; }
         public string Name { get; set; }
-        public Point Location { get; set; }
+        public Point Location
+        {
+            get => new Point(this.Left, this.Top); 
+            set
+            {
+                this.Left = value.X;
+                this.Top = value.Y;
+            }
+        }
         private bool _Enabled = true;
         public ControlCollection Controls { get; }
         public bool Enabled
@@ -154,7 +162,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 this.Width,
                 this.Height,
                 this.ParentHandle,
-                (IntPtr) this.ControlId,
+                (IntPtr)this.ControlId,
                 IntPtr.Zero,
                 IntPtr.Zero);
 
