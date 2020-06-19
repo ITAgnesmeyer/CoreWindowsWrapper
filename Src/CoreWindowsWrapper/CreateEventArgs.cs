@@ -14,12 +14,12 @@ namespace CoreWindowsWrapper
         }
     }
     [Serializable]
-    public class BeforeCreateEventArgs: EventArgs
+    public class BeforeWindowCreateEventArgs: EventArgs
     {
         
         
         public EventArgStyleWrapper Styles { get; set; }
-        public BeforeCreateEventArgs(uint style, uint styleEx)
+        public BeforeWindowCreateEventArgs(uint style, uint styleEx)
         {
             this.Styles = new EventArgStyleWrapper(style, styleEx);
         }

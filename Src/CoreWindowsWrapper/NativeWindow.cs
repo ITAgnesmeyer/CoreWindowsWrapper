@@ -300,12 +300,12 @@ namespace CoreWindowsWrapper
 
         }
 
-        private void OnBeforeCreateInternal(object sender, BeforeCreateEventArgs e)
+        private void OnBeforeCreateInternal(object sender, BeforeWindowCreateEventArgs e)
         {
             OnBeforeCreate(e);
         }
 
-        protected virtual void OnBeforeCreate(BeforeCreateEventArgs e)
+        protected virtual void OnBeforeCreate(BeforeWindowCreateEventArgs e)
         {
             //Do something;
         }

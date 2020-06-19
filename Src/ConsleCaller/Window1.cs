@@ -25,7 +25,7 @@ namespace ConsoleCaller
         private NativeListBox _ListBox;
         private NativeComboBox _ComboBox;
         private ControlTest _ControlTest;
-        protected override void OnBeforeCreate(BeforeCreateEventArgs e)
+        protected override void OnBeforeCreate(BeforeWindowCreateEventArgs e)
         {
             e.Styles.Style = WindowStylesConst.WS_VISIBLE | WindowStylesConst.WS_CAPTION | WindowStylesConst.WS_SYSMENU | WindowStylesConst.WS_SIZEBOX;
             e.Styles.StyleEx = WindowStylesConst.WS_EX_DLGMODALFRAME;

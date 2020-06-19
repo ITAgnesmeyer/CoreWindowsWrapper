@@ -20,7 +20,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
 
         public bool IsMainWindow { get; set; }
-        public event EventHandler<BeforeCreateEventArgs> BeforeCreate;
+        public event EventHandler<BeforeWindowCreateEventArgs> BeforeCreate;
         public event EventHandler<CreateEventArgs> CreateForm;
         public event EventHandler<MouseClickEventArgs> DoubleClick;
         public event EventHandler<MouseClickEventArgs> Click;
@@ -328,7 +328,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
         private void OnBeforeFormCreate()
         {
-            BeforeCreateEventArgs ev = new BeforeCreateEventArgs(this.Style, this.StyleEx);
+            BeforeWindowCreateEventArgs ev = new BeforeWindowCreateEventArgs(this.Style, this.StyleEx);
             OnBeforeCreate(ev);
             this.Style = ev.Styles.Style;
             this.StyleEx = ev.Styles.StyleEx;
@@ -932,7 +932,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
         {
             MouseMove?.Invoke(this, e);
         }
-        private void OnBeforeCreate(BeforeCreateEventArgs e)
+        private void OnBeforeCreate(BeforeWindowCreateEventArgs e)
         {
             BeforeCreate?.Invoke(this, e);
         }
