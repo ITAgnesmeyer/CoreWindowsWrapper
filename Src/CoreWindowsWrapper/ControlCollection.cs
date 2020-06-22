@@ -29,7 +29,7 @@ namespace CoreWindowsWrapper
 
             if (this._ParentWindow != null)
             {
-                if (this._ParentWindow.Handle != IntPtr.Zero)
+                if (this._ParentWindow.Handle.IsValid)
                 {
                     ctrl.Create(this._ParentWindow.Handle);
                 }
@@ -37,7 +37,7 @@ namespace CoreWindowsWrapper
 
             if (this._ParentControl != null)
             {
-                if (this._ParentControl.Handle != IntPtr.Zero)
+                if (this._ParentControl.Handle.IsValid)
                 {
                     ctrl.Create(this._ParentControl.Handle);
                 }

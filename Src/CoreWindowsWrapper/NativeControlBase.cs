@@ -76,6 +76,11 @@ namespace CoreWindowsWrapper
             set => this.Control.ParentHandle = value;
         }
 
+        public bool Visible
+        {
+            get => this.Control.Visible;
+            set => this.Control.Visible = value;
+        }
         public string Name
         {
             get => this.Control.Name;

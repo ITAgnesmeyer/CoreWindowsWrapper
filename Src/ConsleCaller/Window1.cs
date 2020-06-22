@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Globalization;
 using CoreWindowsWrapper;
 using CoreWindowsWrapper.Tools;
+using CoreWindowsWrapper.Win32ApiForm;
 using Diga.Core.Api.Win32;
 
 namespace ConsoleCaller
@@ -25,16 +26,17 @@ namespace ConsoleCaller
         private NativeListBox _ListBox;
         private NativeComboBox _ComboBox;
         private ControlTest _ControlTest;
+        private static string CAPTION = "Dies ist meine Anwnedung";
         protected override void OnBeforeCreate(BeforeWindowCreateEventArgs e)
         {
-            e.Styles.Style = WindowStylesConst.WS_VISIBLE | WindowStylesConst.WS_CAPTION | WindowStylesConst.WS_SYSMENU | WindowStylesConst.WS_SIZEBOX;
-            e.Styles.StyleEx = WindowStylesConst.WS_EX_DLGMODALFRAME;
+            //e.Styles.Style = WindowStylesConst.WS_VISIBLE | WindowStylesConst.WS_CAPTION | WindowStylesConst.WS_SYSMENU | WindowStylesConst.WS_SIZEBOX;
+            //e.Styles.StyleEx = WindowStylesConst.WS_EX_DLGMODALFRAME;
         }
         protected override void InitControls()
         {
 
 
-            this.Text = "Dies ist meine Anwnedung";
+            this.Text = CAPTION;
             this.Name = "Window1";
             //this.StatusBar = false;
             // this.Left = 100;
@@ -45,8 +47,9 @@ namespace ConsoleCaller
             this._ControlTest = new ControlTest();
             this._ControlTest.Width = 200;
             this._ControlTest.Height = 30;
-            this._ControlTest.Left = 500;
-            this._ControlTest.Top = 200;
+            this._ControlTest.Left = 300;
+            this._ControlTest.Top = 80;
+            this._ControlTest.Name = "TEST_CONTAINER";
             
             //this.BackColor = ColorTool.LightGray;
             this.StartUpPosition = WindowsStartupPosition.CenterScreen;
@@ -189,7 +192,7 @@ namespace ConsoleCaller
 
 
             this._TextBox.Clicked += TextBox_Click;
-            //this.Controls.Add(this._ControlTest);
+            
             this.Controls.Add(this._Button);
             this.Controls.Add(this._Button1);
             this.Controls.Add(this._Button3);
@@ -202,10 +205,16 @@ namespace ConsoleCaller
             this.Controls.Add(this._ListBox);
             this.Controls.Add(this._ProgressBar);
             this.Controls.Add(this._Timer);
-
+            this.Controls.Add(this._ControlTest);
             Click += Window1_Click;
             DoubleClick += Window1_DblClick;
             Create += Window1_Create;
+            this.MouseMove += Window1_MoseMove;
+        }
+
+        private void Window1_MoseMove(object sender, MouseMoveEventArgs e)
+        {
+            this.Text = CAPTION + ":" + e.Point.X + "," + e.Point.Y;
         }
 
         private void Button3_Click(object sender, EventArgs e)
@@ -295,6 +304,7 @@ namespace ConsoleCaller
             MessageBox.Show("maximum:" + maxVal.ToString());
             this._ProgressBar.Value = value;
         
+            this._Button3.Visible = !this._Button3.Visible;
            
             this._Button.Enabled = true;
 

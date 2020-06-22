@@ -112,7 +112,7 @@ namespace ConsoleCaller
         private void Window2_DblClick(object sender, MouseClickEventArgs e)
         {
             MessageBox.Show("BrowserID:" + this._WebBrowser.Handle.ToInt32());
-            this.Close();
+            this.Visible=false;
         }
 
         private void Window2_Click(object sender, MouseClickEventArgs e)

@@ -47,7 +47,9 @@ namespace Diga.NativeControls.WebBrowser
             ScriptToExecuteOnDocumentCreatedCompleted;
         public event EventHandler WebViewCreated;
 
-
+        public string BrowserExecutableFolder { get; set; } = "";
+        public string BrowserUserDataFolder { get; set; } = "";
+        public string BrowserAdditionArgs { get; set; } = "";
         public string MonitoringFolder { get; set; } = "";
         public string MonitoringUrl { get; set; } = "";
         public bool EnableMonitoring { get; set; } = false;
@@ -83,7 +85,7 @@ namespace Diga.NativeControls.WebBrowser
             bool created = base.Create(parentId);
             if (this.Handle != IntPtr.Zero)
             {
-                this._WebViewControl = new WebView2Control(this.Handle);
+                this._WebViewControl = new WebView2Control(this.Handle,this.BrowserExecutableFolder, this.BrowserUserDataFolder, this.BrowserAdditionArgs );
                 this._WebViewControl.Created += OnWebWindowCreated;
                 this._WebViewControl.BeforeCreate += OnWebWindowBeforeCreate;
                 this._WebViewControl.AcceleratorKeyPressed += OnAcceleratorKeyPressedIntern;

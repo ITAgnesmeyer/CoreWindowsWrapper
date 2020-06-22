@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Reflection;
 using Diga.Core.Api.Win32;
 using CoreWindowsWrapper.Win32ApiForm;
 
@@ -80,6 +81,7 @@ namespace CoreWindowsWrapper
 
         }
 
+      
         public NativeWindow(IntPtr hookWindowHandle)
         {
             this.ControlType = ControlType.Window;
@@ -183,6 +185,11 @@ namespace CoreWindowsWrapper
             set => this._Window.StatusBar = value;
         }
 
+        public bool Visible
+        {
+            get => this._Window.Visible;
+            set => this._Window.Visible = value;
+        }
         public void Invalidate()
         {
             this._Window.Invlidate();

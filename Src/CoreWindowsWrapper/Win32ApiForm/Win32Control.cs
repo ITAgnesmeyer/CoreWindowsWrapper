@@ -7,10 +7,22 @@ namespace CoreWindowsWrapper.Win32ApiForm
     {
 
         public static int LastControlId { get; set; } = 500;
-        public IntPtr Handle { get; protected set; }
-        public IntPtr ParentHandle { get; internal set; }
+        public ApiHandleRef Handle { get; protected set; } = IntPtr.Zero;
+        public ApiHandleRef ParentHandle { get; internal set; } = IntPtr.Zero;
         public string Text { get; set; }
         public string Name { get; set; }
+
+        private bool _Visible = true;
+
+        public bool Visible
+        {
+            get => this._Visible;
+            set
+            {
+                this._Visible = value;
+                SetControlVisible(this._Visible);
+            }
+        }
         public Point Location
         {
             get => new Point(this.Left, this.Top); 
@@ -28,7 +40,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
             set
             {
                 this._Enabled = value;
-                if (this.Handle != IntPtr.Zero)
+                if (this.Handle.IsValid)
                 {
                     User32.EnableWindow(this.Handle, this._Enabled);
                 }
@@ -105,8 +117,17 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
         private void MoveControlWindow()
         {
-            if (this.Handle == IntPtr.Zero) return;
+            if (!this.Handle.IsValid) return;
             User32.MoveWindow(this.Handle, this.Left, this.Top, this.Width, this.Height, true);
+        }
+
+        private void SetControlVisible(bool visible)
+        {
+            if(!this.Handle.IsValid) return;
+            ShowWindowCommands cmd = ShowWindowCommands.Hide;
+            if (visible)
+                cmd = ShowWindowCommands.Show;
+            User32.ShowWindow(this.Handle, (int)cmd);
         }
 
         private static IntPtr ControlProc(IntPtr hwnd, uint msg, IntPtr wparam, IntPtr lparam)

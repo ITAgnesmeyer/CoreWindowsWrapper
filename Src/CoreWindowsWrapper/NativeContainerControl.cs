@@ -1,4 +1,7 @@
-﻿namespace CoreWindowsWrapper
+﻿using System;
+using System.Collections.Generic;
+
+namespace CoreWindowsWrapper
 {
     public class NativeContainerControl : NativeNoCreateControlBase
     {
@@ -6,6 +9,17 @@
         {
             base.Initialize();
 
+        }
+
+        public override bool Create(IntPtr parentHandle)
+        {
+
+            return base.Create(parentHandle);
+
+            //foreach (KeyValuePair<int, IControl> control in this.Controls)
+            //{
+            //    control.Value
+            //}
         }
     }
 }

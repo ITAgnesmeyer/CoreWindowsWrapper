@@ -27,6 +27,8 @@ namespace ConsoleCaller
                 DefaultContextMenusEnabled = false,
                 DevToolsEnabled = false,
                 EnableMonitoring = true,
+                BrowserExecutableFolder = ".\\edge",
+                BrowserUserDataFolder = "C:\\tmp\\diga",
                 MonitoringFolder = ".\\wwwroot",
                 MonitoringUrl = "http://localhost:1/"
             };

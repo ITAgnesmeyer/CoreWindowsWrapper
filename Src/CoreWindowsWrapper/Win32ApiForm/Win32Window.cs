@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Diga.Core.Api.Win32;
@@ -12,6 +14,95 @@ using Point = Diga.Core.Api.Win32.Point;
 
 namespace CoreWindowsWrapper.Win32ApiForm
 {
+
+    internal class ApiHandleRef : IDisposable
+    {
+        private object _Wrapper;
+        private IntPtr _Handle;
+        private bool disposedValue;
+
+
+
+        public ApiHandleRef(object wrapper, IntPtr handel)
+        {
+            if (wrapper == null)
+                this._Wrapper = this;
+            else
+                this._Wrapper = wrapper;
+
+            this._Handle = handel;
+        }
+        public ApiHandleRef(IntPtr handle) : this(null, handle)
+        {
+        }
+
+        public bool IsValid => this._Handle != IntPtr.Zero;
+        public object Wrapper => this._Wrapper;
+        public IntPtr Handle => this._Handle;
+
+        public static implicit operator IntPtr(ApiHandleRef input)
+        {
+            return input.Handle;
+        }
+
+        public static implicit operator ApiHandleRef(IntPtr input)
+        {
+            return new ApiHandleRef(input);
+        }
+
+        public static bool operator ==(ApiHandleRef left, ApiHandleRef right)
+        {
+            if (left == null) return false;
+            if (right == null) return false;
+            return left.Handle == right.Handle;
+        }
+
+        public static bool operator !=(ApiHandleRef left, ApiHandleRef right)
+        {
+            if (left == null) return false;
+            if (right == null) return false;
+            return left.Handle != right.Handle;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is ApiHandleRef)) return false;
+            ApiHandleRef right = (ApiHandleRef)obj;
+            return this == right;
+        }
+
+        public override int GetHashCode() => base.GetHashCode();
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    this._Handle = IntPtr.Zero;
+                    this._Wrapper = null;
+                }
+
+                // TODO: Nicht verwaltete Ressourcen (nicht verwaltete Objekte) freigeben und Finalizer überschreiben
+                // TODO: Große Felder auf NULL setzen
+                disposedValue = true;
+            }
+        }
+
+        // // TODO: Finalizer nur überschreiben, wenn "Dispose(bool disposing)" Code für die Freigabe nicht verwalteter Ressourcen enthält
+        // ~PinnedApiRef()
+        // {
+        //     // Ändern Sie diesen Code nicht. Fügen Sie Bereinigungscode in der Methode "Dispose(bool disposing)" ein.
+        //     Dispose(disposing: false);
+        // }
+
+        public void Dispose()
+        {
+            // Ändern Sie diesen Code nicht. Fügen Sie Bereinigungscode in der Methode "Dispose(bool disposing)" ein.
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
+    }
     internal sealed class Win32Window : IWindowClass, IDisposable
     {
 
@@ -34,19 +125,28 @@ namespace CoreWindowsWrapper.Win32ApiForm
         internal static readonly Dictionary<IntPtr, Win32Window> WindowList = new Dictionary<IntPtr, Win32Window>();
         private static readonly Stack<Win32Window> WindowStack = new Stack<Win32Window>();
         private static readonly Stack<IntPtr> GdiObjects = new Stack<IntPtr>();
-        private static IntPtr InstanceHandle { get; set; } = IntPtr.Zero;
+        private static ApiHandleRef InstanceHandle { get; set; } = IntPtr.Zero;
         public ControlCollection Controls { get; private set; }
         private readonly MenuItemCollection _FlatMenuItems;
-        public IntPtr Handle { get; private set; }
-        public IntPtr ParentHandle { get; set; }
+        public ApiHandleRef Handle { get; private set; } = IntPtr.Zero;
+        public ApiHandleRef ParentHandle { get; set; } = IntPtr.Zero;
         public int Color { get; set; }
         public string Text { get; set; }
         public string Name { get; set; }
         private string WindowClassName { get; set; }
-        private IntPtr StatusBarHandle { get; set; } = IntPtr.Zero;
-        private IntPtr ToolBarHandle { get; set; } = IntPtr.Zero;
-
+        private ApiHandleRef StatusBarHandle { get; set; } = IntPtr.Zero;
+        private ApiHandleRef ToolBarHandle { get; set; } = IntPtr.Zero;
+        private bool _Visible;
         private Task _DispatchTask;
+
+        private void SetWindowVisible(bool visible)
+        {
+            if (!this.Handle.IsValid) return;
+            ShowWindowCommands cmd = ShowWindowCommands.Show;
+            if (visible == false)
+                cmd = ShowWindowCommands.Hide;
+            User32.ShowWindow(this.Handle, (int)cmd);
+        }
 
         public Point Location
         {
@@ -115,7 +215,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
         private readonly WndProc _DelegateWndProc = WndProc;
         private readonly WndProc _HookWndProc = HookWndProc;
-        private readonly IntPtr _OrgWndProc = IntPtr.Zero;
+        private readonly ApiHandleRef _OrgWndProc = IntPtr.Zero;
         public bool IsHookedWindow { get; set; }
         private int _Left = unchecked((int)0x80000000);
         private int _Top = unchecked((int)0x80000000);
@@ -130,6 +230,22 @@ namespace CoreWindowsWrapper.Win32ApiForm
             return new Win32Window(hookHandle);
         }
 
+       
+
+        [HandleProcessCorruptedStateExceptions]
+        private void SetClassInfo(string className)
+        {
+            try
+            {
+                User32.GetClassInfoEx(Win32Window.InstanceHandle, className, out WndclassEx wclass);
+                this.WindowClass = wclass;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+
+            }
+        }
         private Win32Window(IntPtr hookHandle)
         {
             this.Handle = hookHandle;
@@ -143,14 +259,19 @@ namespace CoreWindowsWrapper.Win32ApiForm
             this.WindowClassName = className;
             this.Name = className;
 
-            Win32Window.InstanceHandle = Marshal.GetHINSTANCE(GetType().Module);
 
-            User32.GetClassInfoEx(Win32Window.InstanceHandle, className, out WndclassEx wclass);
-            this.WindowClass = wclass;
+            User32.GetWindowThreadProcessId(hookHandle, out uint procId);
+            var process = Process.GetProcessById((int)procId);
+            Win32Window.InstanceHandle = process.Handle;
+
+
+            SetClassInfo(className);
+
+
 
             this.ParentHandle = User32.GetWindowLongPtr(hookHandle, GWL.GWL_HWNDPARENT);
             IntPtr stylePtr = User32.GetWindowLongPtr(hookHandle, GWL.GWL_EXSTYLE);
-            this.Style = (uint)(stylePtr.ToInt32());
+            this.Style = (uint)stylePtr.ToInt32();
             if (User32.GetWindowRect(hookHandle, out Rect rect))
             {
                 this._Left = rect.Left;
@@ -166,7 +287,9 @@ namespace CoreWindowsWrapper.Win32ApiForm
             WindowList.Add(this.Handle, this);
 
             this._OrgWndProc = User32.SetWindowLongPtr(hookHandle, GWL.GWL_WNDPROC, windProcPtr);
+
         }
+       
 
         public Win32Window(bool isMainWindow = false)
         {
@@ -191,7 +314,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
         private void MoveMyWindow()
         {
-            if (this.Handle == IntPtr.Zero) return;
+            if (!this.Handle.IsValid) return;
             User32.MoveWindow(this.Handle, this.Left, this.Top, this.Width, this.Height, true);
         }
 
@@ -297,7 +420,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
             if (asControl)
             {
-                if (this.ParentHandle != IntPtr.Zero)
+                if (this.ParentHandle.IsValid)
                     User32.SetParent(this.Handle, this.ParentHandle);
             }
 
@@ -332,7 +455,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
             OnBeforeCreate(ev);
             this.Style = ev.Styles.Style;
             this.StyleEx = ev.Styles.StyleEx;
-            
+
         }
 
         private void CreateDispatchTask()
@@ -375,7 +498,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
                     }
             }
         }
-
+        [HandleProcessCorruptedStateExceptions]
         public void Dispatch()
         {
 
@@ -399,15 +522,20 @@ namespace CoreWindowsWrapper.Win32ApiForm
                         }
 
                     }
+                    catch (AccessViolationException vex)
+                    {
+                        Debug.Print(vex.ToString());
+                        Console.WriteLine("AccessViolationException=>" + vex.StackTrace);
+                    }
 #pragma warning disable 618
                     catch (ExecutionEngineException e)
 #pragma warning restore 618
                     {
-                        Console.WriteLine(e.StackTrace);
+                        Console.WriteLine("ExecutionEngineException=>" + e.StackTrace);
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine(e.StackTrace);
+                        Console.WriteLine("Exception=>" + e.Message + "--Stack:" + e.StackTrace);
                     }
                     if (WindowList.Count == 0) break;
                 }
@@ -499,8 +627,8 @@ namespace CoreWindowsWrapper.Win32ApiForm
             }
 
             this.Menu?.Destroy();
-            if (this.ToolBarHandle != IntPtr.Zero) User32.DestroyWindow(this.ToolBarHandle);
-            if (this.StatusBarHandle != IntPtr.Zero) User32.DestroyWindow(this.StatusBarHandle);
+            if (this.ToolBarHandle.IsValid) User32.DestroyWindow(this.ToolBarHandle);
+            if (this.StatusBarHandle.IsValid) User32.DestroyWindow(this.StatusBarHandle);
             User32.DestroyWindow(this.Handle);
 
             if (User32.UnregisterClass(this.WindowClassName, Process.GetCurrentProcess().Handle))
@@ -510,6 +638,16 @@ namespace CoreWindowsWrapper.Win32ApiForm
             this.Handle = IntPtr.Zero;
         }
 
+        public bool Visible
+        {
+            get => this._Visible;
+            set
+            {
+                this._Visible = value;
+                SetWindowVisible(this._Visible);
+            }
+
+        }
         private static void SetWindowDestroyed(IntPtr hWnd)
         {
             if (WindowList.ContainsKey(hWnd))
@@ -867,7 +1005,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
         {
             if (this.IsHookedWindow)
             {
-                if (this._OrgWndProc != IntPtr.Zero)
+                if (this._OrgWndProc.IsValid)
                 {
                     User32.SetWindowLongPtr(this.Handle, GWL.GWL_WNDPROC, _OrgWndProc);
                 }
