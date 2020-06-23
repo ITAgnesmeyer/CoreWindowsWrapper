@@ -1,23 +1,38 @@
 # CoreWindowsWrapper
-### Native Windows Wrapper for .NET-Core
+### Native Windows Wrapper for .NET-Core and .Framework
 
 CoreWindowsWrapper is a DLL you can use to create Core Applications showing Dialogs without using System.Windows.Forms.
 The Project uses the Windows - API to create Native Windows. I personally use this DLL to create Copy-Deploy-Setups.
 
-This is a Visual Stuido 2019 Preview Project using NETCore 3.0-preiew.
-With NETCore 3.0 you can create Windows-Applications.
+~~This is a Visual Stuido 2019 Preview Project using NETCore 3.0-preiew.
+With NETCore 3.0 you can create Windows-Applications.~~
 
-If You want to use this with NETCore 2.X you can Publish the native app.
-Go into the Publish-Folder and modify the EXE SUBSYSTEM. This changes the Comsole-Application to a Windows-Application:)
+~~If You want to use this with NETCore 2.X you can Publish the native app.
+Go into the Publish-Folder and modify the EXE SUBSYSTEM. This changes the Comsole-Application to a Windows-Application:)~~
 
-```batch
- editbin.exe ConsleCaller.exe /SUBSYSTEM:WINDOWS
-```
-If you want to enable vusual Styles you can use MT.EXE
 
-```batch
- mt.exe -manifest app.manifest -outputresource:ConsoleCaller.exe;#1
- ```
+~~editbin.exe ConsleCaller.exe /SUBSYSTEM:WINDOWS~~
+
+~~If you want to enable vusual Styles you can use MT.EXE~~
+
+
+~~mt.exe -manifest app.manifest -outputresource:ConsoleCaller.exe;#1~~
+
+**Please do not use core 2.x anymore. Microsoft discontinues support for the version.**
+Look at the following page:
+[https://dotnet.microsoft.com/download/dotnet-core](https://dotnet.microsoft.com/download/dotnet-core)
+
+currently .NET Core 3.1 is recommanded
+
+.Net 5.0 will be released soon!
+
+
+
+Procedure from .Core 3.1:
+---
+1. Create a project from the Type Console (Core). 
+2. Change the output type from Console to Windows application in the project properties.
+
 #### Application with Styling enabled.
 If the application contains the Manifest it looks like this.
 
@@ -106,5 +121,5 @@ namespace ConsleCaller
 I hope this helps in many Projects. 
 
 ##### Dipl.-Ing.(FH) Guido Agnesmeyer
-##### January 2019
+##### June 2020
 
