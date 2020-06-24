@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -18,8 +16,8 @@ namespace CoreWindowsWrapper.Win32ApiForm
     internal class ApiHandleRef : IDisposable
     {
         private object _Wrapper;
-        private IntPtr _Handle;
-        private bool disposedValue;
+        private  IntPtr _Handle;
+        private bool _DisposedValue;
 
 
 
@@ -52,15 +50,15 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
         public static bool operator ==(ApiHandleRef left, ApiHandleRef right)
         {
-            if (left == null) return false;
-            if (right == null) return false;
+            if (((object)left) == null) return false;
+            if (((object)right) == null) return false;
             return left.Handle == right.Handle;
         }
 
         public static bool operator !=(ApiHandleRef left, ApiHandleRef right)
         {
-            if (left == null) return false;
-            if (right == null) return false;
+            if (((object)left) == null) return false;
+            if (((object)right) == null) return false;
             return left.Handle != right.Handle;
         }
 
@@ -71,11 +69,14 @@ namespace CoreWindowsWrapper.Win32ApiForm
             return this == right;
         }
 
-        public override int GetHashCode() => base.GetHashCode();
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!this._DisposedValue)
             {
                 if (disposing)
                 {
@@ -83,22 +84,13 @@ namespace CoreWindowsWrapper.Win32ApiForm
                     this._Wrapper = null;
                 }
 
-                // TODO: Nicht verwaltete Ressourcen (nicht verwaltete Objekte) freigeben und Finalizer überschreiben
-                // TODO: Große Felder auf NULL setzen
-                disposedValue = true;
+            
+                this._DisposedValue = true;
             }
         }
 
-        // // TODO: Finalizer nur überschreiben, wenn "Dispose(bool disposing)" Code für die Freigabe nicht verwalteter Ressourcen enthält
-        // ~PinnedApiRef()
-        // {
-        //     // Ändern Sie diesen Code nicht. Fügen Sie Bereinigungscode in der Methode "Dispose(bool disposing)" ein.
-        //     Dispose(disposing: false);
-        // }
-
         public void Dispose()
         {
-            // Ändern Sie diesen Code nicht. Fügen Sie Bereinigungscode in der Methode "Dispose(bool disposing)" ein.
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
