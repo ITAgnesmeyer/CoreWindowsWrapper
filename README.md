@@ -120,7 +120,8 @@ namespace ConsleCaller
 
 Example Videos:
 ---
-[How to crate a control with CoreWindowsWrapper](https://www.youtube.com/watch?v=pUK0cw0OkMo)
+1. [How to crate a control with CoreWindowsWrapper](https://www.youtube.com/watch?v=pUK0cw0OkMo)
+2. [Visual Styles](https://www.youtube.com/watch?v=XMHUsqDBWR0)
 
 I hope this helps in many Projects. 
 
