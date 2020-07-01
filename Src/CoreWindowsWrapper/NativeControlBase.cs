@@ -51,7 +51,7 @@ namespace CoreWindowsWrapper
             set => this.Control.TypeIdentifyer = value;
         }
 
-        internal CommonControls CommonControlType
+        protected CommonControls CommonControlType
         {
             get => this.Control.CommonControlType;
             set => this.Control.CommonControlType = value;

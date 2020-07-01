@@ -304,6 +304,17 @@ namespace CoreWindowsWrapper.Win32ApiForm
             this.Color = 0xF0F0F0;
         }
 
+        public Rect GetClientRect()
+        {
+            Rect rect = new Rect(this.Left, this.Top, this.Width, this.Height);
+            if (User32.GetClientRect(this.Handle, out Rect rc))
+            {
+                rect = rc;
+            }
+            return rect;
+        }
+
+
         private void MoveMyWindow()
         {
             if (!this.Handle.IsValid) return;

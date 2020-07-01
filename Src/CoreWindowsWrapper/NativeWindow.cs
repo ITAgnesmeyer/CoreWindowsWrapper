@@ -19,6 +19,18 @@ namespace CoreWindowsWrapper
     }
     public class NativeWindow : IControl, IDisposable
     {
+
+        public static bool TryGetWindow(IntPtr hWnd, out NativeWindow wnd)
+        {
+            if (Win32Window.WindowList.ContainsKey(hWnd))
+            {
+                var item = Win32Window.WindowList[hWnd];
+                wnd = new NativeWindow(item);
+                return true;
+            }
+            wnd = null;
+            return false;
+        }
         private Win32Window _Window;
         private bool IsHookWindow
         {
@@ -74,6 +86,14 @@ namespace CoreWindowsWrapper
         public event EventHandler<SizeEventArgs> Size;
         public event EventHandler<PaintEventArgs> Paint;
 
+
+        internal NativeWindow(Win32Window wnd)
+        {
+            this._Window = wnd;
+            InitEvents();
+
+
+        }
         public NativeWindow()
         {
             this.ControlType = ControlType.Window;
@@ -194,6 +214,9 @@ namespace CoreWindowsWrapper
         {
             this._Window.Invlidate();
         }
+
+       
+
         public void Redraw()
         {
             this._Window.Redraw();
@@ -484,7 +507,7 @@ namespace CoreWindowsWrapper
             Size?.Invoke(this, e);
         }
 
-        protected Rect GetClientRect()
+        public Rect GetClientRect()
         {
             return this._Window.GetCleanClientRect();
         }

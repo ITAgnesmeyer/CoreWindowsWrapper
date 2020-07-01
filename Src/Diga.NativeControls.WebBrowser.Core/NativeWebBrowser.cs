@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using CoreWindowsWrapper;
 using Diga.Core.Api.Win32;
-
+using Diga.WebView2.Interop;
 using Diga.WebView2.Wrapper;
 using Diga.WebView2.Wrapper.EventArguments;
 using Diga.WebView2.Wrapper.Types;
@@ -13,6 +13,7 @@ namespace Diga.NativeControls.WebBrowser
 {
     public class NativeWebBrowser : NativeControlBase
     {
+        private NativeWindow _ParentNativeWindow = null;
         private WebView2Control _WebViewControl;
         private string _HtmlContent;
         private bool _DefaultContextMenusEnabled = true;
@@ -46,7 +47,7 @@ namespace Diga.NativeControls.WebBrowser
         public event EventHandler<AddScriptToExecuteOnDocumentCreatedCompletedEventArgs>
             ScriptToExecuteOnDocumentCreatedCompleted;
         public event EventHandler WebViewCreated;
-
+        public bool AutoDock { get; set; } = true;
         public string BrowserExecutableFolder { get; set; } = "";
         public string BrowserUserDataFolder { get; set; } = "";
         public string BrowserAdditionArgs { get; set; } = "";
@@ -85,7 +86,7 @@ namespace Diga.NativeControls.WebBrowser
             bool created = base.Create(parentId);
             if (this.Handle != IntPtr.Zero)
             {
-                this._WebViewControl = new WebView2Control(this.Handle,this.BrowserExecutableFolder, this.BrowserUserDataFolder, this.BrowserAdditionArgs );
+                this._WebViewControl = new WebView2Control(this.Handle, this.BrowserExecutableFolder, this.BrowserUserDataFolder, this.BrowserAdditionArgs);
                 this._WebViewControl.Created += OnWebWindowCreated;
                 this._WebViewControl.BeforeCreate += OnWebWindowBeforeCreate;
                 this._WebViewControl.AcceleratorKeyPressed += OnAcceleratorKeyPressedIntern;
@@ -231,7 +232,7 @@ namespace Diga.NativeControls.WebBrowser
             OnAcceleratorKeyPressed(e);
         }
 
-        private void OnWebWindowBeforeCreate(object sender,BeforeCreateEventArgs e)
+        private void OnWebWindowBeforeCreate(object sender, BeforeCreateEventArgs e)
         {
             e.Settings.AreDefaultContextMenusEnabled = new CBOOL(this._DefaultContextMenusEnabled);
             e.Settings.AreDefaultScriptDialogsEnabled = new CBOOL(this._DefaultScriptDialogsEnabled);
@@ -244,7 +245,34 @@ namespace Diga.NativeControls.WebBrowser
         public void DoDock()
         {
             if (this.IsCreated)
+            {
+
+                if (this.AutoDock)
+                {
+                    if (NativeWindow.TryGetWindow(this.ParentHandle, out NativeWindow wnd))
+                    {
+                        Rect rect = wnd.GetClientRect();
+                        this.Left = rect.Left;
+                        this.Top = rect.Top;
+                        this.Width = rect.Width;
+                        this.Height = rect.Height;
+                    }
+                    else
+                    {
+                        if (User32.GetClientRect(this.ParentHandle, out Rect rect))
+                        {
+                            this.Left = rect.Left;
+                            this.Top = rect.Top;
+                            this.Width = rect.Width;
+                            this.Height = rect.Height;
+                        }
+
+                    }
+                }
                 this._WebViewControl.DockToParent();
+            }
+
+
         }
 
         private void OnWebWindowCreated(object sender, EventArgs e)
@@ -658,7 +686,21 @@ namespace Diga.NativeControls.WebBrowser
 
         protected virtual void OnWebViewCreated()
         {
+            this.DoDock();
+            if (this.AutoDock)
+            {
+                if (NativeWindow.TryGetWindow(this.ParentHandle, out NativeWindow wnd))
+                {
+                    this._ParentNativeWindow = wnd;
+                    this._ParentNativeWindow.Size += OnParentSize;
+                }
+            }
             WebViewCreated?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OnParentSize(object sender, SizeEventArgs e)
+        {
+            this.DoDock();
         }
     }
 }

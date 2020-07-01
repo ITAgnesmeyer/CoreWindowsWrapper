@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using CoreWindowsWrapper;
+using Diga.Core.Api.Win32;
 using Diga.NativeControls.WebBrowser;
 using Diga.WebView2.Wrapper.EventArguments;
 
@@ -10,13 +11,15 @@ namespace ConsoleCaller
         private NativeWebBrowser _Browser;
         protected override void InitControls()
         {
+            base.InitControls();
             this.Text = "WebBrowser";
             this.Name = "BrowserWindow";
             this.StatusBar = true;
             this.IconFile = "Browser.ico";
             this.Width = 600;
             this.Height = 400;
-            
+            this.StatusBar = true;
+            this.StartUpPosition = WindowsStartupPosition.CenterScreen;
             
             this._Browser = new NativeWebBrowser()
             {
@@ -27,10 +30,11 @@ namespace ConsoleCaller
                 DefaultContextMenusEnabled = false,
                 DevToolsEnabled = false,
                 EnableMonitoring = true,
-                BrowserExecutableFolder = ".\\edge",
+                //BrowserExecutableFolder = ".\\edge",
                 BrowserUserDataFolder = "C:\\tmp\\diga",
                 MonitoringFolder = ".\\wwwroot",
-                MonitoringUrl = "http://localhost:1/"
+                MonitoringUrl = "http://localhost:1/",
+                AutoDock = true
             };
             this._Browser.DocumentTitleChanged += OnDocumentTitleChanged;
             this._Browser.NavigationStart += OnNavigationStart;
@@ -38,6 +42,7 @@ namespace ConsoleCaller
             this._Browser.WebResourceRequested += OnWebResourceRequested;
             this.Controls.Add(this._Browser);
         }
+        
         private void OnWebResourceRequested(object sender, WebResourceRequestedEventArgs e)
         {
             Debug.Print(e.Request.Uri);
@@ -60,15 +65,16 @@ namespace ConsoleCaller
             this.Text = this._Browser.DocumentTitle;
         }
         
-        protected override void OnSize(SizeEventArgs e)
-        {
-            if (e.Width == 0) return;
-            base.OnSize(e);
-            this._Browser.Left = e.X;
-            this._Browser.Top = e.Y;
-            this._Browser.Width = e.Width;
-            this._Browser.Height = e.Height;
-            this._Browser.DoDock();
-        }
+        //protected override void OnSize(SizeEventArgs e)
+        //{
+        //    if (e.Width == 0) return;
+        //    base.OnSize(e);
+        //    //Rect rect = this.GetClientRect();
+        //    //this.Left = rect.Left;
+        //    //this.Top = rect.Top;
+        //    //this.Height = rect.Height;
+        //    //this.Width = rect.Width;
+        //    //this._Browser.DoDock();
+        //}
     }
 }

@@ -11,7 +11,7 @@ namespace CoreWindowsWrapper
             base.Initialize();
             this.ControlType = Win32ApiForm.ControlType.Edit;
             this.TypeIdentifier = "edit";
-
+            this.Style |= EditBoxStyles.ES_AUTOHSCROLL;
 
             this.BackColor = Tools.ColorTool.White;
             this.ForeColor = Tools.ColorTool.Black;

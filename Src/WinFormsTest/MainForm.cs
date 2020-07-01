@@ -33,11 +33,11 @@ namespace WinFormsTest
         {
             if (e.Width == 0) return;
             
-            this._WebBrowser.Left = e.X;
-            this._WebBrowser.Top = e.Y;
-            this._WebBrowser.Width = e.Width;
-            this._WebBrowser.Height = e.Height;
-            this._WebBrowser.DoDock();
+            //this._WebBrowser.Left = e.X;
+            //this._WebBrowser.Top = e.Y;
+            //this._WebBrowser.Width = e.Width;
+            //this._WebBrowser.Height = e.Height;
+            //this._WebBrowser.DoDock();
             this.Refresh();
         }
 
