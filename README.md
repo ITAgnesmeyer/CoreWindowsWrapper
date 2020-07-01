@@ -118,6 +118,10 @@ namespace ConsleCaller
 }
 ```
 
+Example Videos:
+---
+[How to crate a control with CoreWindowsWrapper](https://www.youtube.com/watch?v=pUK0cw0OkMo)
+
 I hope this helps in many Projects. 
 
 ##### Dipl.-Ing.(FH) Guido Agnesmeyer
