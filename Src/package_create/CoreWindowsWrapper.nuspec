@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>CoreWindowsWrapper</id>
-    <version>1.0.43</version>
+    <version>1.0.44</version>
     <authors>Dipl.-Ing.(FH) Guido Agnesmeyer</authors>
     <owners>Dipl.-Ing.(FH) Guido Agnesmeyer</owners>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
