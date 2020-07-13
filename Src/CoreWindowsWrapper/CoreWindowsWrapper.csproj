@@ -48,7 +48,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Diga.Core.Api.Win32.Core" Version="1.0.20" />
+    <PackageReference Include="Diga.Core.Api.Win32.Core" Version="1.0.21" />
   </ItemGroup>
 
   <ItemGroup>

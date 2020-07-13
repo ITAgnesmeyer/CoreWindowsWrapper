@@ -42,7 +42,7 @@ namespace CoreWindowsWrapper
                 this._ParentHandle = control.Handle;
 
 
-            BROWSEINFO bf = new BROWSEINFO();
+            BrowseInfo bf = new BrowseInfo();
             bf.hwndOwner = this._ParentHandle;
             bf.pidlRoot = IntPtr.Zero;
             bf.lpszTitle = this.Caption;

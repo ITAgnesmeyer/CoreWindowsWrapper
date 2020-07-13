@@ -101,6 +101,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
         //[DllImport("user32.dll", EntryPoint = "CreateWindowEx", CharSet = CharSet.Auto, SetLastError =true)]
         //public static extern IntPtr CreateWindowEx(uint dwExStyle, [In]string lpClassName, [In] string lpWindowName, uint dwStyle, int X, int Y, int nWidth, int nHeight, [In] IntPtr hWndParent, [In] IntPtr hMenu, [In] IntPtr hInstance, [In] IntPtr lpParam);
 
+       
 
         public bool IsMainWindow { get; set; }
         public event EventHandler<BeforeWindowCreateEventArgs> BeforeCreate;
@@ -131,6 +132,20 @@ namespace CoreWindowsWrapper.Win32ApiForm
         private bool _Visible;
         private Task _DispatchTask;
 
+        private static ApiHandleRef TryGetMainWindow()
+        {
+            ApiHandleRef mainHwnd = IntPtr.Zero;
+            foreach (KeyValuePair<IntPtr, Win32Window> keyValuePair in WindowList)
+            {
+                if (keyValuePair.Value.IsMainWindow)
+                {
+                    mainHwnd = keyValuePair.Key;
+                    break;
+                }
+            }
+            
+            return mainHwnd;
+        }
         private void SetWindowVisible(bool visible)
         {
             if (!this.Handle.IsValid) return;
@@ -508,8 +523,11 @@ namespace CoreWindowsWrapper.Win32ApiForm
             lock (this)
             {
                 int br = 0;
+                ApiHandleRef mainWindowHandle = TryGetMainWindow();
                 while ((br = User32.GetMessage(out var msg, IntPtr.Zero, 0, 0)) != 0)
                 {
+                    if (!mainWindowHandle.IsValid)
+                        mainWindowHandle = TryGetMainWindow();
 
                     try
                     {
@@ -520,8 +538,20 @@ namespace CoreWindowsWrapper.Win32ApiForm
                         }
                         else
                         {
-                            User32.TranslateMessage(ref msg);
-                            User32.DispatchMessage(ref msg);
+                            if (mainWindowHandle.IsValid)
+                            {
+                                if (!User32.IsDialogMessage(mainWindowHandle, ref msg))
+                                {
+                                    User32.TranslateMessage(ref msg);
+                                    User32.DispatchMessage(ref msg);
+                                }
+                            }
+                            else
+                            {
+                                User32.TranslateMessage(ref msg);
+                                User32.DispatchMessage(ref msg);
+                                
+                            }
                         }
 
                     }

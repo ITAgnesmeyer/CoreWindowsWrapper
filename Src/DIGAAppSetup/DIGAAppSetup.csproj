@@ -17,7 +17,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CoreWindowsWrapper" Version="1.0.41" />
+    <PackageReference Include="CoreWindowsWrapper" Version="1.0.44" />
   </ItemGroup>
 
   <ItemGroup>
