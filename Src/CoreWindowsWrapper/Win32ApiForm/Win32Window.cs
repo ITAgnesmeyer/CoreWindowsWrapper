@@ -13,88 +13,88 @@ using Point = Diga.Core.Api.Win32.Point;
 namespace CoreWindowsWrapper.Win32ApiForm
 {
 
-    internal class ApiHandleRef : IDisposable
-    {
-        private object _Wrapper;
-        private  IntPtr _Handle;
-        private bool _DisposedValue;
+    //internal class ApiHandleRef : IDisposable
+    //{
+    //    private object _Wrapper;
+    //    private  IntPtr _Handle;
+    //    private bool _DisposedValue;
 
 
 
-        public ApiHandleRef(object wrapper, IntPtr handel)
-        {
-            if (wrapper == null)
-                this._Wrapper = this;
-            else
-                this._Wrapper = wrapper;
+    //    public ApiHandleRef(object wrapper, IntPtr handel)
+    //    {
+    //        if (wrapper == null)
+    //            this._Wrapper = this;
+    //        else
+    //            this._Wrapper = wrapper;
 
-            this._Handle = handel;
-        }
-        public ApiHandleRef(IntPtr handle) : this(null, handle)
-        {
-        }
+    //        this._Handle = handel;
+    //    }
+    //    public ApiHandleRef(IntPtr handle) : this(null, handle)
+    //    {
+    //    }
 
-        public bool IsValid => this._Handle != IntPtr.Zero;
-        public object Wrapper => this._Wrapper;
-        public IntPtr Handle => this._Handle;
+    //    public bool IsValid => this._Handle != IntPtr.Zero;
+    //    public object Wrapper => this._Wrapper;
+    //    public IntPtr Handle => this._Handle;
 
-        public static implicit operator IntPtr(ApiHandleRef input)
-        {
-            return input.Handle;
-        }
+    //    public static implicit operator IntPtr(ApiHandleRef input)
+    //    {
+    //        return input.Handle;
+    //    }
 
-        public static implicit operator ApiHandleRef(IntPtr input)
-        {
-            return new ApiHandleRef(input);
-        }
+    //    public static implicit operator ApiHandleRef(IntPtr input)
+    //    {
+    //        return new ApiHandleRef(input);
+    //    }
 
-        public static bool operator ==(ApiHandleRef left, ApiHandleRef right)
-        {
-            if (((object)left) == null) return false;
-            if (((object)right) == null) return false;
-            return left.Handle == right.Handle;
-        }
+    //    public static bool operator ==(ApiHandleRef left, ApiHandleRef right)
+    //    {
+    //        if (((object)left) == null) return false;
+    //        if (((object)right) == null) return false;
+    //        return left.Handle == right.Handle;
+    //    }
 
-        public static bool operator !=(ApiHandleRef left, ApiHandleRef right)
-        {
-            if (((object)left) == null) return false;
-            if (((object)right) == null) return false;
-            return left.Handle != right.Handle;
-        }
+    //    public static bool operator !=(ApiHandleRef left, ApiHandleRef right)
+    //    {
+    //        if (((object)left) == null) return false;
+    //        if (((object)right) == null) return false;
+    //        return left.Handle != right.Handle;
+    //    }
 
-        public override bool Equals(object obj)
-        {
-            if (!(obj is ApiHandleRef)) return false;
-            ApiHandleRef right = (ApiHandleRef)obj;
-            return this == right;
-        }
+    //    public override bool Equals(object obj)
+    //    {
+    //        if (!(obj is ApiHandleRef)) return false;
+    //        ApiHandleRef right = (ApiHandleRef)obj;
+    //        return this == right;
+    //    }
 
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
+    //    public override int GetHashCode()
+    //    {
+    //        return base.GetHashCode();
+    //    }
 
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this._DisposedValue)
-            {
-                if (disposing)
-                {
-                    this._Handle = IntPtr.Zero;
-                    this._Wrapper = null;
-                }
+    //    protected virtual void Dispose(bool disposing)
+    //    {
+    //        if (!this._DisposedValue)
+    //        {
+    //            if (disposing)
+    //            {
+    //                this._Handle = IntPtr.Zero;
+    //                this._Wrapper = null;
+    //            }
 
             
-                this._DisposedValue = true;
-            }
-        }
+    //            this._DisposedValue = true;
+    //        }
+    //    }
 
-        public void Dispose()
-        {
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
-        }
-    }
+    //    public void Dispose()
+    //    {
+    //        Dispose(disposing: true);
+    //        GC.SuppressFinalize(this);
+    //    }
+    //}
     internal sealed class Win32Window : IWindowClass, IDisposable
     {
 
@@ -131,7 +131,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
         private ApiHandleRef ToolBarHandle { get; set; } = IntPtr.Zero;
         private bool _Visible;
         private Task _DispatchTask;
-
+        public static int DispatchCounter{get;internal set;}
         private static ApiHandleRef TryGetMainWindow()
         {
             ApiHandleRef mainHwnd = IntPtr.Zero;
@@ -352,7 +352,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 cbClsExtra = 0,
                 cbWndExtra = 0,
                 hInstance = Process.GetCurrentProcess().Handle,
-                hIcon = Tools.ImageTool.SaveLoadIconFromFile(this.IconFile),
+                hIcon = string.IsNullOrEmpty(this.IconFile) ?  Tools.ImageTool.LoadAppIcon(): Tools.ImageTool.SafeLoadIconFromFile(this.IconFile) ,
                 hCursor = User32.LoadCursor(IntPtr.Zero, (int)Win32ApiCursors.IDC_ARROW),
                 lpszMenuName = null,
                 lpszClassName = this.WindowClassName,
@@ -461,7 +461,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
             if (!this.IsMainWindow)
             {
-                CreateDispatchTask();
+                //CreateDispatchTask();
             }
 
             return true;
@@ -519,7 +519,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
         [HandleProcessCorruptedStateExceptions]
         public void Dispatch()
         {
-
+            DispatchCounter++;
             lock (this)
             {
                 int br = 0;
@@ -573,6 +573,8 @@ namespace CoreWindowsWrapper.Win32ApiForm
                     if (WindowList.Count == 0) break;
                 }
             }
+
+            DispatchCounter--;
         }
 
         private static IntPtr HookWndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)

@@ -52,7 +52,7 @@ namespace DIGAAppSetup
             this.BackColor = CoreWindowsWrapper.Tools.ColorTool.White;
             this.Name = "MainForm";
             this.Text = "Welcome to the Setup";
-            this.IconFile = "app.ico";
+            //this.IconFile = "app.ico";
             this.StartUpPosition = WindowsStartupPosition.CenterScreen;
             this.Create += MainFrom_Create;
             //_LabelCaption

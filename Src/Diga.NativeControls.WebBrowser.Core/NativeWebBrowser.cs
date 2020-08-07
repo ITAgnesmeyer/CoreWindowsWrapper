@@ -4,6 +4,7 @@ using System.IO;
 using CoreWindowsWrapper;
 using Diga.Core.Api.Win32;
 using Diga.WebView2.Interop;
+using Diga.WebView2.WinForms;
 using Diga.WebView2.Wrapper;
 using Diga.WebView2.Wrapper.EventArguments;
 using Diga.WebView2.Wrapper.Types;

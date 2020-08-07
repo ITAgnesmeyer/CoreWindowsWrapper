@@ -20,7 +20,7 @@ namespace CoreWindowsWrapper
         {
             if(string.IsNullOrEmpty(this.BitMap)) return;
             if(!File.Exists(this.BitMap)) return;
-            IntPtr hBmp = Tools.ImageTool.SaveLoadBitmapFromFile(this.BitMap);
+            IntPtr hBmp = Tools.ImageTool.SafeLoadBitmapFromFile(this.BitMap);
             User32.SendMessage(this.Handle, StaticControlMessages.STM_SETIMAGE, ImageTypeConst.IMAGE_BITMAP, hBmp);
 
         }

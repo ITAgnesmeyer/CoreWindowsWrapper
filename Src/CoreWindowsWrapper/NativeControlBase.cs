@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Diga.Core.Api.Win32;
 using CoreWindowsWrapper.Win32ApiForm;

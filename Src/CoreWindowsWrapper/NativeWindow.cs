@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Reflection;
 using Diga.Core.Api.Win32;
 using CoreWindowsWrapper.Win32ApiForm;
 
@@ -453,6 +452,11 @@ namespace CoreWindowsWrapper
             if (this.ParentWindow != null)
                 this.ParentWindow.Enabled = false;
             this._Window.Create();
+            if (Win32Window.DispatchCounter <= 0)
+            {
+                this._Window.Dispatch();
+            }
+            
         }
         public void Show()
         {
