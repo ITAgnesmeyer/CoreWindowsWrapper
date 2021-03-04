@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>CoreWindowsWrapper</id>
-    <version>1.0.46</version>
+    <version>1.0.47</version>
     <authors>Dipl.-Ing.(FH) Guido Agnesmeyer</authors>
     <owners>Dipl.-Ing.(FH) Guido Agnesmeyer</owners>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
@@ -10,15 +10,15 @@
     <projectUrl>https://github.com/ITAgnesmeyer/CoreWindowsWrapper</projectUrl>
     <description>CoreWindowsWrapper is a DLL you can use to create Core Applications showing Dialogs without using System.Windows.Forms. The Project uses the Windows - API to create Native Windows.</description>
     <releaseNotes>BugFixes BeforeCreateEventArgs confilicts with other EvetnArgs: renamed to BeforeWindowCreateEventArgs</releaseNotes>
-    <copyright>2019 Dipl.-Ing.(FH) Guido Agnesmeyer</copyright>
-    <tags>dotnet-core</tags>
+    <copyright>2021 Dipl.-Ing.(FH) Guido Agnesmeyer</copyright>
+    <tags>windows,forms,control,Win32</tags>
     <repository type="GitHub" url="https://github.com/ITAgnesmeyer/CoreWindowsWrapper.git" />
     <dependencies>
       <group targetFramework=".NETCoreApp3.1">
-        <dependency id="Diga.Core.Api.Win32.Core" version="1.0.23" exclude="Build,Analyzers" />
+        <dependency id="Diga.Core.Api.Win32.Core" version="1.0.24" exclude="Build,Analyzers" />
       </group>
       <group targetFramework=".NETFramework4.7.2">
-        <dependency id="Diga.Core.Api.Win32" version="1.0.23" />
+        <dependency id="Diga.Core.Api.Win32" version="1.0.24" />
       </group>
     </dependencies>
   </metadata>

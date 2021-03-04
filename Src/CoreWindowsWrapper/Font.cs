@@ -1,6 +1,7 @@
 ﻿using System;
 
 using Diga.Core.Api.Win32;
+using Diga.Core.Api.Win32.GDI;
 
 namespace CoreWindowsWrapper
 {

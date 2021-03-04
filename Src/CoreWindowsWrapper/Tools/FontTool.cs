@@ -1,5 +1,7 @@
 ﻿using Diga.Core.Api.Win32;
 using System;
+using Diga.Core.Api.Win32.GDI;
+
 // ReSharper disable CheckNamespace
 
 namespace CoreWindowsWrapper.Tools

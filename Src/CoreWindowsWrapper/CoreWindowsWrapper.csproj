@@ -25,7 +25,7 @@
     <Version>1.0.4.1</Version>
     <SignAssembly>false</SignAssembly>
     <DelaySign>true</DelaySign>
-    <AssemblyOriginatorKeyFile>guido_agnesmeyer_2019.cer</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>diga_cert.snk</AssemblyOriginatorKeyFile>
     <AssemblyVersion>1.0.4.1</AssemblyVersion>
     <FileVersion>1.0.4.1</FileVersion>
     <ApplicationIcon />
@@ -48,7 +48,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Diga.Core.Api.Win32.Core" Version="1.0.23" />
+    <PackageReference Include="Diga.Core.Api.Win32.Core" Version="1.0.24" />
   </ItemGroup>
 
   <ItemGroup>
