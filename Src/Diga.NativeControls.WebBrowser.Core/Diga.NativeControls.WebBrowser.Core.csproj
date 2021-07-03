@@ -15,8 +15,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Diga.WebView2.Wrapper" Version="4.0.1" />
-    <PackageReference Include="MimeTypeExtension" Version="1.0.1" />
+    <PackageReference Include="Diga.WebView2.Wrapper" Version="9.0.1" />
+    <PackageReference Include="MimeTypeExtension" Version="1.0.26" />
   </ItemGroup>
 
   <ItemGroup>
