@@ -122,8 +122,14 @@
     <Compile Include="..\CoreWindowsWrapper\NativeControlBase.cs">
       <Link>NativeControlBase.cs</Link>
     </Compile>
+    <Compile Include="..\CoreWindowsWrapper\NativeDateTimePicker.cs">
+      <Link>NativeDateTimePicker.cs</Link>
+    </Compile>
     <Compile Include="..\CoreWindowsWrapper\NativeGroupBox.cs">
       <Link>NativeGroupBox.cs</Link>
+    </Compile>
+    <Compile Include="..\CoreWindowsWrapper\NativeIpAddressEdit.cs">
+      <Link>NativeIpAddressEdit.cs</Link>
     </Compile>
     <Compile Include="..\CoreWindowsWrapper\NativeLabel.cs">
       <Link>NativeLabel.cs</Link>
