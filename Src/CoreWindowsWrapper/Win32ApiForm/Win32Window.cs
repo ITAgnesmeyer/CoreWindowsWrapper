@@ -14,18 +14,6 @@ using Point = Diga.Core.Api.Win32.Point;
 namespace CoreWindowsWrapper.Win32ApiForm
 {
 
-    internal class Win32Dialog : IDisposable
-    {
-        public static ApiHandleRef InstanceHandle { get; set; } = IntPtr.Zero;
-        public ApiHandleRef Handle { get; private set; } = IntPtr.Zero;
-        public ApiHandleRef ParentHandle { get; set; } = IntPtr.Zero;
-        
-        public void Dispose()
-        {
-           
-        }
-    }
-
     internal sealed class Win32Window : IWindowClass, IDisposable
     {
 
@@ -41,6 +29,8 @@ namespace CoreWindowsWrapper.Win32ApiForm
         public event EventHandler<SizeEventArgs> Size;
         public event EventHandler<PaintEventArgs> Paint;
         public event EventHandler<MouseMoveEventArgs> MouseMove;
+        public event EventHandler<NativeKeyEventArgs> KeyDown;
+        public event EventHandler<NativeKeyEventArgs> KeyUp;
 
         internal static readonly Dictionary<IntPtr, Win32Window> WindowList = new Dictionary<IntPtr, Win32Window>();
         private static readonly Stack<Win32Window> WindowStack = new Stack<Win32Window>();
@@ -221,6 +211,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
             WindowList.Add(this.Handle, this);
 
             this._OrgWndProc = User32.SetWindowLongPtr(hookHandle, GWL.GWL_WNDPROC, windProcPtr);
+            
 
         }
        
@@ -403,6 +394,11 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
         }
 
+        public void UpdateStyle(uint style)
+        {
+            User32.SetWindowLongPrt32(this.Handle ,(int) GWL.GWL_STYLE ,(int)style);
+        }
+
         private void CreateDispatchTask()
         {
             this._DispatchTask = new Task(Dispatch);
@@ -469,6 +465,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
                             {
                                 if (!User32.IsDialogMessage(mainWindowHandle, ref msg))
                                 {
+                                   
                                     User32.TranslateMessage(ref msg);
                                     User32.DispatchMessage(ref msg);
                                 }
@@ -748,8 +745,14 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
                     _lastMessageReturn = new IntPtr(1);
                     break;
-
-
+                case WindowsMessages.WM_KEYUP:
+                    window.OnKeyUp(hWnd , new NativeKeyEventArgs(wParam, lParam));
+                    break;
+                case WindowsMessages.WM_KEYDOWN:
+                    
+                    window.OnKeyDown(hWnd, new NativeKeyEventArgs(wParam, lParam));
+                    break;
+               
                 case WindowsMessages.WM_PAINT:
                     PaintStruct ps;
                     // ReSharper disable once UnusedVariable
@@ -884,6 +887,11 @@ namespace CoreWindowsWrapper.Win32ApiForm
             return handled;
         }
 
+        private void OnKeyUp(IntPtr hWnd, NativeKeyEventArgs nativeKeyEventArgs)
+        {
+            KeyUp?.Invoke(this, nativeKeyEventArgs);
+        }
+
         private static void CtlColors(IntPtr wParam, IntPtr lParam, Win32Window window)
         {
             IntPtr editCtlHdc = wParam;
@@ -929,7 +937,10 @@ namespace CoreWindowsWrapper.Win32ApiForm
             //Do Something?
             OnPaint(new PaintEventArgs(new PaintObject(ps)));
         }
-
+        private void OnKeyDown(IntPtr hWnd, NativeKeyEventArgs keyEventArgs )
+        {
+            KeyDown?.Invoke(this, keyEventArgs);
+        }
         private void OnCreate()
         {
             CreateForm?.Invoke(this, new CreateEventArgs(this.Handle));

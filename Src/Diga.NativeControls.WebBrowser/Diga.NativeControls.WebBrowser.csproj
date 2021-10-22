@@ -67,12 +67,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CoreWindowsWrapper.FW\CoreWindowsWrapper.FW.csproj">
-      <Project>{6f2dd37f-8132-4177-b0a1-f4f36c3d2590}</Project>
-      <Name>CoreWindowsWrapper.FW</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\CoreWindowsWrapper\packages\Diga.WebView2.Wrapper.9.0.1\build\Diga.WebView2.Wrapper.targets" Condition="Exists('..\CoreWindowsWrapper\packages\Diga.WebView2.Wrapper.9.0.1\build\Diga.WebView2.Wrapper.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

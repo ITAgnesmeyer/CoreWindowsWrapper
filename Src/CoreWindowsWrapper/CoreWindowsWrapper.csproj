@@ -9,25 +9,25 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1;net5.0;net6.0;net461;net472</TargetFrameworks>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Authors>Dipl.-Ing.(FH) Guido Agnesmeyer</Authors>
     <RepositoryUrl>https://github.com/ITAgnesmeyer/CoreWindowsWrapper.git</RepositoryUrl>
     <PackageTags>dotnet-core</PackageTags>
     <Description>CoreWindowsWrapper is a DLL you can use to create Core Applications showing Dialogs without using System.Windows.Forms. The Project uses the Windows - API to create Native Windows.</Description>
-    <Copyright>2019 Dipl.-Ing.(FH) Guido Agnesmeyer</Copyright>
+    <Copyright>Copyright © 2021 Dipl.-Ing.(FH) Guido Agnesmeyer</Copyright>
     <PackageLicenseUrl></PackageLicenseUrl>
-    <RepositoryType>GitHub</RepositoryType>
+    <RepositoryType></RepositoryType>
     <PackageProjectUrl>https://github.com/ITAgnesmeyer/CoreWindowsWrapper</PackageProjectUrl>
     <PackageReleaseNotes>BugFixes
 </PackageReleaseNotes>
-    <Version>1.0.4.1</Version>
-    <SignAssembly>false</SignAssembly>
-    <DelaySign>true</DelaySign>
+    <Version>2.0.1-preview</Version>
+    <SignAssembly>True</SignAssembly>
+    <DelaySign>False</DelaySign>
     <AssemblyOriginatorKeyFile>diga_cert.snk</AssemblyOriginatorKeyFile>
-    <AssemblyVersion>1.0.4.1</AssemblyVersion>
-    <FileVersion>1.0.4.1</FileVersion>
+    <AssemblyVersion>2.0.1</AssemblyVersion>
+    <FileVersion>2.0.1</FileVersion>
     <ApplicationIcon />
     <Win32Resource></Win32Resource>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -41,6 +41,46 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp3.1|AnyCPU'">
+    <NoWarn>1701;1702;SYSLIB0032</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp3.1|AnyCPU'">
+    <NoWarn>1701;1702;SYSLIB0032</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net5.0|AnyCPU'">
+    <NoWarn>1701;1702;SYSLIB0032</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net5.0|AnyCPU'">
+    <NoWarn>1701;1702;SYSLIB0032</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'">
+    <NoWarn>1701;1702;SYSLIB0032</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0|AnyCPU'">
+    <NoWarn>1701;1702;SYSLIB0032</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net461|AnyCPU'">
+    <NoWarn>1701;1702;SYSLIB0032</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net461|AnyCPU'">
+    <NoWarn>1701;1702;SYSLIB0032</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net472|AnyCPU'">
+    <NoWarn>1701;1702;SYSLIB0032</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net472|AnyCPU'">
+    <NoWarn>1701;1702;SYSLIB0032</NoWarn>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="packages\**" />
     <EmbeddedResource Remove="packages\**" />
@@ -48,7 +88,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Diga.Core.Api.Win32.Core" Version="1.0.26" />
+    <PackageReference Include="Diga.Core.Api.Win32" Version="2.0.1" />
   </ItemGroup>
 
   <ItemGroup>

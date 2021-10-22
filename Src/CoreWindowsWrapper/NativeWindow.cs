@@ -5,17 +5,6 @@ using CoreWindowsWrapper.Win32ApiForm;
 
 namespace CoreWindowsWrapper
 {
-    public class NativeChildWindow : NativeWindow
-    {
-        public NativeChildWindow() : base()
-        {
-            this.IsMainWindow = false;
-        }
-        public NativeChildWindow(NativeWindow parent) : base(parent)
-        {
-            this.IsMainWindow = false;
-        }
-    }
     public class NativeWindow : IControl, IDisposable
     {
 
@@ -84,7 +73,8 @@ namespace CoreWindowsWrapper
         public event EventHandler<MouseMoveEventArgs> MouseMove;
         public event EventHandler<SizeEventArgs> Size;
         public event EventHandler<PaintEventArgs> Paint;
-
+        public event EventHandler<NativeKeyEventArgs> KeyDown;
+        public event EventHandler<NativeKeyEventArgs> KeyUp;
 
         internal NativeWindow(Win32Window wnd)
         {
@@ -326,7 +316,24 @@ namespace CoreWindowsWrapper
             this._Window.Size += OnFormSize;
             this._Window.Paint += OnPaintIntern;
             this._Window.MouseMove += OnMouseMoveIntern;
+            this._Window.KeyDown += OnKeyDownInternal;
+            this._Window.KeyUp += OnKeyUpInternal;
 
+        }
+
+        private void OnKeyUpInternal(object sender, NativeKeyEventArgs e)
+        {
+            OnKeyUp(e);
+        }
+
+        private void OnKeyUp(NativeKeyEventArgs e)
+        {
+            KeyUp?.Invoke(this,e);
+        }
+
+        private void OnKeyDownInternal(object sender, NativeKeyEventArgs e)
+        {
+            OnKeyDown(e);
         }
 
         private void OnBeforeCreateInternal(object sender, BeforeWindowCreateEventArgs e)
@@ -511,6 +518,10 @@ namespace CoreWindowsWrapper
             Size?.Invoke(this, e);
         }
 
+        public virtual void OnKeyDown(NativeKeyEventArgs e)
+        {
+            KeyDown?.Invoke(this,e);
+        }
         public Rect GetClientRect()
         {
             return this._Window.GetCleanClientRect();
