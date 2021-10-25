@@ -35,8 +35,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Diga.Core.Api.Win32, Version=1.0.26.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\CoreWindowsWrapper\packages\Diga.Core.Api.Win32.1.0.26\lib\net472\Diga.Core.Api.Win32.dll</HintPath>
+    <Reference Include="Diga.Core.Api.Win32, Version=2.0.1.0, Culture=neutral, PublicKeyToken=195159b462588500, processorArchitecture=MSIL">
+      <HintPath>..\CoreWindowsWrapper\packages\Diga.Core.Api.Win32.2.0.1\lib\net472\Diga.Core.Api.Win32.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -87,6 +87,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CoreWindowsWrapper\CoreWindowsWrapper.csproj">
+      <Project>{820f239a-3001-4659-b224-489079b1357e}</Project>
+      <Name>CoreWindowsWrapper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Diga.NativeControls.WebBrowser\Diga.NativeControls.WebBrowser.csproj">
       <Project>{5A726955-C418-4DD9-898A-336BE2630BFD}</Project>
       <Name>Diga.NativeControls.WebBrowser</Name>
