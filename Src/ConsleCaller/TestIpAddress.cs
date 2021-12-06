@@ -58,7 +58,8 @@ namespace ConsoleCaller
         {
             if (e.VirtalKey == Diga.Core.Api.Win32.VirtualKeys.VK_F11)
             {
-
+                this.SetWindowState(WindowState.Maximized);
+                NativeApp.DoEvents();
             }
         }
 

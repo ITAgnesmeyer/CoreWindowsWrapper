@@ -396,9 +396,73 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
         public void UpdateStyle(uint style)
         {
-            User32.SetWindowLongPrt32(this.Handle ,(int) GWL.GWL_STYLE ,(int)style);
+            IntPtr p = new IntPtr(style);
+            //this.Style = style;
+            User32.SetWindowLongPtr(this.Handle, GWL.GWL_STYLE, p);
+
         }
 
+        public void UpdateWidow()
+        {
+            User32.SetWindowPos(this.Handle, IntPtr.Zero, 0, 0, 0, 0,
+                (uint)DeferWindowPosCommands.SWP_FRAMECHANGED | (uint)DeferWindowPosCommands.SWP_NOMOVE |
+                (uint)DeferWindowPosCommands.SWP_NOSIZE | (uint)DeferWindowPosCommands.SWP_NOZORDER |
+                (uint)DeferWindowPosCommands.SWP_NOOWNERZORDER);
+        }
+        public void UpdateExStyle(uint exStyle)
+        {
+            IntPtr p = new IntPtr(exStyle);
+            //this.StyleEx = exStyle;
+            User32.SetWindowLongPtr(this.Handle, GWL.GWL_EXSTYLE, p);
+
+        }
+
+        public uint GetStyle()
+        {
+            IntPtr style = User32.GetWindowLongPtr(this.Handle, GWL.GWL_STYLE);
+            uint s = unchecked((uint)style.ToInt64());
+            return s;
+        }
+
+        public uint GetExStyle()
+        {
+            IntPtr exStyle = User32.GetWindowLongPtr(this.Handle, GWL.GWL_EXSTYLE);
+            uint s = unchecked((uint)exStyle.ToInt64());
+            return s;
+        }
+        public void SetWindowState(WindowState state)
+        {
+            switch (state)
+            {
+                case WindowState.Normal:
+                    User32.ShowWindow(this.Handle, (int)WindowState.Normal);
+                    break;
+                case WindowState.Maximized:
+                    User32.ShowWindow(this.Handle, (int)WindowState.Maximized);
+                    break;
+                case WindowState.Minimized:
+                    User32.ShowWindow(this.Handle, (int)WindowState.Minimized);
+                    break;
+            }
+        }
+
+        public WindowState GetWindowState()
+        {
+            WindowPlacement wp = new WindowPlacement();
+            User32.GetWindowPlacement(this.Handle, ref wp);
+            if (wp.showCmd == (uint)ShowWindowCommands.Maximize || wp.showCmd == (uint)ShowWindowCommands.ShowMaximized)
+            {
+                return WindowState.Maximized;
+            }
+
+            if (wp.showCmd == (uint)ShowWindowCommands.Minimize || wp.showCmd == (uint)ShowWindowCommands.ShowMinimized)
+            {
+                return WindowState.Minimized;
+            }
+
+            return WindowState.Normal;
+
+        }
         private void CreateDispatchTask()
         {
             this._DispatchTask = new Task(Dispatch);

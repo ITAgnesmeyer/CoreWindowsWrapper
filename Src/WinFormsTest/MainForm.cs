@@ -2,6 +2,7 @@
 using CoreWindowsWrapper.Tools;
 using Diga.NativeControls.WebBrowser;
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Forms;
 
@@ -62,10 +63,27 @@ namespace WinFormsTest
             CoreWindowsWrapper.MessageBox.Show(this._NativeWindow.Handle,"MenuInfo!","API");
         }
 
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            
+            this._NativeWindow.Close();
+            this._Panel1Window.Close();
+            this._Panel2Window.Close();
+
+            base.OnClosing(e);
+
+        }
+
+
         protected override void WndProc(ref Message m)
         {
             if (m.Msg == 0x004E)
+            {
                 Debug.Print("Destroy");
+            
+            }
+                
+
             base.WndProc(ref m);
 
         }

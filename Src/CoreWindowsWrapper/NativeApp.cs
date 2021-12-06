@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Diga.Core.Api.Win32;
 namespace CoreWindowsWrapper
@@ -40,5 +41,16 @@ namespace CoreWindowsWrapper
 
             Ole32.OleUninitialize();
         }
+
+        public static void DoEvents()
+        {
+            if (_mainWindow == null) return;
+            while (User32.PeekMessage(out MSG msg, IntPtr.Zero, 0, 0, 0x0001 | 0x0002))
+            {
+                User32.TranslateMessage(ref msg);
+                User32.DispatchMessage(ref msg);
+            }
+        }
+
     }
 }

@@ -545,5 +545,40 @@ namespace CoreWindowsWrapper
         {
             Paint?.Invoke(this, e);
         }
+
+        public uint GetWindowStyle()
+        {
+            return this._Window.GetStyle();
+        }
+
+        public uint GetWindowExStyle()
+        {
+            return this._Window.GetExStyle();
+        }
+        public void SetWindowState(WindowState state)
+        {
+            this._Window.SetWindowState(state);
+        }
+
+        public WindowState GetWindowState()
+        {
+            return this._Window.GetWindowState();
+        }
+
+        public void UpdateStyle(uint style)
+        {
+            this._Window.UpdateStyle(style);
+        }
+
+        public void UpdateExStyle(uint exStyle)
+        {
+            this._Window.UpdateExStyle(exStyle);
+        }
+
+
+        public void UpdateWidow()
+        {
+            this._Window.UpdateWidow();
+        }
     }
 }

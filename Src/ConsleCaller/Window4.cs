@@ -61,7 +61,9 @@ namespace ConsoleCaller
             if(!this._DoDraw) return;
 
             Color fc = Color.Black;
-            
+
+#pragma warning disable IDE0063 // Einfache using-Anweisung verwenden
+#pragma warning disable CA1416 // Plattformkompatibilität überprüfen
             using (Graphics g = Graphics.FromHdc(e.PaintObject.Hdc))
             {
                 
@@ -71,7 +73,9 @@ namespace ConsoleCaller
                 }
                 
             }
-            
+#pragma warning restore CA1416 // Plattformkompatibilität überprüfen
+#pragma warning restore IDE0063 // Einfache using-Anweisung verwenden
+
         }
     }
 }

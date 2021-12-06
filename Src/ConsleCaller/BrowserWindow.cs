@@ -2,6 +2,7 @@
 using CoreWindowsWrapper;
 using Diga.Core.Api.Win32;
 using Diga.NativeControls.WebBrowser;
+using Diga.WebView2.Wrapper;
 using Diga.WebView2.Wrapper.EventArguments;
 
 namespace ConsoleCaller
@@ -40,9 +41,45 @@ namespace ConsoleCaller
             this._Browser.NavigationStart += OnNavigationStart;
             this._Browser.NavigationCompleted += OnNaviationCompleted;
             this._Browser.WebResourceRequested += OnWebResourceRequested;
+            this._Browser.AcceleratorKeyPressed += OnAccessorKeyPressed;
             this.Controls.Add(this._Browser);
         }
-        
+
+        private const uint NoneStyle = 385941504;
+
+        private const uint NoneExStyle = 327680;
+
+        private uint OldStyle;
+        private uint OldExStyle;
+        private void OnAccessorKeyPressed(object sender, AcceleratorKeyPressedEventArgs e)
+        {
+            uint currentStyle = this.GetWindowStyle();
+            uint currentExStyle = this.GetWindowExStyle();
+            if (e.KeyVentType == KeyEventType.KeyDown && e.VirtualKey == Diga.Core.Api.Win32.VirtualKeys.VK_F11)
+            {
+                if (currentStyle == NoneStyle && currentExStyle == NoneExStyle)
+                {
+                    this.SetWindowState(WindowState.Normal);
+                    this.UpdateStyle(this.OldStyle);
+                    this.UpdateExStyle(this.OldExStyle);
+                    this.UpdateWidow();
+                    
+                }
+                else
+                {
+                    this.OldStyle = currentStyle;
+                    this.OldExStyle = currentExStyle;
+                    this.SetWindowState(WindowState.Maximized);
+                    this.UpdateStyle(NoneStyle);
+                    this.UpdateExStyle(NoneExStyle);
+                    this.UpdateWidow();
+                    
+                }
+                NativeApp.DoEvents();
+                
+            }
+        }
+
         private void OnWebResourceRequested(object sender, WebResourceRequestedEventArgs e)
         {
             Debug.Print(e.Request.Uri);
@@ -58,7 +95,7 @@ namespace ConsoleCaller
         }
         private void OnNavigationStart(object sender, NavigationStartingEventArgs e)
         {
-            this.Text = "Start-Navigate" + e.Uri;
+            this.Text = "Start-Navigate" + e.uri;
         }
         private void OnDocumentTitleChanged(object sender, WebView2EventArgs e)
         {

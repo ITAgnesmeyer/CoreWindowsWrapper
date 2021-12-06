@@ -18,7 +18,7 @@ namespace ConsoleCaller
             this.Width = 500;
             this.Height = 400;
             this.StartUpPosition = WindowsStartupPosition.CenterScreen;
-
+            
             //Creating the File Menu
             NativeMenu menuFile = new NativeMenu("mnuFile", "&File");
             
@@ -53,6 +53,17 @@ namespace ConsoleCaller
             this.Menu = menuFile;
 
             this.Controls.Add(this._TextBox);
+        }
+
+        public override void OnKeyDown(NativeKeyEventArgs e)
+        {
+            if (e.VirtalKey == Diga.Core.Api.Win32.VirtualKeys.VK_F11)
+            {
+                this.SetWindowState(WindowState.Maximized);
+
+            }
+            base.OnKeyDown(e);
+
         }
 
         private async void FileSave_Click(object sender, MouseClickEventArgs e)

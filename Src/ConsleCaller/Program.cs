@@ -8,7 +8,7 @@ namespace ConsoleCaller
        [STAThread]
         public static int Main(string[] args)
         {
-            TestIpAddress nw = new TestIpAddress();
+            BrowserWindow nw = new BrowserWindow();
             NativeApp.Run(nw);
             return 0;
         }
