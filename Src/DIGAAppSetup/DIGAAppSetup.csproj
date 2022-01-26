@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFrameworks>net5.0;net472</TargetFrameworks>
     <ApplicationIcon>Firmen_Emblem.ico</ApplicationIcon>
     <StartupObject>DIGAAppSetup.Program</StartupObject>
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -15,6 +15,10 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Diga.Core.Json" Version="1.0.2" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CoreWindowsWrapper\CoreWindowsWrapper.csproj" />

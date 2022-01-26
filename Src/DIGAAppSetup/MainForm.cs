@@ -1,14 +1,18 @@
 ﻿using System;
+using System.IO;
 using CoreWindowsWrapper;
+
 
 namespace DIGAAppSetup
 {
-    internal partial class MainForm : NativeWindow
+    public partial class MainForm : NativeWindow
     {
         public MainForm()
         {
             InitializeComponent();
         }
+
+        
 
         private void MainFrom_Create(object sender, CreateEventArgs e)
         {
@@ -22,12 +26,29 @@ namespace DIGAAppSetup
 
         private void CancelButton_Clicked(object sender, EventArgs e)
         {
-            MessageBox.Show("CancelButton_Clicked");
+            try
+            {
+                string json = Diga.Core.Json.DigaJson.Serialize(this);
+                File.WriteAllText("Test.json",json);
+                
+                MessageBox.Show(this.Handle, "Exported", "Export",
+                    MessageBoxOptions.OkOnly | MessageBoxOptions.IconInformation);
+
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(this.Handle, "Serializer Error:" + exception.ToString(), "Export Error",
+                    MessageBoxOptions.OkOnly | MessageBoxOptions.IconError);
+
+            }
+            
+
+          
         }
     }
 
 
-    internal partial class MainForm
+    public partial class MainForm
     {
         private NativeButton _OkButton;
         private NativeButton _CancelButton;
@@ -52,7 +73,7 @@ namespace DIGAAppSetup
             this.BackColor = CoreWindowsWrapper.Tools.ColorTool.White;
             this.Name = "MainForm";
             this.Text = "Welcome to the Setup";
-            //this.IconFile = "app.ico";
+            this.IconFile = "app.ico";
             this.StartUpPosition = WindowsStartupPosition.CenterScreen;
             this.Create += MainFrom_Create;
             //_LabelCaption
@@ -112,6 +133,12 @@ namespace DIGAAppSetup
             this.Controls.Add(this._CancelButton);
 
             this.Controls.Add(this._OkButton);
+        }
+
+        protected override void OnBeforeCreate(BeforeWindowCreateEventArgs e)
+        {
+            e.Styles.Style = Diga.Core.Api.Win32.WindowStylesConst.WS_DLGFRAME |
+                             Diga.Core.Api.Win32.WindowStylesConst.WS_SYSMENU;
         }
     }
 }

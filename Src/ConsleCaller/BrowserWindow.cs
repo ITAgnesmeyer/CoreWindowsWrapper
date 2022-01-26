@@ -39,7 +39,7 @@ namespace ConsoleCaller
             };
             this._Browser.DocumentTitleChanged += OnDocumentTitleChanged;
             this._Browser.NavigationStart += OnNavigationStart;
-            this._Browser.NavigationCompleted += OnNaviationCompleted;
+            this._Browser.NavigationCompleted += OnNavigationCompleted;
             this._Browser.WebResourceRequested += OnWebResourceRequested;
             this._Browser.AcceleratorKeyPressed += OnAccessorKeyPressed;
             this.Controls.Add(this._Browser);
@@ -75,7 +75,7 @@ namespace ConsoleCaller
                     this.UpdateWidow();
                     
                 }
-                NativeApp.DoEvents();
+                //NativeApp.DoEvents();
                 
             }
         }
@@ -85,7 +85,7 @@ namespace ConsoleCaller
             Debug.Print(e.Request.Uri);
         }
 
-        private void OnNaviationCompleted(object sender, NavigationCompletedEventArgs e)
+        private void OnNavigationCompleted(object sender, NavigationCompletedEventArgs e)
         {
             if (e.IsSuccess)
                 this.Text = e.IsSuccess + "->" + this._Browser.DocumentTitle;
