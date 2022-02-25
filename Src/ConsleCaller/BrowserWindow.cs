@@ -26,11 +26,11 @@ namespace ConsoleCaller
             {
                 Width = this.Width,
                 Height = this.Height,
-                Url = "http://localhost:1",
+                Url = "https://vscode.dev",
                 IsStatusBarEnabled = true,
                 DefaultContextMenusEnabled = false,
                 DevToolsEnabled = false,
-                EnableMonitoring = true,
+                EnableMonitoring = false,
                 //BrowserExecutableFolder = ".\\edge",
                 BrowserUserDataFolder = "C:\\tmp\\diga",
                 MonitoringFolder = ".\\wwwroot",
