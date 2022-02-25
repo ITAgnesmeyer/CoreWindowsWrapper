@@ -14,7 +14,7 @@
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Authors>Dipl.-Ing.(FH) Guido Agnesmeyer</Authors>
     <RepositoryUrl>https://github.com/ITAgnesmeyer/CoreWindowsWrapper.git</RepositoryUrl>
-    <PackageTags>dotnet-core</PackageTags>
+    <PackageTags>dotnet-core;CoreWindowsWrapper</PackageTags>
     <Description>CoreWindowsWrapper is a DLL you can use to create Core Applications showing Dialogs without using System.Windows.Forms. The Project uses the Windows - API to create Native Windows.</Description>
     <Copyright>Copyright © 2021 Dipl.-Ing.(FH) Guido Agnesmeyer</Copyright>
     <PackageLicenseUrl></PackageLicenseUrl>
@@ -22,12 +22,12 @@
     <PackageProjectUrl>https://github.com/ITAgnesmeyer/CoreWindowsWrapper</PackageProjectUrl>
     <PackageReleaseNotes>BugFixes
 </PackageReleaseNotes>
-    <Version>2.0.2</Version>
+    <Version>2.0.3</Version>
     <SignAssembly>True</SignAssembly>
     <DelaySign>False</DelaySign>
     <AssemblyOriginatorKeyFile>diga_cert.snk</AssemblyOriginatorKeyFile>
-    <AssemblyVersion>2.0.2</AssemblyVersion>
-    <FileVersion>2.0.2</FileVersion>
+    <AssemblyVersion>2.0.3</AssemblyVersion>
+    <FileVersion>2.0.3</FileVersion>
     <ApplicationIcon />
     <Win32Resource></Win32Resource>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
