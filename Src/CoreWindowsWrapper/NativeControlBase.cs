@@ -12,6 +12,8 @@ namespace CoreWindowsWrapper
         internal virtual Win32Control Control { get => this._Control; set => this._Control = value; }
         public virtual event EventHandler<EventArgs> Clicked;
         public virtual event EventHandler<EventArgs> DblClicked;
+        //public virtual event EventHandler<NativeKeyEventArgs> KeyDown;
+        //public virtual event EventHandler<NativeKeyEventArgs> KeyUp; 
         private Font _Font;
         private readonly TaskQueue _TaskQueue = new TaskQueue();
 

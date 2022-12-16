@@ -75,6 +75,7 @@ namespace CoreWindowsWrapper
         public event EventHandler<PaintEventArgs> Paint;
         public event EventHandler<NativeKeyEventArgs> KeyDown;
         public event EventHandler<NativeKeyEventArgs> KeyUp;
+        public event EventHandler<NativeKeyEventArgs> SysKeyDown; 
 
         internal NativeWindow(Win32Window wnd)
         {
@@ -318,7 +319,13 @@ namespace CoreWindowsWrapper
             this._Window.MouseMove += OnMouseMoveIntern;
             this._Window.KeyDown += OnKeyDownInternal;
             this._Window.KeyUp += OnKeyUpInternal;
+            this._Window.SysKeyDown += OnSysKeyDownInternal;
 
+        }
+
+        private void OnSysKeyDownInternal(object sender, NativeKeyEventArgs e)
+        {
+            OnSysKeyDown(e);
         }
 
         private void OnKeyUpInternal(object sender, NativeKeyEventArgs e)
@@ -579,6 +586,11 @@ namespace CoreWindowsWrapper
         public void UpdateWidow()
         {
             this._Window.UpdateWidow();
+        }
+
+        protected virtual void OnSysKeyDown(NativeKeyEventArgs e)
+        {
+            SysKeyDown?.Invoke(this, e);
         }
     }
 }

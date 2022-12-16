@@ -44,18 +44,22 @@ namespace ConsoleCaller
             this.Width = 600;
             this.Height = 400;
             
-            this._ControlTest = new ControlTest();
-            this._ControlTest.Width = 200;
-            this._ControlTest.Height = 30;
-            this._ControlTest.Left = 300;
-            this._ControlTest.Top = 80;
-            this._ControlTest.Name = "TEST_CONTAINER";
-            
+            this._ControlTest = new ControlTest
+            {
+                Width = 200,
+                Height = 30,
+                Left = 300,
+                Top = 80,
+                Name = "TEST_CONTAINER"
+            };
+
             //this.BackColor = ColorTool.LightGray;
             this.StartUpPosition = WindowsStartupPosition.CenterScreen;
             this.BackColor = ColorTool.White;
-            this._Timer = new NativeTimer();
-            this._Timer.Interval = 100;
+            this._Timer = new NativeTimer
+            {
+                Interval = 100
+            };
             //this._Timer.ControlId = 700;
             this._Timer.Tick += Timer_OnTick;
             this._Button = new NativeButton
@@ -70,6 +74,8 @@ namespace ConsoleCaller
                 ForeColor = ColorTool.Green
 
             };
+            this._Button.Clicked += button_OnClicked;
+            this._Button.DblClicked += button_OnDblClicked;
 
             this._Button1 = new NativeButton
             {
@@ -81,8 +87,7 @@ namespace ConsoleCaller
                 Name = "bnTest"//,
                 //ControlId = 505
             };
-            this._Button.Clicked += button_OnClicked;
-            this._Button.DblClicked += button_OnDblClicked;
+
             this._Button1.Clicked += button1_OnClicked;
             this._Button1.DblClicked += button1_OnDblClicked;
 
@@ -96,15 +101,17 @@ namespace ConsoleCaller
             };
 
             this._Button3.Clicked += Button3_Click;
-            this._ComboBox = new NativeComboBox();
-            this._ComboBox.Location = new Point(350, 10);
-            
-            this._ComboBox.Height = 30;
-            this._ComboBox.Width = 200;
-            this._ComboBox.Name = "cbbTest";
-            this._ComboBox.ForeColor = ColorTool.Blue;
-            this._ComboBox.BackColor = ColorTool.Green;
-            this._ComboBox.Font = new Font() { Name = "Arial", Size = 10 };
+            this._ComboBox = new NativeComboBox
+            {
+                Location = new Point(350, 10),
+                Height = 30,
+                Width = 200,
+                Name = "cbbTest",
+                ForeColor = ColorTool.Blue,
+                BackColor = ColorTool.Green,
+                Font = new Font() { Name = "Arial", Size = 10 }
+            };
+
             this._ComboBox.SelChange += ComboBox_SelChange;
 
 
@@ -120,7 +127,9 @@ namespace ConsoleCaller
                 ForeColor = ColorTool.Read
                 //ControlId = 502
             };
+            
             this._TextBox.Change += TextBox_Change;
+            this._TextBox.Clicked += TextBox_Click;
 
             this._TextBox2 = new NativeTextBox
             {
@@ -151,31 +160,37 @@ namespace ConsoleCaller
             this._Label1.Clicked += Label1_Click;
             this._Label1.DblClicked += Label1_DblClick;
 
-            this._Bitmap = new NativeBitmap();
-            this._Bitmap.BitMap = "Skype.bmp";
-            this._Bitmap.Left = 150;
-            this._Bitmap.Top = 50;
-            this._Bitmap.Width = 100;
-            this._Bitmap.Height = 100;
+            this._Bitmap = new NativeBitmap
+            {
+                BitMap = "Skype.bmp",
+                Left = 150,
+                Top = 50,
+                Width = 100,
+                Height = 100
+            };
 
-            this._CheckBox = new NativeCheckBox();
-            this._CheckBox.Left = 300;
-            this._CheckBox.Top = 50;
-            this._CheckBox.Width = 200;
-            this._CheckBox.Height = 30;
-            this._CheckBox.Text = "TEST CHECKBOX";
-            this._CheckBox.BackColor = ColorTool.White;
-            this._CheckBox.Checked = true;
+            this._CheckBox = new NativeCheckBox
+            {
+                Left = 300,
+                Top = 50,
+                Width = 200,
+                Height = 30,
+                Text = "TEST CHECKBOX",
+                BackColor = ColorTool.White,
+                Checked = true
+            };
 
-            this._ListBox = new NativeListBox();
-            this._ListBox.Left = 300;
-            this._ListBox.Top = 200;
-            this._ListBox.Width = 400;
-            this._ListBox.Height = 400;
-            this._ListBox.BackColor = ColorTool.Yellow;
-            this._ListBox.ForeColor = ColorTool.Read;
-            this._ListBox.Font = new Font() { Name = "Arial", Size = 16 };
-            this._ListBox.MultiSelect = true;
+            this._ListBox = new NativeListBox
+            {
+                Left = 300,
+                Top = 200,
+                Width = 400,
+                Height = 400,
+                BackColor = ColorTool.Yellow,
+                ForeColor = ColorTool.Read,
+                Font = new Font() { Name = "Arial", Size = 16 },
+                MultiSelect = true
+            };
             this._ListBox.DblClicked+=ListBox_DblClicked;
             
             this._ListBox.SelChange+=ListBox_SelChange;
@@ -191,7 +206,7 @@ namespace ConsoleCaller
 
 
 
-            this._TextBox.Clicked += TextBox_Click;
+            
             
             this.Controls.Add(this._Button);
             this.Controls.Add(this._Button1);
@@ -209,7 +224,26 @@ namespace ConsoleCaller
             Click += Window1_Click;
             DoubleClick += Window1_DblClick;
             Create += Window1_Create;
+            SysKeyDown += Window1_SysKeyDown;
+            KeyDown += Window1_KeyDown;
             this.MouseMove += Window1_MoseMove;
+        }
+
+        private void Window1_KeyDown(object sender, NativeKeyEventArgs e)
+        {
+            if (e.ScanCode == (int)KeyCode.KeyA)
+            {
+                MessageBox.Show(this.Handle, "A pressed", "F4");
+            }
+        }
+
+        private void Window1_SysKeyDown(object sender, NativeKeyEventArgs e)
+        {
+            if (e.IsAlt && e.VirtalKey == VirtualKeys.VK_F4)
+            {
+                MessageBox.Show(this.Handle, "F4 pressed", "F4");
+                e.Handled = true;
+            }
         }
 
         private void Window1_MoseMove(object sender, MouseMoveEventArgs e)

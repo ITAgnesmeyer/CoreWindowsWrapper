@@ -31,6 +31,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
         public event EventHandler<MouseMoveEventArgs> MouseMove;
         public event EventHandler<NativeKeyEventArgs> KeyDown;
         public event EventHandler<NativeKeyEventArgs> KeyUp;
+        public event EventHandler<NativeKeyEventArgs> SysKeyDown; 
 
         internal static readonly Dictionary<IntPtr, Win32Window> WindowList = new Dictionary<IntPtr, Win32Window>();
         private static readonly Stack<Win32Window> WindowStack = new Stack<Win32Window>();
@@ -695,6 +696,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 WindowList.Remove(hWnd);
             }
         }
+        private const uint SC_CLOSE = 0xF060;
 
         private static bool InvokeEvent(uint eventType, IntPtr hWnd, IntPtr wParam, IntPtr lParam)
         {
@@ -722,6 +724,13 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
             switch (eventType)
             {
+                case WindowsMessages.WM_SYSKEYDOWN:
+                    
+                    var kevSysDown = new NativeKeyEventArgs(wParam, lParam);
+                    window.OnSysteKeyDown(hWnd, kevSysDown);
+                    handled = kevSysDown.Handled;
+                    //_lastMessageReturn = new IntPtr(1);
+                    break;
                 case WindowsMessages.WM_NOTIFY:
                     NmHdr hdr = null;
                     try
@@ -810,11 +819,14 @@ namespace CoreWindowsWrapper.Win32ApiForm
                     _lastMessageReturn = new IntPtr(1);
                     break;
                 case WindowsMessages.WM_KEYUP:
-                    window.OnKeyUp(hWnd , new NativeKeyEventArgs(wParam, lParam));
+                    var kevUp = new NativeKeyEventArgs(wParam, lParam);
+                    window.OnKeyUp(hWnd , kevUp);
+                    handled = kevUp.Handled;
                     break;
                 case WindowsMessages.WM_KEYDOWN:
-                    
-                    window.OnKeyDown(hWnd, new NativeKeyEventArgs(wParam, lParam));
+                    var kevDown = new NativeKeyEventArgs(wParam, lParam);
+                    window.OnKeyDown(hWnd, kevDown );
+                    handled = kevDown .Handled;
                     break;
                
                 case WindowsMessages.WM_PAINT:
@@ -1000,6 +1012,11 @@ namespace CoreWindowsWrapper.Win32ApiForm
         {
             //Do Something?
             OnPaint(new PaintEventArgs(new PaintObject(ps)));
+        }
+
+        private void OnSysteKeyDown(IntPtr hWnd, NativeKeyEventArgs keyEventArgs)
+        {
+            SysKeyDown?.Invoke(this, keyEventArgs);
         }
         private void OnKeyDown(IntPtr hWnd, NativeKeyEventArgs keyEventArgs )
         {
