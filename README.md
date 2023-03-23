@@ -4,7 +4,9 @@
 CoreWindowsWrapper is a DLL you can use to create Core Applications showing Dialogs without using System.Windows.Forms.
 The Project uses the Windows - API to create Native Windows. I personally use this DLL to create Copy-Deploy-Setups.
 
-Procedure from .Core 3.1:
+The component does not use COM. Unlike WPF or Windows Forms, it is possible to compile AOT Native.
+
+How to create DotNet-Core apps:
 ---
 1. Create a project from the Type Console (Core). 
 2. Change the output type from Console to Windows application in the project properties.
@@ -108,5 +110,5 @@ Mac-OS comming soon:
 I hope this helps in many Projects. 
 
 ##### Dipl.-Ing.(FH) Guido Agnesmeyer
-##### JAN 2022
+##### MAR 2023
 
