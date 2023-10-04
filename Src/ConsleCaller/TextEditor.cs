@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Text;
 using CoreWindowsWrapper;
 
 namespace ConsoleCaller
@@ -117,9 +118,12 @@ namespace ConsoleCaller
                 //Read the selected Path
                 string fileName = ofd.File;
                 //File Actions.
-                string text = await File.ReadAllTextAsync(fileName);
+                byte[] b = await File.ReadAllBytesAsync(fileName);
+
+                string text = Encoding.ASCII.GetString(b);  //await File.ReadAllTextAsync(fileName);
                 this._CurrentFileName = fileName;
                 this._TextBox.Text = text;
+                //this._TextBox.Load(fileName);
                 this._TextBox.Enabled = true;
                 this.Text = "Little Edit:" + fileName;
             }
