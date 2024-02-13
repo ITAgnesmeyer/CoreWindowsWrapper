@@ -201,7 +201,15 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
             return true;
         }
+        public void Destroy()
+        {
+            if(this.Handle.IsValid)
+            {
+                User32.DestroyWindow(this.Handle);
+                this.Handle = IntPtr.Zero;
 
+            }
+        }
         public WndclassEx WindowClass { get; set; }
     }
 }

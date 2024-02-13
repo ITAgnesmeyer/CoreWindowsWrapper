@@ -717,6 +717,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
             }
             else
             {
+                
                 if (!WindowList.ContainsKey(hWnd)) return false;
                 window = WindowList[hWnd];
             }
@@ -768,7 +769,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
                     if (window.Controls.ContainsKey(controlId))
                     {
                         IControl control = window.Controls[controlId];
-                        handled = control.HandleEvents(hWnd, hWndControl, controlId, command, wParam, lParam);
+                            handled = control.HandleEvents(hWnd, hWndControl, controlId, command, wParam, lParam);
                     }
                     else
                     {

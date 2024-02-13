@@ -25,6 +25,7 @@ namespace ConsoleCaller
         private NativeCheckBox _CheckBox;
         private NativeListBox _ListBox;
         private NativeComboBox _ComboBox;
+        private NativeDateTimePicker _DateTimePicker;
         private ControlTest _ControlTest;
         private static string CAPTION = "Dies ist meine Anwnedung";
         protected override void OnBeforeCreate(BeforeWindowCreateEventArgs e)
@@ -130,7 +131,7 @@ namespace ConsoleCaller
             
             this._TextBox.Change += TextBox_Change;
             this._TextBox.Clicked += TextBox_Click;
-
+            
             this._TextBox2 = new NativeTextBox
             {
                 Left = 10,
@@ -204,6 +205,14 @@ namespace ConsoleCaller
                 //ControlId = 507
             };
 
+            this._DateTimePicker = new NativeDateTimePicker
+            {
+                Left = 10,
+                Top = 300,
+                Width = 150,
+                Height = 30
+
+            };
 
 
             
@@ -219,6 +228,7 @@ namespace ConsoleCaller
             this.Controls.Add(this._CheckBox);
             this.Controls.Add(this._ListBox);
             this.Controls.Add(this._ProgressBar);
+            this.Controls.Add(this._DateTimePicker);
             this.Controls.Add(this._Timer);
             this.Controls.Add(this._ControlTest);
             Click += Window1_Click;
@@ -231,16 +241,31 @@ namespace ConsoleCaller
 
         private void Window1_KeyDown(object sender, NativeKeyEventArgs e)
         {
-            if (e.ScanCode == (int)KeyCode.KeyA)
+            if (e.Key == (int)KeyCode.KeyA)
             {
                 MessageBox.Show(this.Handle, "A pressed", "F4");
             }
         }
 
+        private unsafe uint GetVal(int index)
+        {
+            int* p = &index;
+            uint* pp = (uint*)p;
+            return *pp;
+        }
         private void Window1_SysKeyDown(object sender, NativeKeyEventArgs e)
         {
-            if (e.IsAlt && e.VirtalKey == VirtualKeys.VK_F4)
+            if (e.IsAlt && e.VirtalKey == VirtualKeys.VK_F5)
             {
+                int i = (0 - 740);
+                Debug.Print("DTN_FIRST=>0x" + i.ToString("x4"));
+                i = (0 - 745);
+                Debug.Print("DTN_LAST=>0x" + i.ToString("x4"));
+                i = (0 - 753);
+                Debug.Print("DTN_FIRST2=>0x" + i.ToString("x4"));
+                i = (0 - 799);
+                Debug.Print("DTN_LAST2=>0x" + i.ToString("x4"));
+
                 MessageBox.Show(this.Handle, "F4 pressed", "F4");
                 e.Handled = true;
             }

@@ -8,6 +8,7 @@
         Timer,
         Link,
         ListBox,
+        ListView,
         GroupBox,
         ComboBox,
         Button,

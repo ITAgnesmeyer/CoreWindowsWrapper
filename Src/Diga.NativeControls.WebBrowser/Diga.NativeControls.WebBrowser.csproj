@@ -33,17 +33,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Diga.Core.Api.Win32, Version=2.0.7.0, Culture=neutral, PublicKeyToken=195159b462588500, processorArchitecture=MSIL">
-      <HintPath>..\CoreWindowsWrapper\packages\Diga.Core.Api.Win32.2.0.7\lib\netstandard2.0\Diga.Core.Api.Win32.dll</HintPath>
+    <Reference Include="Diga.Core.Api.Win32, Version=2.0.8.0, Culture=neutral, PublicKeyToken=195159b462588500, processorArchitecture=MSIL">
+      <HintPath>..\CoreWindowsWrapper\packages\Diga.Core.Api.Win32.2.0.8\lib\netstandard2.0\Diga.Core.Api.Win32.dll</HintPath>
     </Reference>
-    <Reference Include="Diga.WebView2.Interop, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b57a3a24e5935ad4, processorArchitecture=MSIL">
-      <HintPath>..\CoreWindowsWrapper\packages\Diga.WebView2.Interop.20.1.3\lib\netstandard2.0\Diga.WebView2.Interop.dll</HintPath>
+    <Reference Include="Diga.WebView2.Interop, Version=20.1.5.0, Culture=neutral, PublicKeyToken=b57a3a24e5935ad4, processorArchitecture=MSIL">
+      <HintPath>..\CoreWindowsWrapper\packages\Diga.WebView2.Interop.20.1.5\lib\netstandard2.0\Diga.WebView2.Interop.dll</HintPath>
     </Reference>
-    <Reference Include="Diga.WebView2.Wrapper, Version=20.1.3.0, Culture=neutral, PublicKeyToken=0ba9f1d70febdaef, processorArchitecture=MSIL">
-      <HintPath>..\CoreWindowsWrapper\packages\Diga.WebView2.Wrapper.20.1.3\lib\netstandard2.0\Diga.WebView2.Wrapper.dll</HintPath>
+    <Reference Include="Diga.WebView2.Wrapper, Version=20.1.6.0, Culture=neutral, PublicKeyToken=0ba9f1d70febdaef, processorArchitecture=MSIL">
+      <HintPath>..\CoreWindowsWrapper\packages\Diga.WebView2.Wrapper.20.1.6\lib\netstandard2.0\Diga.WebView2.Wrapper.dll</HintPath>
     </Reference>
-    <Reference Include="MimeTypeExtension, Version=1.0.29.1, Culture=neutral, PublicKeyToken=5bccdf24b37e4bab, processorArchitecture=MSIL">
-      <HintPath>..\CoreWindowsWrapper\packages\MimeTypeExtension.1.0.29\lib\netstandard2.0\MimeTypeExtension.dll</HintPath>
+    <Reference Include="MimeTypeExtension, Version=1.0.30.1, Culture=neutral, PublicKeyToken=5bccdf24b37e4bab, processorArchitecture=MSIL">
+      <HintPath>..\CoreWindowsWrapper\packages\MimeTypeExtension.1.0.30\lib\netstandard2.0\MimeTypeExtension.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\CoreWindowsWrapper\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -64,6 +64,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -73,11 +74,11 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\CoreWindowsWrapper\packages\Diga.WebView2.Wrapper.20.1.3\build\Diga.WebView2.Wrapper.targets" Condition="Exists('..\CoreWindowsWrapper\packages\Diga.WebView2.Wrapper.20.1.3\build\Diga.WebView2.Wrapper.targets')" />
+  <Import Project="..\CoreWindowsWrapper\packages\Diga.WebView2.Wrapper.20.1.6\build\Diga.WebView2.Wrapper.targets" Condition="Exists('..\CoreWindowsWrapper\packages\Diga.WebView2.Wrapper.20.1.6\build\Diga.WebView2.Wrapper.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>Dieses Projekt verweist auf mindestens ein NuGet-Paket, das auf diesem Computer fehlt. Verwenden Sie die Wiederherstellung von NuGet-Paketen, um die fehlenden Dateien herunterzuladen. Weitere Informationen finden Sie unter "http://go.microsoft.com/fwlink/?LinkID=322105". Die fehlende Datei ist "{0}".</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\CoreWindowsWrapper\packages\Diga.WebView2.Wrapper.20.1.3\build\Diga.WebView2.Wrapper.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\CoreWindowsWrapper\packages\Diga.WebView2.Wrapper.20.1.3\build\Diga.WebView2.Wrapper.targets'))" />
+    <Error Condition="!Exists('..\CoreWindowsWrapper\packages\Diga.WebView2.Wrapper.20.1.6\build\Diga.WebView2.Wrapper.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\CoreWindowsWrapper\packages\Diga.WebView2.Wrapper.20.1.6\build\Diga.WebView2.Wrapper.targets'))" />
   </Target>
 </Project>

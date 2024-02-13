@@ -5,7 +5,7 @@ namespace CoreWindowsWrapper
 {
     public class NativeLabel : NativeControlBase
     {
-        
+
 
         protected override void Initialize()
         {
@@ -15,7 +15,7 @@ namespace CoreWindowsWrapper
             this.Style = WindowStylesConst.WS_VISIBLE | WindowStylesConst.WS_CHILD | StaticControlStyles.SS_NOTIFY;
             this.BackColor = Tools.ColorTool.White;
             this.ForeColor = Tools.ColorTool.Black;
-            
+
         }
 
         public override string Text
@@ -24,15 +24,15 @@ namespace CoreWindowsWrapper
             set
             {
                 base.Text = value;
-                User32.SetWindowTextsRaw(this.Handle,value);
+                User32.SetWindowTextsRaw(this.Handle, value);
 
             }
         }
 
         protected override bool ControlProc(IntPtr hWndParent, IntPtr hWndControl, int controlId, uint command, IntPtr wParam, IntPtr lParam)
         {
-           bool handled = false;
-            switch(command)
+            bool handled = false;
+            switch (command)
             {
                 case StaticControlMessages.STN_DBLCLK:
 
@@ -43,13 +43,13 @@ namespace CoreWindowsWrapper
                     OnClicked();
                     handled = true;
                     break;
-                
-                
+
+
             }
 
             return handled;
         }
 
-       
+
     }
 }

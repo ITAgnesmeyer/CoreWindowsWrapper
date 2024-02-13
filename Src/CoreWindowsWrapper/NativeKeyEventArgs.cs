@@ -20,7 +20,7 @@ namespace CoreWindowsWrapper
         [DllImport("user32.dll", EntryPoint="MapVirtualKeyW")]
         public static extern  uint MapVirtualKeyW(uint uCode, uint uMapType) ;
 
-
+        public uint Key { get; }
         public int VirtalKey { get; }
         public int ScanCode { get; }
         public bool ScanCodeE0 { get; }
@@ -39,7 +39,7 @@ namespace CoreWindowsWrapper
 
             var vkKey = wParamHiLow.iLow;
             this.VirtalKey = vkKey;
-
+            this.Key = Win32Api.GetIntPtrUInt(wParam);
             var lParamHiLow = Win32Api.MakeHiLo(lParam);
 
             var hiWord = (ushort)lParamHiLow.iHigh;

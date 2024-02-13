@@ -10,7 +10,7 @@ namespace CoreWindowsWrapper
         {
             base.Initialize();
             this.ControlType = Win32ApiForm.ControlType.CheckBox;
-            this.Style = this.Style |ButtonStyles.BS_CHECKBOX;
+            this.Style = this.Style |ButtonStyles.BS_CHECKBOX | ButtonStyles.BS_NOTIFY;
             
         }
 
