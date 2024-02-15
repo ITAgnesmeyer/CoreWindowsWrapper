@@ -4,11 +4,11 @@
 		<SccProvider>SAK</SccProvider>
 		<SccAuxPath>SAK</SccAuxPath>
 		<SccLocalPath>SAK</SccLocalPath>
-		<Platforms>AnyCPU</Platforms>
+		<Platforms>AnyCPU;x64</Platforms>
 	</PropertyGroup>
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<TargetFramework>net8.0-windows</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<ApplicationIcon>
 		</ApplicationIcon>
 		<StartupObject />
@@ -17,13 +17,14 @@
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 		<PublishAot>true</PublishAot>
 		<_SuppressWinFormsTrimError>true</_SuppressWinFormsTrimError>
+		<UseWindowsForms>false</UseWindowsForms>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<Prefer32Bit>true</Prefer32Bit>
+		<!--<Prefer32Bit>true</Prefer32Bit>-->
 		<PlatformTarget>AnyCPU</PlatformTarget>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<Prefer32Bit>false</Prefer32Bit>
+		<!--<Prefer32Bit>false</Prefer32Bit>-->
 		<PlatformTarget>AnyCPU</PlatformTarget>
 	</PropertyGroup>
 	<ItemGroup>

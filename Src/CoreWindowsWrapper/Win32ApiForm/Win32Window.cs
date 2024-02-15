@@ -745,6 +745,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
                     if (hdr != null)
                     {
+                        
                         int cId = (int)hdr.idFrom;
                         uint cCmd = Win32Api.GetIntPtrUInt(hdr.code);
                         IntPtr hCWndControl = hdr.hwndFrom;
@@ -752,7 +753,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
                         if (window.Controls.ContainsKey(cId))
                         {
                             IControl cControl = window.Controls[cId];
-                            Debug.Print("Control Type=>" + cControl.ControlType + ",ID=>" + cId + ",cmd=>" + cCmd);
+                            Debug.Print("Control Type=>" + cControl.ControlType + ",ID=>" + cId + ",cmd=>0x" + cCmd.ToString("x4") + "=>" + cCmd);
                             handled = cControl.HandleEvents(hWnd, hCWndControl, cId, cCmd, wParam, lParam);
 
                         }

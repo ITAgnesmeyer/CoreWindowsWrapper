@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFrameworks>net7.0;net6.0;net461;net472</TargetFrameworks>
+    <TargetFrameworks>net8.0;net7.0;net6.0;net461;net472</TargetFrameworks>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Authors>Dipl.-Ing.(FH) Guido Agnesmeyer</Authors>
