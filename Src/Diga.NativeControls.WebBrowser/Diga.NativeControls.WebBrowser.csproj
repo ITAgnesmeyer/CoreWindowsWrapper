@@ -33,8 +33,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Diga.Core.Api.Win32, Version=2.0.8.0, Culture=neutral, PublicKeyToken=195159b462588500, processorArchitecture=MSIL">
-      <HintPath>..\CoreWindowsWrapper\packages\Diga.Core.Api.Win32.2.0.8\lib\netstandard2.0\Diga.Core.Api.Win32.dll</HintPath>
+    <Reference Include="Diga.Core.Api.Win32, Version=2.0.9.0, Culture=neutral, PublicKeyToken=195159b462588500, processorArchitecture=MSIL">
+      <HintPath>..\CoreWindowsWrapper\packages\Diga.Core.Api.Win32.2.0.9\lib\netstandard2.0\Diga.Core.Api.Win32.dll</HintPath>
     </Reference>
     <Reference Include="Diga.WebView2.Interop, Version=20.1.5.0, Culture=neutral, PublicKeyToken=b57a3a24e5935ad4, processorArchitecture=MSIL">
       <HintPath>..\CoreWindowsWrapper\packages\Diga.WebView2.Interop.20.1.5\lib\netstandard2.0\Diga.WebView2.Interop.dll</HintPath>

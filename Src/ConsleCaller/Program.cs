@@ -8,7 +8,7 @@ namespace ConsoleCaller
        [STAThread]
         public static int Main(string[] args)
         {
-            ListViewTest nw = new ListViewTest();
+            TreeViewTest nw = new TreeViewTest();
             NativeApp.Run(nw);
             return 0;
         }

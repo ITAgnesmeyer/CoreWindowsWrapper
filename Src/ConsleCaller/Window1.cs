@@ -428,7 +428,7 @@ namespace ConsoleCaller
         {
             Window2 win2 = new Window2(this);
             //this.Controls.Add(win2);
-            win2.Show();
+            win2.ShowModal();
             MessageBox.Show("Nach Show");
         }
 

@@ -9,6 +9,8 @@
         Link,
         ListBox,
         ListView,
+        ImageList,
+        TreeView,
         GroupBox,
         ComboBox,
         Button,

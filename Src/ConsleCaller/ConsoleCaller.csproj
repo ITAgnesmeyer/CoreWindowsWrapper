@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup Label="Globals">
 		<SccProjectName>SAK</SccProjectName>
 		<SccProvider>SAK</SccProvider>
@@ -8,7 +8,7 @@
 	</PropertyGroup>
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net8.0-windows</TargetFramework>
 		<ApplicationIcon>
 		</ApplicationIcon>
 		<StartupObject />
@@ -17,7 +17,7 @@
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 		<PublishAot>true</PublishAot>
 		<_SuppressWinFormsTrimError>true</_SuppressWinFormsTrimError>
-		<UseWindowsForms>false</UseWindowsForms>
+		<UseWindowsForms>true</UseWindowsForms>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 		<!--<Prefer32Bit>true</Prefer32Bit>-->
@@ -140,6 +140,6 @@
 		</None>
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="System.Drawing.Common" Version="8.0.1" />
+		<PackageReference Include="System.Drawing.Common" Version="8.0.2" />
 	</ItemGroup>
 </Project>

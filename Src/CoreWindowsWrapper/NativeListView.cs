@@ -7,6 +7,7 @@ using System.Security.Policy;
 
 namespace CoreWindowsWrapper
 {
+
     public class ListViewItem
     {
         private tagLVITEMW _Item;
@@ -127,7 +128,7 @@ namespace CoreWindowsWrapper
             }
             set
             {
-                this._Item.lParam = (int)value;
+                this._Item.lParam = value;
             }
         }
 
