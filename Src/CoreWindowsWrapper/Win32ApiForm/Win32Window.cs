@@ -31,7 +31,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
         public event EventHandler<MouseMoveEventArgs> MouseMove;
         public event EventHandler<NativeKeyEventArgs> KeyDown;
         public event EventHandler<NativeKeyEventArgs> KeyUp;
-        public event EventHandler<NativeKeyEventArgs> SysKeyDown; 
+        public event EventHandler<NativeKeyEventArgs> SysKeyDown;
 
         internal static readonly Dictionary<IntPtr, Win32Window> WindowList = new Dictionary<IntPtr, Win32Window>();
         private static readonly Stack<Win32Window> WindowStack = new Stack<Win32Window>();
@@ -49,7 +49,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
         private ApiHandleRef ToolBarHandle { get; set; } = IntPtr.Zero;
         private bool _Visible;
         private Task _DispatchTask;
-        public static int DispatchCounter{get;internal set;}
+        public static int DispatchCounter { get; internal set; }
         private static ApiHandleRef TryGetMainWindow()
         {
             ApiHandleRef mainHwnd = IntPtr.Zero;
@@ -61,7 +61,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
                     break;
                 }
             }
-            
+
             return mainHwnd;
         }
         private void SetWindowVisible(bool visible)
@@ -155,7 +155,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
             return new Win32Window(hookHandle);
         }
 
-       
+
 
         [HandleProcessCorruptedStateExceptions]
         private void SetClassInfo(string className)
@@ -212,10 +212,10 @@ namespace CoreWindowsWrapper.Win32ApiForm
             WindowList.Add(this.Handle, this);
 
             this._OrgWndProc = User32.SetWindowLongPtr(hookHandle, GWL.GWL_WNDPROC, windProcPtr);
-            
+
 
         }
-       
+
 
         public Win32Window(bool isMainWindow = false)
         {
@@ -271,7 +271,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 cbClsExtra = 0,
                 cbWndExtra = 0,
                 hInstance = Process.GetCurrentProcess().Handle,
-                hIcon = string.IsNullOrEmpty(this.IconFile) ?  Tools.ImageTool.LoadAppIcon(): Tools.ImageTool.SafeLoadIconFromFile(this.IconFile) ,
+                hIcon = string.IsNullOrEmpty(this.IconFile) ? Tools.ImageTool.LoadAppIcon() : Tools.ImageTool.SafeLoadIconFromFile(this.IconFile),
                 hCursor = User32.LoadCursor(IntPtr.Zero, (int)Win32ApiCursors.IDC_ARROW),
                 lpszMenuName = null,
                 lpszClassName = this.WindowClassName,
@@ -508,8 +508,8 @@ namespace CoreWindowsWrapper.Win32ApiForm
         public void Dispatch()
         {
             DispatchCounter++;
-            lock (this)
-            {
+            //lock (this)
+            //{
                 int br = 0;
                 ApiHandleRef mainWindowHandle = TryGetMainWindow();
                 while ((br = User32.GetMessage(out var msg, IntPtr.Zero, 0, 0)) != 0)
@@ -528,18 +528,22 @@ namespace CoreWindowsWrapper.Win32ApiForm
                         {
                             if (mainWindowHandle.IsValid)
                             {
+
                                 if (!User32.IsDialogMessage(mainWindowHandle, ref msg))
                                 {
-                                   
+
                                     User32.TranslateMessage(ref msg);
-                                    User32.DispatchMessage(ref msg);
+                                    if (msg.hwnd != IntPtr.Zero)
+                                    {
+                                        User32.DispatchMessage(ref msg);
+                                    }
                                 }
                             }
                             else
                             {
                                 User32.TranslateMessage(ref msg);
                                 User32.DispatchMessage(ref msg);
-                                
+
                             }
                         }
 
@@ -561,7 +565,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
                     }
                     if (WindowList.Count == 0) break;
                 }
-            }
+            //}
 
             DispatchCounter--;
         }
@@ -717,7 +721,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
             }
             else
             {
-                
+
                 if (!WindowList.ContainsKey(hWnd)) return false;
                 window = WindowList[hWnd];
             }
@@ -726,7 +730,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
             switch (eventType)
             {
                 case WindowsMessages.WM_SYSKEYDOWN:
-                    
+
                     var kevSysDown = new NativeKeyEventArgs(wParam, lParam);
                     window.OnSysteKeyDown(hWnd, kevSysDown);
                     handled = kevSysDown.Handled;
@@ -745,7 +749,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
                     if (hdr != null)
                     {
-                        
+
                         int cId = (int)hdr.idFrom;
                         uint cCmd = Win32Api.GetIntPtrUInt(hdr.code);
                         IntPtr hCWndControl = hdr.hwndFrom;
@@ -770,7 +774,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
                     if (window.Controls.ContainsKey(controlId))
                     {
                         IControl control = window.Controls[controlId];
-                            handled = control.HandleEvents(hWnd, hWndControl, controlId, command, wParam, lParam);
+                        handled = control.HandleEvents(hWnd, hWndControl, controlId, command, wParam, lParam);
                     }
                     else
                     {
@@ -822,22 +826,26 @@ namespace CoreWindowsWrapper.Win32ApiForm
                     break;
                 case WindowsMessages.WM_KEYUP:
                     var kevUp = new NativeKeyEventArgs(wParam, lParam);
-                    window.OnKeyUp(hWnd , kevUp);
+                    window.OnKeyUp(hWnd, kevUp);
                     handled = kevUp.Handled;
                     break;
                 case WindowsMessages.WM_KEYDOWN:
                     var kevDown = new NativeKeyEventArgs(wParam, lParam);
-                    window.OnKeyDown(hWnd, kevDown );
-                    handled = kevDown .Handled;
+                    window.OnKeyDown(hWnd, kevDown);
+                    handled = kevDown.Handled;
                     break;
-               
+
                 case WindowsMessages.WM_PAINT:
-                    PaintStruct ps;
+                    //PaintStruct ps;
+                    using(var p = new ApiStructHandleRef<PaintStruct>())
+                    {
+                        IntPtr hdc = User32.BeginPaint(hWnd, p);
+                        window.OnPaint(hWnd, p.GetStruct());
+                        User32.EndPaint(hWnd, p);
+                        User32.ReleaseDC(hWnd, hdc);
+
+                    }
                     // ReSharper disable once UnusedVariable
-                    IntPtr hdc = User32.BeginPaint(hWnd, out ps);
-                    window.OnPaint(hWnd, ps);
-                    User32.EndPaint(hWnd, ref ps);
-                    User32.ReleaseDC(hWnd, hdc);
                     break;
                 case WindowsMessages.WM_LBUTTONDBLCLK:
                     window.OnDoubleClick(new MouseClickEventArgs(MouseButton.Left, hWnd));
@@ -1020,7 +1028,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
         {
             SysKeyDown?.Invoke(this, keyEventArgs);
         }
-        private void OnKeyDown(IntPtr hWnd, NativeKeyEventArgs keyEventArgs )
+        private void OnKeyDown(IntPtr hWnd, NativeKeyEventArgs keyEventArgs)
         {
             KeyDown?.Invoke(this, keyEventArgs);
         }

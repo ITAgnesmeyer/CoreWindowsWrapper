@@ -21,6 +21,6 @@ namespace CoreWindowsWrapper
             set => this._PaintStruct.fErase = value;
         }
 
-        public Rect RcPaint => this._PaintStruct.rcPaint;
+        public Rect RcPaint => this._PaintStruct.GetRcPaint();
     }
 }

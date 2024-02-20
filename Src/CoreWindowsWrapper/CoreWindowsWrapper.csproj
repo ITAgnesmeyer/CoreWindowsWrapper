@@ -22,12 +22,12 @@
     <PackageProjectUrl>https://github.com/ITAgnesmeyer/CoreWindowsWrapper</PackageProjectUrl>
     <PackageReleaseNotes>BugFixes
 </PackageReleaseNotes>
-    <Version>2.0.5</Version>
+    <Version>2.0.7</Version>
     <SignAssembly>True</SignAssembly>
     <DelaySign>False</DelaySign>
     <AssemblyOriginatorKeyFile>diga_cert.snk</AssemblyOriginatorKeyFile>
-    <AssemblyVersion>2.0.5</AssemblyVersion>
-    <FileVersion>2.0.5</FileVersion>
+    <AssemblyVersion>2.0.7</AssemblyVersion>
+    <FileVersion>2.0.7</FileVersion>
     <ApplicationIcon />
     <Win32Resource></Win32Resource>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -96,7 +96,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Diga.Core.Api.Win32" Version="2.0.9" />
+    <PackageReference Include="Diga.Core.Api.Win32" Version="2.0.10" />
   </ItemGroup>
 
   <ItemGroup>
