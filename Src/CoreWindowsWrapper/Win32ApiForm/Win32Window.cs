@@ -41,12 +41,14 @@ namespace CoreWindowsWrapper.Win32ApiForm
         private readonly MenuItemCollection _FlatMenuItems;
         public ApiHandleRef Handle { get; private set; } = IntPtr.Zero;
         public ApiHandleRef ParentHandle { get; set; } = IntPtr.Zero;
+        public ApiHandleRef AcceleratorTableHandle { get; set; } = IntPtr.Zero;
         public int Color { get; set; }
         public string Text { get; set; }
         public string Name { get; set; }
         private string WindowClassName { get; set; }
         private ApiHandleRef StatusBarHandle { get; set; } = IntPtr.Zero;
         private ApiHandleRef ToolBarHandle { get; set; } = IntPtr.Zero;
+
         private bool _Visible;
         private Task _DispatchTask;
         public static int DispatchCounter { get; internal set; }
@@ -63,6 +65,12 @@ namespace CoreWindowsWrapper.Win32ApiForm
             }
 
             return mainHwnd;
+        }
+        public void LoadAccelrators(int id)
+        {
+         
+            ResourceLoader loader = new ResourceLoader();
+            this.AcceleratorTableHandle = loader.LoadAccelerator(id);
         }
         private void SetWindowVisible(bool visible)
         {
@@ -598,6 +606,8 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
             switch (msg)
             {
+               
+
                 case WindowsMessages.WM_CLOSE:
                     InvokeEvent(msg, hWnd, wParam, lParam);
                     SetWindowDestroyed(hWnd);
@@ -964,7 +974,19 @@ namespace CoreWindowsWrapper.Win32ApiForm
                     Rect rzs = window.GetCleanClientRect();
                     window.OnSize(new SizeEventArgs(rzs.X, rzs.Y, rzs.Right - rzs.Left, rzs.Bottom - rzs.Top));
                     break;
-
+                case WindowsMessages.WM_TIMER:
+                    int timerId = Win32Api.LoWord(wParam.ToInt32());
+                    if(window.Controls.ContainsKey(timerId))
+                    {
+                        IControl control = window.Controls[timerId];
+                        handled = control.HandleEvents(hWnd, IntPtr.Zero, timerId, WindowsMessages.WM_TIMER, wParam, lParam);
+                        
+                    }
+                    else
+                    {
+                        handled = false;
+                    }
+                    break;
                 default:
                     handled = false;
                     break;

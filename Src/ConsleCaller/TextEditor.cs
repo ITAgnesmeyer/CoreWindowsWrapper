@@ -12,6 +12,8 @@ namespace ConsoleCaller
 
         protected override void InitControls()
         {
+            bool v = this.LoadAccelerators(101);
+
             this.Text = "Little Editor";
             this.Name = "MainWindow";
             this.StatusBar = true;
@@ -42,8 +44,12 @@ namespace ConsoleCaller
 
             //Create Help-Menu
             NativeMenu menuHelp = new NativeMenu("&Help");
+            
             //Add Sub-Item to Help-Menu
-            NativeMenuItem menuInfo = new NativeMenuItem("&Info");
+            NativeMenuItem menuInfo = new NativeMenuItem("&Info\tAlt+Ctrl+Shift+F1");
+            //IMenuItem im = menuInfo;
+           
+            
             //Add Event-Handler
             menuInfo.Click += MenuInfo_Click;
             //Add the Sub-Item to the Help-Menu

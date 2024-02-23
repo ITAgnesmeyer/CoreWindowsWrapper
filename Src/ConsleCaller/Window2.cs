@@ -6,7 +6,7 @@ namespace ConsoleCaller
 {
     public class Window2 : NativeWindow
     {
-        private NativeWebBrowser _WebBrowser;
+        //private NativeWebBrowser _WebBrowser;
         private NativeButton _Button;
         private NativeLink _Link;
         private NativeGroupBox _GroupBox;
@@ -33,11 +33,11 @@ namespace ConsoleCaller
             this.Click += Window2_Click;
             this.DoubleClick += Window2_DblClick;
             this.Create += Window2_Create;
-            this._WebBrowser = new NativeWebBrowser();
-            this._WebBrowser.Location = new Diga.Core.Api.Win32.Point(100,100);
-            this._WebBrowser.Width = 200;
-            this._WebBrowser.Height = 200;
-            this._WebBrowser.Url = "https://www.google.de";
+            //this._WebBrowser = new NativeWebBrowser();
+            //this._WebBrowser.Location = new Diga.Core.Api.Win32.Point(100,100);
+            //this._WebBrowser.Width = 200;
+            //this._WebBrowser.Height = 200;
+            //this._WebBrowser.Url = "https://www.google.de";
 
             this._Button = new NativeButton();
             this._Button.Left = 100;
@@ -65,7 +65,7 @@ namespace ConsoleCaller
             this._GroupBox.Text = "TEST";
             
 
-            this.Controls.Add(this._WebBrowser);
+            //this.Controls.Add(this._WebBrowser);
             this.Controls.Add(this._Button);
             this.Controls.Add(this._Link);
             this.Controls.Add(this._GroupBox);
@@ -111,8 +111,9 @@ namespace ConsoleCaller
 
         private void Window2_DblClick(object sender, MouseClickEventArgs e)
         {
-            MessageBox.Show("BrowserID:" + this._WebBrowser.Handle.ToInt32());
+            //MessageBox.Show("BrowserID:" + this._WebBrowser.Handle.ToInt32());
             this.Visible=false;
+            this.Close();
         }
 
         private void Window2_Click(object sender, MouseClickEventArgs e)

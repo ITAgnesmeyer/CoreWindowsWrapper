@@ -8,7 +8,7 @@ namespace ConsoleCaller
        [STAThread]
         public static int Main(string[] args)
         {
-            Window4 nw = new Window4();
+            TestIpAddress nw = new TestIpAddress();
             NativeApp.Run(nw);
             return 0;
         }

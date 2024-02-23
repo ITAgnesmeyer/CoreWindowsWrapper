@@ -1,5 +1,6 @@
 ﻿using CoreWindowsWrapper;
 using CoreWindowsWrapper.Win32ApiForm;
+using Diga.Core.Api.Win32.GDI;
 using System.Drawing;
 
 namespace ConsoleCaller
@@ -61,7 +62,8 @@ namespace ConsoleCaller
             if(!this._DoDraw) return;
 
             Color fc = Color.Black;
-
+            
+            
 #pragma warning disable IDE0063 // Einfache using-Anweisung verwenden
 #pragma warning disable CA1416 // Plattformkompatibilität überprüfen
             using (Graphics g = Graphics.FromHdc(e.PaintObject.Hdc))

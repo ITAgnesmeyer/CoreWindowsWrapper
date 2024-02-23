@@ -67,6 +67,7 @@ namespace ConsoleCaller
         {
             this._IpEdit.GetAddress(out byte b1, out byte b2, out byte b3, out byte b4);
             Debug.Print($"{b1}.{b2}.{b3}.{b4}");
+            this._Label.Text = $"{b1}.{b2}.{b3}.{b4}";
 
         }
     }

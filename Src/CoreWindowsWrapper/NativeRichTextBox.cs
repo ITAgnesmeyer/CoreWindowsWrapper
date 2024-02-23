@@ -160,9 +160,10 @@ namespace CoreWindowsWrapper
         protected override void Initialize()
         {
             Kernel32.LoadLibrary("Msftedit.dll");
+            //Kernel32.LoadLibrary("C:\\Program Files\\Microsoft Office\\root\\vfs\\ProgramFilesCommonX64\\Microsoft Shared\\Office16\\riched20.dll");
             base.Initialize();
+            //this.TypeIdentifier = "RICHEDIT60W";//"RICHEDIT50W";
             this.TypeIdentifier = "RICHEDIT50W";
-
             this.Style = this.Style | EditBoxStyles.ES_MULTILINE | ES_SAVESEL | EditBoxStyles.ES_WANTRETURN  | WindowStylesConst.WS_HSCROLL | WindowStylesConst.WS_VSCROLL;
 
         }

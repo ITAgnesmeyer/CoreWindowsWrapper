@@ -64,6 +64,27 @@ namespace CoreWindowsWrapper
                 return IntPtr.Zero;
             }
         }
+
+        public IntPtr Accelerators
+        {
+            get
+            {
+                if(this._Window != null)
+                {
+                    return this._Window.AcceleratorTableHandle;
+                }
+                return IntPtr.Zero;
+            }
+        }
+        public bool LoadAccelerators(int id)
+        {
+            if (this._Window == null)
+                return false;
+            if (id < 0)
+                return false;
+            this._Window.LoadAccelrators(id);
+            return true;
+        }
         public event EventHandler<CreateEventArgs> Create;
         public event EventHandler<MouseClickEventArgs> DoubleClick;
         public event EventHandler<MouseClickEventArgs> Click;
