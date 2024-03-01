@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
     internal sealed class Win32Window : IWindowClass, IDisposable
     {
-
+        private const uint WM_PARENTRESIZE = WindowsMessages.WM_USER + 975;
 
         public bool IsMainWindow { get; set; }
         public event EventHandler<BeforeWindowCreateEventArgs> BeforeCreate;
@@ -32,6 +33,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
         public event EventHandler<NativeKeyEventArgs> KeyDown;
         public event EventHandler<NativeKeyEventArgs> KeyUp;
         public event EventHandler<NativeKeyEventArgs> SysKeyDown;
+        public event EventHandler<EventArgs> ParentResize;
 
         internal static readonly Dictionary<IntPtr, Win32Window> WindowList = new Dictionary<IntPtr, Win32Window>();
         private static readonly Stack<Win32Window> WindowStack = new Stack<Win32Window>();
@@ -90,6 +92,8 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 this.Top = value.Y;
             }
         }
+
+       
 
         public int Left
         {
@@ -480,14 +484,18 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
         private void FlattenControlItems(IControl control)
         {
+            if (control is NativeWindow)
+                return;
             if (!this.Controls.ContainsKey(control.ControlId))
                 this.Controls.Add(control);
             foreach (var controlControl in control.Controls.Values)
             {
                 FlattenControlItems(controlControl);
             }
-
+           
             control.Controls.Clear();
+           
+            
         }
 
 
@@ -644,6 +652,11 @@ namespace CoreWindowsWrapper.Win32ApiForm
                                 return new IntPtr(0);
                             }
                         }
+                        else
+                        {
+                            if(WindowList.Count > 0)
+                                Debug.Print("Window not found!");
+                        }
 
                         return User32.DefWindowProc(hWnd, msg, wParam, lParam);
                     }
@@ -732,7 +745,8 @@ namespace CoreWindowsWrapper.Win32ApiForm
             else
             {
 
-                if (!WindowList.ContainsKey(hWnd)) return false;
+                if (!WindowList.ContainsKey(hWnd)) 
+                    return false;
                 window = WindowList[hWnd];
             }
 
@@ -960,10 +974,20 @@ namespace CoreWindowsWrapper.Win32ApiForm
                     {
                         User32.SendMessage(window.ToolBarHandle, WindowsMessages.WM_SIZE);
                     }
-
+                    
                     Rect r = window.GetCleanClientRect();
                     window.OnSize(new SizeEventArgs(r.X, r.Y, r.Right - r.Left, r.Bottom - r.Top));
+                    foreach (var item in window.Controls)
+                    {
+                        if(item.Value is NativeWindow)
+                        {
+                            User32.SendMessage(item.Value.Handle, WM_PARENTRESIZE);
+                        }
+                    }
                     //handled = false;
+                    break;
+                case WM_PARENTRESIZE:
+                    window.OnParentResize();
                     break;
                 case WindowsMessages.WM_SIZING:
                     Rect rz = window.GetCleanClientRect();
@@ -1113,6 +1137,11 @@ namespace CoreWindowsWrapper.Win32ApiForm
             Size?.Invoke(this, e);
         }
 
+        private void OnParentResize()
+        {
+            ParentResize?.Invoke(this, EventArgs.Empty);
+        }
+        
         public Rect GetCleanClientRect()
         {
             int sbHeigt = 0;

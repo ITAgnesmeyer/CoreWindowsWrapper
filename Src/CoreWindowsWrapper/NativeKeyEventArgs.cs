@@ -31,7 +31,7 @@ namespace CoreWindowsWrapper
         public bool IsDlgMode { get; }
         public bool IsMenuMode { get; }
         public bool Handled { get; set; }
-       
+        public IntPtr ResturnCode { get; set; } = IntPtr.Zero;
         internal NativeKeyEventArgs(IntPtr wParam, IntPtr lParam)
         {
             this.Handled = false;

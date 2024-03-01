@@ -12,8 +12,11 @@ namespace CoreWindowsWrapper
         internal virtual Win32Control Control { get => this._Control; set => this._Control = value; }
         public virtual event EventHandler<EventArgs> Clicked;
         public virtual event EventHandler<EventArgs> DblClicked;
-        //public virtual event EventHandler<NativeKeyEventArgs> KeyDown;
+        public virtual event EventHandler<NativeKeyEventArgs> KeyDown;
+        public virtual event EventHandler<NativeKeyEventArgs> KeyUp;
+        public virtual event EventHandler<NativeKeyEventArgs> KeyPress;
         //public virtual event EventHandler<NativeKeyEventArgs> KeyUp; 
+        public event EventHandler<MouseMoveEventArgs> MouseMove;
         private Font _Font;
         private readonly TaskQueue _TaskQueue = new TaskQueue();
 
@@ -129,7 +132,11 @@ namespace CoreWindowsWrapper
             get => this.Control.Location;
             set => this.Control.Location = value;
         }
-
+        public Size Size
+        {
+            get => this.Control.Size;
+            set => this.Control.Size = value;
+        }
         internal int ControlId
         {
             get => ((IControl)this).ControlId;
@@ -183,9 +190,71 @@ namespace CoreWindowsWrapper
         {
             bool retCreate = this.Control.Create(parentId);
             this.AfterCreate();
+            this.Control.WndProc = OnWndProc;
             return retCreate;
         }
 
+        private IntPtr OnWndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
+        {
+            switch(msg)
+            {
+                case WindowsMessages.WM_KEYDOWN:
+                    {
+                        var kevDown = new NativeKeyEventArgs(wParam, lParam);
+                        OnKeyDown(hWnd, kevDown);
+                        if (kevDown.Handled)
+                        {
+                            if(kevDown.ResturnCode != IntPtr.Zero)
+                                return kevDown.ResturnCode;
+                            return (IntPtr)1;
+                        }
+                            
+
+                    }
+                    break;
+                case WindowsMessages.WM_MOUSEMOVE:
+                    HighLow hl = Win32Api.MakeHiLo(lParam);
+                    uint mouseButtons = Win32Api.GetIntPtrUInt(wParam);
+                    OnMouseMove(new MouseMoveEventArgs(new Point(hl.iLow, hl.iHigh), (MouseKey)mouseButtons));
+                    break;
+                case WindowsMessages.WM_KEYUP:
+                    {
+                        var kevUp = new NativeKeyEventArgs(wParam, lParam);
+                        OnKeyUp(hWnd, kevUp);
+                        if(kevUp.Handled)
+                            return (IntPtr)1;
+                    }
+                    break;
+                case WindowsMessages.WM_CHAR:
+                    {
+                        var kevDown = new NativeKeyEventArgs(wParam, lParam);
+                        OnKeyPress(hWnd, kevDown);
+                        if(kevDown.Handled)
+                            return (IntPtr)1;
+                    }
+                    break;
+            }
+            return IntPtr.Zero;
+        }
+        protected virtual void OnMouseMove(MouseMoveEventArgs e)
+        {
+            SafeInvoke(this.MouseMove, e);
+            
+        }
+        protected virtual void OnKeyPress(IntPtr hWnd, NativeKeyEventArgs keyEventArgs)
+        {
+            SafeInvoke(this.KeyPress, keyEventArgs);
+        }
+        protected  virtual void OnKeyDown(IntPtr hWnd, NativeKeyEventArgs keyEventArgs)
+        {
+            //KeyDown?.Invoke(this, keyEventArgs);
+            SafeInvoke(this.KeyDown, keyEventArgs); 
+        }
+
+        protected virtual void OnKeyUp(IntPtr hWnd, NativeKeyEventArgs keyEventArgs)
+        {
+            SafeInvoke(this.KeyUp, keyEventArgs);
+        }
         protected virtual bool ControlProc(IntPtr hWndParent, IntPtr hWndControl, int controlId, uint command,
             IntPtr wParam, IntPtr lParam)
         {

@@ -23,7 +23,7 @@
 		<PackageReleaseNotes>
 			BugFixes
 		</PackageReleaseNotes>
-		<Version>2.0.8.1-prerelease</Version>
+		<Version>2.0.8.6-prerelease</Version>
 		<SignAssembly>True</SignAssembly>
 		<DelaySign>False</DelaySign>
 		<AssemblyOriginatorKeyFile>diga_cert.snk</AssemblyOriginatorKeyFile>
@@ -33,6 +33,7 @@
 		<Win32Resource></Win32Resource>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -92,7 +93,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Include="README.md" Pack="true" PackagePath="\"/>
+		<None Include="README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Remove="packages\**" />
@@ -101,7 +102,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Diga.Core.Api.Win32" Version="2.0.11-prerelease" />
+		<PackageReference Include="Diga.Core.Api.Win32" Version="2.0.14-prerelease" />
 	</ItemGroup>
 
 	<ItemGroup>

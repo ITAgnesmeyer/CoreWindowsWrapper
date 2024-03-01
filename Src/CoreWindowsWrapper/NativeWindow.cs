@@ -279,6 +279,8 @@ namespace CoreWindowsWrapper
             set => this._Window.Location = value;
            
         }
+
+        
         int IControl.ControlId { get; set; } = -1;
         string IControl.TypeIdentifyer
         {
@@ -341,7 +343,14 @@ namespace CoreWindowsWrapper
             this._Window.KeyDown += OnKeyDownInternal;
             this._Window.KeyUp += OnKeyUpInternal;
             this._Window.SysKeyDown += OnSysKeyDownInternal;
+            this._Window.ParentResize += OnParentResizeInternl;
 
+
+        }
+
+        private void OnParentResizeInternl(object sender, EventArgs e)
+        {
+            OnParentResize();
         }
 
         private void OnSysKeyDownInternal(object sender, NativeKeyEventArgs e)
@@ -545,7 +554,10 @@ namespace CoreWindowsWrapper
         {
             Size?.Invoke(this, e);
         }
+        protected virtual void OnParentResize()
+        {
 
+        }
         public virtual void OnKeyDown(NativeKeyEventArgs e)
         {
             KeyDown?.Invoke(this,e);

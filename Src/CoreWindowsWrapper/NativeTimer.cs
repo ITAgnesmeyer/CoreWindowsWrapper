@@ -16,11 +16,19 @@ namespace CoreWindowsWrapper
 
         public void StartTimer()
         {
-            TimerProc proc = OnTimerProc;
+            //First check if there is a parent Window
+            if (this.ParentHandle == IntPtr.Zero)
+                throw new InvalidOperationException("You cannot start Timer before main Window created!");
+            //timer Proc is  disabled 
+            //Uses Windows Message insted!
+            //TimerProc proc = OnTimerProc;
             UIntPtr id = (UIntPtr)this.ControlId;
             uint intVal = System.Convert.ToUInt32(this.Interval);
             if (this.Interval > 0)
+            {
                 User32.SetTimer(this.ParentHandle, id, intVal, null);
+            }
+                
         }
 
         private void OnTimerProc(IntPtr param0, uint param1, IntPtr param2, uint param3)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography.X509Certificates;
 using CoreWindowsWrapper;
 using CoreWindowsWrapper.Tools;
 using Diga.Core.Api.Win32;
@@ -8,6 +9,7 @@ namespace ConsoleCaller
     class ListViewTest : NativeWindow
     {
         private NativeButton _Button;
+        private NativeLabel _Label;
         private NativeListView _ListView;
         protected override void InitControls()
         {
@@ -23,6 +25,15 @@ namespace ConsoleCaller
             };
             this._Button.Clicked += OnButtonClicked;
 
+            this._Label = new NativeLabel
+            {
+                Left = 300,
+                Top = 0,
+                Width = 255,
+                Height = 30,
+                Text = ""
+            };
+            
             this._ListView = new NativeListView
             {
                 Left = 0,
@@ -32,11 +43,18 @@ namespace ConsoleCaller
                 Font = new Font { Size = 10}
 
             };
+            this._ListView.ItemChanged += ListView_ItemChanged;
 
             this.Controls.Add(this._Button);
+            this.Controls.Add(this._Label);
             this.Controls.Add(this._ListView);
         }
-        
+
+        private void ListView_ItemChanged(object sender, ListViewItemChangeEventArgs e)
+        {
+            this._Label.Text = $"Item:{e.ListViewNotify.ItemIndex},SubItem:{e.ListViewNotify.SubItemIndex} => x:{e.ListViewNotify.ActionPoint.X},y:{e.ListViewNotify.ActionPoint.Y}";
+        }
+
         protected override void OnCreate(CreateEventArgs e)
         {
             base.OnCreate(e);

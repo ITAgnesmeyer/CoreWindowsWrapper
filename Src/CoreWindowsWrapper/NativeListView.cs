@@ -7,7 +7,53 @@ using System.Security.Policy;
 
 namespace CoreWindowsWrapper
 {
+    public class ListViewItemChangeEventArgs:EventArgs
+    {
+        public ListViewNotify ListViewNotify { get; }
+        public ListViewItemChangeEventArgs(tagNMLISTVIEW lvn)
+        {
+            ListViewNotify = lvn;   
+        }
+        public ListViewItemChangeEventArgs(ListViewNotify listViewNotify)
+        {
 
+            ListViewNotify = listViewNotify;
+
+        }
+    }
+
+
+    public class ListViewNotify
+    {
+        private tagNMLISTVIEW _ListView;
+        public ListViewNotify(tagNMLISTVIEW lvn)
+        {
+            this._ListView = lvn;
+        }
+        public tagNMLISTVIEW ToStruct() => this._ListView;
+        public IntPtr FormHandle => this._ListView.hdr.hwndFrom;
+        public uint ItemId => this._ListView.hdr.idFrom;
+        public IntPtr Code => this._ListView.hdr.code;
+
+       
+        public int ItemIndex => this._ListView.iItem;
+        public int SubItemIndex => this._ListView.iSubItem;
+        public uint NewState => this._ListView.uNewState;
+        public uint OldState => this._ListView.uOldState;
+        public uint Changed => this._ListView.uChanged;
+        public Point ActionPoint => this._ListView.ptAction;
+        public IntPtr LParam => this._ListView.lParam;
+
+        public static implicit operator ListViewNotify(tagNMLISTVIEW lvn)
+        {
+            return new ListViewNotify(lvn);
+        }
+
+        public static implicit operator tagNMLISTVIEW(ListViewNotify lvn) 
+        { 
+            return lvn.ToStruct();
+        }
+    }
     public class ListViewItem
     {
         private tagLVITEMW _Item;
@@ -393,6 +439,17 @@ namespace CoreWindowsWrapper
         private const uint LVS_NOCOLUMNHEADER = 0x4000;
         private const uint LVS_NOSORTHEADER = 0x8000;
         private List<ListViewColumn> _Columns = new List<ListViewColumn>();
+        public EventHandler<ListViewItemChangeEventArgs> ItemChangeing;
+        public EventHandler<ListViewItemChangeEventArgs> ItemChanged;
+        protected virtual void OnItemChangeing(ListViewItemChangeEventArgs e)
+        {
+            SafeInvoke(ItemChangeing, e);
+        }
+
+        protected virtual void OnItemChanged(ListViewItemChangeEventArgs e)
+        {
+            SafeInvoke(ItemChanged, e);
+        }
         protected override void Initialize()
         {
             base.Initialize();
@@ -539,12 +596,49 @@ namespace CoreWindowsWrapper
             bool result = false;
             switch (command)
             {
+                case ListViewNotifyConst.LVN_ITEMACTIVATE:
+                    try
+                    {
+                        tagNMITEMACTIVATE track = Marshal.PtrToStructure<tagNMITEMACTIVATE>(lParam);
+                    }
+                    catch 
+                    {
+                        break;
+                        
+                    }
+                    break;
+                case ListViewNotifyConst.LVN_ITEMCHANGING:
+                    try
+                    {
+                        tagNMLISTVIEW item = Marshal.PtrToStructure<tagNMLISTVIEW>(lParam);
+                        OnItemChangeing(new ListViewItemChangeEventArgs(item));
+                        result = true;
+                    }
+                    catch 
+                    {
+
+                        break;
+                    }
+                    break;
+                case ListViewNotifyConst.LVN_ITEMCHANGED:
+                    try
+                    {
+                        tagNMLISTVIEW item = Marshal.PtrToStructure<tagNMLISTVIEW>(lParam);
+                        OnItemChanged(new ListViewItemChangeEventArgs(item));
+                        result = true;
+                    }
+                    catch 
+                    {
+
+                        break;
+                    }
+                    break;
                 case ListViewNotifyConst.LVN_HOTTRACK:
                     try
                     {
                         tagNMLISTVIEW track = Marshal.PtrToStructure<tagNMLISTVIEW>(lParam);
 
-                        
+                        Debug.Print("LV-HotTrack");
                         
 
                     }

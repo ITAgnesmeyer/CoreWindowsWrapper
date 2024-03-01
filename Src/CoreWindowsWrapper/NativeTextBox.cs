@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Diagnostics;
 using Diga.Core.Api.Win32;
 
@@ -6,21 +7,35 @@ namespace CoreWindowsWrapper
 {
     public class NativeTextBox : NativeControlBase
     {
+        private const uint ECM_FIRST = 0x1500;
+        private const uint EM_SETEXTENDEDSTYLE = ECM_FIRST + 10;
+        private const uint ES_EX_ALLOWEOL_CR = 0x0001;
+        private const uint ES_EX_ALLOWEOL_LF = 0x0002;
+        private const uint ES_EX_ALLOWEOL_ALL = (ES_EX_ALLOWEOL_CR | ES_EX_ALLOWEOL_LF);
+        private const uint ES_EX_CONVERT_EOL_ON_PASTE = 0x0004;
+        private const uint ES_EX_ZOOMABLE = 0x0010;
         public event EventHandler<EventArgs> Change;
         public event EventHandler<EventArgs> SetFocus;
         public event EventHandler<EventArgs> KillFocus;
+        
         protected override void Initialize()
         {
             base.Initialize();
             this.ControlType = Win32ApiForm.ControlType.Edit;
             this.TypeIdentifier = "edit";
-            this.Style |= EditBoxStyles.ES_AUTOHSCROLL;
-
+            this.Style |= EditBoxStyles.ES_AUTOHSCROLL | EditBoxStyles.ES_WANTRETURN  ;
+            
             this.BackColor = Tools.ColorTool.White;
             this.ForeColor = Tools.ColorTool.Black;
 
         }
+        //protected override void AfterCreate()
+        //{
+        //    uint exStyle = ES_EX_ALLOWEOL_CR | ES_EX_ALLOWEOL_ALL;
+        //    IntPtr result = User32.SendMessage(this.Handle, EM_SETEXTENDEDSTYLE, exStyle, exStyle);
+        //    int r = result.ToInt32();
 
+        //}
         public override string Text
         {
             get => User32.GetWindowTextRaw(this.Handle);
@@ -28,6 +43,8 @@ namespace CoreWindowsWrapper
             {
                 base.Text = value;
                 User32.SetWindowTextsRaw(this.Handle, value);
+
+                
 
             }
         }
@@ -39,6 +56,7 @@ namespace CoreWindowsWrapper
             Debug.Print($"NativeTextBox:0x{command.ToString("x4")}");
             switch (command)
             {
+               
                 case EditBoxMessages.EN_SETFOCUS:
                     OnSetFocus();
                     handled = true;
@@ -52,12 +70,23 @@ namespace CoreWindowsWrapper
                     OnChange();
                     handled = true;
                     break;
-              
+               
 
             }
 
             return handled;
 
+        }
+        protected override void OnKeyDown(IntPtr hWnd, NativeKeyEventArgs keyEventArgs)
+        {
+            if(keyEventArgs.Key == VirtualKeys.VK_TAB)
+            {
+                keyEventArgs.Handled = true;
+                keyEventArgs.ResturnCode = (IntPtr)0x0002;
+                User32.PostMessage(this.ParentHandle, WindowsMessages.WM_KEYDOWN, (IntPtr)keyEventArgs.Key,(IntPtr)0);
+                return;
+            }
+            base.OnKeyDown(hWnd, keyEventArgs);
         }
         protected virtual void OnKillFocus()
         {

@@ -35,8 +35,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Diga.Core.Api.Win32, Version=2.0.11.0, Culture=neutral, PublicKeyToken=195159b462588500, processorArchitecture=MSIL">
-      <HintPath>..\CoreWindowsWrapper\packages\Diga.Core.Api.Win32.2.0.11-prerelease\lib\netstandard2.0\Diga.Core.Api.Win32.dll</HintPath>
+    <Reference Include="Diga.Core.Api.Win32, Version=2.0.14.0, Culture=neutral, PublicKeyToken=195159b462588500, processorArchitecture=MSIL">
+      <HintPath>..\CoreWindowsWrapper\packages\Diga.Core.Api.Win32.2.0.14-prerelease\lib\netstandard2.0\Diga.Core.Api.Win32.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using Diga.Core.Api.Win32;
 using Diga.Core.Api.Win32.GDI;
 
@@ -12,6 +13,8 @@ namespace CoreWindowsWrapper.Win32ApiForm
         public ApiHandleRef ParentHandle { get; internal set; } = IntPtr.Zero;
         public string Text { get; set; }
         public string Name { get; set; }
+        // private  IntPtr ControlProc(IntPtr hwnd, uint msg, IntPtr wparam, IntPtr lparam)
+        public WndProc WndProc { get; set; }
 
         private bool _Visible = true;
 
@@ -31,6 +34,19 @@ namespace CoreWindowsWrapper.Win32ApiForm
             {
                 this.Left = value.X;
                 this.Top = value.Y;
+            }
+        }
+
+        public Size Size
+        {
+            get
+            {
+                return new Size(this.Width, this.Height);
+            }
+            set
+            {
+                this.Width = value.cx; 
+                this.Height = value.cy;
             }
         }
         private bool _Enabled = true;
@@ -100,6 +116,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
             WindowStylesConst.WS_VISIBLE | WindowStylesConst.WS_CHILD | WindowStylesConst.WS_TABSTOP;
 
         private readonly WndProc _DelegateWndProc;
+        private IntPtr _OldDelgateWndProc = IntPtr.Zero;
         private int _Left;
         private int _Top;
         private int _Width;
@@ -131,10 +148,25 @@ namespace CoreWindowsWrapper.Win32ApiForm
             User32.ShowWindow(this.Handle, (int)cmd);
         }
 
-        private static IntPtr ControlProc(IntPtr hwnd, uint msg, IntPtr wparam, IntPtr lparam)
+        private  IntPtr ControlProc(IntPtr hwnd, uint msg, IntPtr wparam, IntPtr lparam)
         {
-
-            return User32.DefWindowProc(hwnd, msg, wparam, lparam);
+            if(_OldDelgateWndProc !=IntPtr.Zero)
+            {
+                if(this.WndProc != null)
+                {
+                    IntPtr result = this.WndProc(hwnd , msg, wparam , lparam);
+                    if(result != IntPtr.Zero)
+                    {
+                        return result;
+                    }
+                }
+                return User32.CallWindowProc(_OldDelgateWndProc, hwnd, (int)msg, wparam, lparam);
+            }
+            else
+            {
+                return User32.DefWindowProc(hwnd, msg, wparam, lparam);
+            }
+            
         }
 
         public void PreCreate(IntPtr hWnd)
@@ -151,6 +183,16 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
             }
 
+        }
+
+        internal virtual bool CreateChilds() 
+        {
+            bool result = true;
+            foreach (var control in this.Controls.Values)
+            {
+                result &= control.Create(this.Handle);
+            }
+            return result;
         }
         internal virtual bool Create(IntPtr parentHandle)
         {
@@ -197,7 +239,9 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 IntPtr retVal = User32.SendMessage(this.Handle, WindowsMessages.WM_SETFONT, hFont, 0);
             }
 
+            _OldDelgateWndProc =  User32.SetWindowLongPtr(this.Handle, GWL.GWL_WNDPROC, Marshal.GetFunctionPointerForDelegate((WndProc)_DelegateWndProc));
 
+            // CreateChilds();
 
             return true;
         }

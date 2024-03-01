@@ -66,15 +66,21 @@ namespace CoreWindowsWrapper
                 else
                 {
 
-
-                    if (User32.TranslateAccelerator(_mainWindow.Handle, _mainWindow.Accelerators, ref msg) == 0)
+                    if ((User32.TranslateAccelerator(_mainWindow.Handle, _mainWindow.Accelerators, ref msg) == 0) && (!User32.IsDialogMessage(_mainWindow.Handle, ref msg)))
                     {
-                       
-                            User32.TranslateMessage(ref msg);
-                            User32.DispatchMessage(ref msg);
+                                User32.TranslateMessage(ref msg);
+                                User32.DispatchMessage(ref msg);
 
-                       
                     }
+
+                    //if (User32.TranslateAccelerator(_mainWindow.Handle, _mainWindow.Accelerators, ref msg) == 0)
+                    //{
+
+                    //        User32.TranslateMessage(ref msg);
+                    //        User32.DispatchMessage(ref msg);
+
+
+                    //}
                 }
             }
         }

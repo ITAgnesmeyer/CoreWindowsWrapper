@@ -47,10 +47,9 @@ namespace ConsoleCaller
             
             this._ControlTest = new ControlTest
             {
+                Location = new Point(300,80),
                 Width = 200,
-                Height = 30,
-                Left = 300,
-                Top = 80,
+                Height = 100,
                 Name = "TEST_CONTAINER"
             };
 
@@ -65,10 +64,8 @@ namespace ConsoleCaller
             this._Timer.Tick += Timer_OnTick;
             this._Button = new NativeButton
             {
-                Left = 10,
-                Top = 10,
-                Width = 100,
-                Height = 30,
+                Location = new Point(10, 10),
+                Size = new Size(100, 30),
                 Text = "Test",
                 Name = "bnTest",
                 BackColor = ColorTool.Blue,
@@ -80,10 +77,8 @@ namespace ConsoleCaller
 
             this._Button1 = new NativeButton
             {
-                Left = 150,
-                Top = 10,
-                Width = 100,
-                Height = 30,
+                Location = new Point(150, 10),
+                Size = new Size(100, 30),
                 Text = "Test",
                 Name = "bnTest"//,
                 //ControlId = 505
@@ -95,8 +90,7 @@ namespace ConsoleCaller
             this._Button3 = new NativeButton
             {
                 Location = new Point(300, 10),
-                Width = 20,
-                Height = 30,
+                Size = new Size(20, 30),
                 Name = "SelectFolder",
                 Text = "…"
             };
@@ -105,8 +99,7 @@ namespace ConsoleCaller
             this._ComboBox = new NativeComboBox
             {
                 Location = new Point(350, 10),
-                Height = 30,
-                Width = 200,
+                Size = new Size(200, 30),
                 Name = "cbbTest",
                 ForeColor = ColorTool.Blue,
                 BackColor = ColorTool.Green,
@@ -118,10 +111,8 @@ namespace ConsoleCaller
 
             this._TextBox = new NativeTextBox
             {
-                Left = 10,
-                Top = 50,
-                Width = 100,
-                Height = 30,
+                Location = new Point(10,50),
+                Size = new Size(300,30),
                 Text = "ATEST",
                 Name = "txtTest",
                 Font = new Font() { Name = "Arial", Size = 14 },
@@ -131,13 +122,12 @@ namespace ConsoleCaller
             
             this._TextBox.Change += TextBox_Change;
             this._TextBox.Clicked += TextBox_Click;
+            this._TextBox.KeyPress += TextBox_KeyPress;
             
             this._TextBox2 = new NativeTextBox
             {
-                Left = 10,
-                Top = 150,
-                Width = 100,
-                Height = 30,
+                Location = new Point(10,150),
+                Size = new Size(100,30),
                 Text = "",
                 Name = "txt2Test",
                 //ControlId = 503,
@@ -148,10 +138,8 @@ namespace ConsoleCaller
 
             this._Label1 = new NativeLabel
             {
-                Left = 10,
-                Top = 200,
-                Width = 100,
-                Height = 30,
+                Location = new Point(10, 200),
+                Size = new Size(100, 30),
                 Text = "Dies ist ein Label"//,
                                            //BackColor=ColorTool.Read,
                                            //ForeColor = ColorTool.Green,
@@ -237,6 +225,15 @@ namespace ConsoleCaller
             SysKeyDown += Window1_SysKeyDown;
             KeyDown += Window1_KeyDown;
             this.MouseMove += Window1_MoseMove;
+        }
+
+        private void TextBox_KeyPress(object sender, NativeKeyEventArgs e)
+        {
+           if(e.Key == (uint)VirtualKeys.VK_RETURN )
+            {
+                MessageBox.Show(this.Handle, "Return Pressed", "Return");
+                e.Handled = true;
+            }
         }
 
         private void Window1_KeyDown(object sender, NativeKeyEventArgs e)
@@ -428,6 +425,7 @@ namespace ConsoleCaller
         {
             Window2 win2 = new Window2(this);
             //this.Controls.Add(win2);
+            win2.StartUpPosition = WindowsStartupPosition.CenterScreen;
             win2.ShowModal();
             MessageBox.Show("Nach Show");
         }
