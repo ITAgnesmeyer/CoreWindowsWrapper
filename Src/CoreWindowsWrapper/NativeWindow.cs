@@ -33,6 +33,8 @@ namespace CoreWindowsWrapper
         {
             get
             {
+                if(this._Window != null)
+                    return this._Window.IsMainWindow;
                 return this._IsMainWindow;
             }
             set
@@ -47,7 +49,38 @@ namespace CoreWindowsWrapper
         public ControlCollection Controls => this._Window.Controls;
         private WindowsStartupPosition _StartUpPosition;
         private bool _IsMainWindow;
-
+        private bool _IsPanel;
+        internal bool IsPanel
+        {
+            get
+            {
+                if(this._Window != null)
+                    return this._Window.IsPanel;
+                return this._IsPanel;
+            }
+            set
+            {
+                this._IsPanel = value;
+                if(this._Window != null)
+                    this._Window.IsPanel = value;
+            }
+        }
+        private DockType _DockType;
+        internal DockType DockType
+        {
+            get
+            {
+                if(this._Window != null)
+                    return this._Window.DockType;
+                return this._DockType;
+            }
+            set
+            {
+                this._DockType = value;
+                if(this._Window != null)
+                    this._Window.DockType = value;
+            }
+        }
         public NativeMenu Menu
         {
             get => (NativeMenu)this._Window.Menu;
@@ -140,7 +173,33 @@ namespace CoreWindowsWrapper
         {
             ((IControl)this).ParentHandle = e.Handle;
         }
+        public bool SetWindowRectByClientRect(Rect rect)
+        {
+            var rrect = GetWindowRectByClientRect(rect);
+            if(rrect.Width != 0 && rrect.Height != 0)
+            {
+                this.Left = rrect.Left;
+                this.Top = rrect.Top;
+                this.Width = rrect.Width;
+                this.Height = rrect.Height;
+                return true;
+            }
+            return false;
+        }
 
+        public Rect GetWindowRectByClientRect(Rect rect)
+        {
+            bool result = User32.AdjustWindowRectEx(ref rect, this.GetWindowStyle(), this.Menu != null, this.GetWindowExStyle());
+            if(result)
+            {
+                return rect;
+            }
+            else
+            {
+                return new Rect(0,0,0,0);
+            }
+
+        }
         public void Close()
         {
             this._Window.Close();
@@ -447,7 +506,7 @@ namespace CoreWindowsWrapper
         }
         private void Initialize(IntPtr parentHandle)
         {
-            this._Window = new Win32Window(parentHandle, this.IsMainWindow);
+            this._Window = new Win32Window(parentHandle, this.IsMainWindow,this.IsPanel, this.DockType);
 
             InitDefaults();
         }

@@ -8,7 +8,7 @@ namespace ConsoleCaller
        [STAThread]
         public static int Main(string[] args)
         {
-            Window1 nw = new Window1();
+            ControlOnControl nw = new ControlOnControl();
             NativeApp.Run(nw);
             return 0;
         }

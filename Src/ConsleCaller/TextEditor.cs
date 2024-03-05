@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using CoreWindowsWrapper;
+using Diga.Core.Api.Win32;
 
 namespace ConsoleCaller
 {
@@ -18,11 +19,12 @@ namespace ConsoleCaller
             this.Text = "Little Editor";
             this.Name = "MainWindow";
             this.StatusBar = true;
-            this._TextBox = new NativeRichTextBox {Left = 0, Top = 0, Width = 480, Height = 380};
-            this.Width = 500;
-            this.Height = 400;
-            this.StartUpPosition = WindowsStartupPosition.CenterScreen;
+            Rect r = new Rect(0,0,480,380);
+            this._TextBox = new NativeRichTextBox {Left = r.Left, Top = r.Top, Width = r.Width, Height = r.Height};
             
+            this.StartUpPosition = WindowsStartupPosition.CenterScreen;
+           
+
             //Creating the File Menu
             NativeMenu menuFile = new NativeMenu("mnuFile", "&File");
             
@@ -61,7 +63,7 @@ namespace ConsoleCaller
             menuFile.Items.Add(menuHelp);
             //Add the first Element of the Menu to the Form
             this.Menu = menuFile;
-
+            this.SetWindowRectByClientRect(r);
             this.Controls.Add(this._TextBox);
         }
 

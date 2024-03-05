@@ -4,6 +4,7 @@ using Diga.Core.Api.Win32;
 
 namespace CoreWindowsWrapper
 {
+
     public class NativeComboBox : NativeControlBase
     {
         public event EventHandler<NativeComboBoxSelChangeEventArgs> SelChange;

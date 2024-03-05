@@ -18,7 +18,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
     internal sealed class Win32Window : IWindowClass, IDisposable
     {
         private const uint WM_PARENTRESIZE = WindowsMessages.WM_USER + 975;
-
+        public bool IsPanel { get; set; }
         public bool IsMainWindow { get; set; }
         public event EventHandler<BeforeWindowCreateEventArgs> BeforeCreate;
         public event EventHandler<CreateEventArgs> CreateForm;
@@ -61,6 +61,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
             {
                 if (keyValuePair.Value.IsMainWindow)
                 {
+                    
                     mainHwnd = keyValuePair.Key;
                     break;
                 }
@@ -149,7 +150,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
         }
 
         private static IntPtr _lastMessageReturn = IntPtr.Zero;
-
+        public DockType DockType { get; set; } = DockType.None;
         private readonly WndProc _DelegateWndProc = WndProc;
         private readonly WndProc _HookWndProc = HookWndProc;
         private readonly ApiHandleRef _OrgWndProc = IntPtr.Zero;
@@ -239,7 +240,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
             this.Color = 0xF0F0F0;
         }
 
-        public Win32Window(IntPtr parentHandle, bool isMainWindow = false)
+        public Win32Window(IntPtr parentHandle, bool isMainWindow = false, bool isPanel = false, DockType dockType = DockType.None)
         {
             this.Controls = new ControlCollection(this);
             this._FlatMenuItems = new MenuItemCollection();
@@ -248,6 +249,8 @@ namespace CoreWindowsWrapper.Win32ApiForm
             this.Name = "Win32WindowClass";
             this.Text = this.Name;
             this.Color = 0xF0F0F0;
+            this.IsPanel = isPanel;
+            this.DockType = dockType;
         }
 
         public Rect GetClientRect()

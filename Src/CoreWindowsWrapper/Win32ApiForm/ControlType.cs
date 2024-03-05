@@ -17,6 +17,7 @@
         Bitmap,
         CheckBox,
         Progress,
-        Window
+        Window,
+        Panel
     }
 }

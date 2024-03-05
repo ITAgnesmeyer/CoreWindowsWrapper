@@ -5,7 +5,6 @@ using System.Text;
 using Diga.Core.Api.Win32;
 namespace CoreWindowsWrapper
 {
-
     public class OpenFileDialog
     {
         private OfNw _OfNw;
