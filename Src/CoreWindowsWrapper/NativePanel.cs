@@ -35,38 +35,42 @@ namespace CoreWindowsWrapper
             int restBottom = 0;
             int restLeft = 0;
             int restRight = 0;
-            if(NativeWindow.TryGetWindow(this.ParentHandle, out NativeWindow nw))
+            if (NativeWindow.TryGetWindow(this.ParentHandle, out NativeWindow nw))
             {
-                if(nw.IsPanel)
+                if (nw.IsPanel)
                 {
-                    
-                    
-                    foreach(var item in nw.Controls)
+
+
+                    foreach (var item in nw.Controls)
                     {
-                        if(nw.Handle == this.Handle)
+                        if(item.Value is NativePanel panel)
                         {
-                            break;
-                        }
-
-                        if(nw.DockType != DockType.None)
-                        {
-                            switch(nw.DockType)
+                            if (panel.Handle == this.Handle)
                             {
-                                case DockType.Top:
-                                    restTop += nw.Height;
-                                    break;
-                                case DockType.Left:
-                                    restLeft += nw.Width; 
-                                    break;
-                                case DockType.Right:
-                                    restRight += nw.Width;
-                                    break;
-                                case DockType.Bottom: 
-                                    restBottom += nw.Height;
-                                    break;
+                                break;
+                            }
 
+                            if (panel.DockType != DockType.None)
+                            {
+                                switch (panel.DockType)
+                                {
+                                    case DockType.Top:
+                                        restTop += panel.Height;
+                                        break;
+                                    case DockType.Left:
+                                        restLeft += panel.Width;
+                                        break;
+                                    case DockType.Right:
+                                        restRight += panel.Width;
+                                        break;
+                                    case DockType.Bottom:
+                                        restBottom += panel.Height;
+                                        break;
+
+                                }
                             }
                         }
+
                     }
                 }
             }
@@ -110,7 +114,7 @@ namespace CoreWindowsWrapper
                     this.Width = rect.Width - restLeft - restRight;
                     break;
                 case DockType.Bottom:
-                    this.Left = restTop;
+                    this.Left = restLeft;
                     this.Width = rect.Width - restLeft - restRight;
                     this.Top = rect.Height - this.Height - restBottom;
                     break;

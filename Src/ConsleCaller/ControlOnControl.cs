@@ -1,6 +1,7 @@
 ﻿using System;
 using CoreWindowsWrapper;
 using CoreWindowsWrapper.Tools;
+using Diga.Core.Api.Win32;
 
 namespace ConsoleCaller
 {
@@ -14,6 +15,11 @@ namespace ConsoleCaller
         private NativePanel _PanelCenter;
         private NativePanel _PanelLeft;
         private NativePanel _panelRight;
+        private NativeTextBox _topTextBox;
+        private NativeTextBox _bottomTextBox;
+        private NativeTextBox _leftTextBox;
+        private NativeTextBox _rightTextBox;
+        private NativeTextBox _centerTextBox;
         protected override void InitControls()
         {
             this.Text = "Control on Control";
@@ -68,14 +74,60 @@ namespace ConsoleCaller
                 BackColor = ColorTool.Yellow
 
             };
-            this.Controls.Add(this._MainPanel);
+            this._topTextBox = new NativeTextBox
+            {
+                Left = 0,
+                Top = 0,
+                Height = 30,
+                Width = 100,
+                Text = "TOP"
+            };
+            this._PanelTop.Controls.Add(this._topTextBox);
+            this._leftTextBox = new NativeTextBox
+            {
+                Left = 0,
+                Top = 0,
+                Height = 30,
+                Width = 100,
+                Text = "LEFT"
+            };
+            this._PanelLeft.Controls.Add(this._leftTextBox);
+
+            this._bottomTextBox = new NativeTextBox
+            {
+                Left = 0,
+                Top = 0,
+                Height = 30,
+                Width = 100,
+                Text = "BOTTOM"
+            };
+            this._PanelBottom.Controls.Add( this._bottomTextBox);
+            this._rightTextBox = new NativeTextBox
+            {
+                Left = 0,
+                Top = 0,
+                Height = 30,
+                Width = 100,
+                Text = "RIGHT"
+            };
+            this._panelRight.Controls.Add(this._rightTextBox);
+            this._centerTextBox = new NativeTextBox
+            {
+                Left = 0,
+                Top = 0,
+                Height = 30,
+                Width = 100,
+                Text = "RIGHT"
+            };
+            this._PanelCenter.Controls.Add(this._centerTextBox);
+
             this._PanelCenter.Controls.Add(this._panelRight);
             this._MainPanel.Controls.Add(this._PanelLeft);
             this._MainPanel.Controls.Add(this._PanelTop);
             this._MainPanel.Controls.Add(this._PanelBottom);
             this._MainPanel.Controls.Add(this._PanelCenter);
+            this.Controls.Add(this._MainPanel);
 
-           
         }
 
         private void Button_Clicked(object sender, EventArgs e)
