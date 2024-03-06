@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -73,13 +74,136 @@ namespace CoreWindowsWrapper
             }
             return hWndOwner;
         }
+        private static volatile bool _StopModalDispatch = false;
+        internal static volatile bool _ModalDispatchIsRunning = false;
+        public static void StopModalDispatch()
+        {
+            _StopModalDispatch = true;
+            //User32.PostMessage(_mainWindow.Handle, WindowsMessages.WM_ACTIVATE,IntPtr.Zero,IntPtr.Zero);
+        }
+        private static Stack<Action> _ModalActionstack = new Stack<Action>();
 
+        internal static void RunModalDispatch()
+        {
+            var action = new Action(ModalDispatch);
+
+            _ModalActionstack.Push(action);
+
+            action();
+            _ModalActionstack.Pop();
+            
+
+        }
+
+        internal static  void ModalDispatch()
+        {
+            _ModalDispatchIsRunning = true;
+            //IntPtr hAccel = IntPtr.Zero;
+            int ret;
+            while (!_StopModalDispatch)
+            {
+                if ((ret = User32.GetMessage(out MSG msg, IntPtr.Zero, 0, 0)) > 0)
+                {
+
+
+                    if (ret == -1)
+                    {
+                        //return;
+                    }
+                    else
+                    {
+
+                        if (NativeWindow.TryGetWindow(msg.hwnd, out NativeWindow nw))
+                        {
+                            if (nw.ParentHandle != IntPtr.Zero)
+                            {
+                                if ((User32.TranslateAccelerator(nw.ParentHandle, _mainWindow.Accelerators, ref msg) == 0) && (!User32.IsDialogMessage(nw.ParentHandle, ref msg)))
+                                {
+                                    User32.TranslateMessage(ref msg);
+                                    User32.DispatchMessage(ref msg);
+
+                                }
+                            }
+                            else
+                            {
+                                // && (!User32.IsDialogMessage(nw.Handle, ref msg)
+                                if ((User32.TranslateAccelerator(nw.Handle, nw.Accelerators, ref msg) == 0))
+                                {
+                                    User32.TranslateMessage(ref msg);
+                                    User32.DispatchMessage(ref msg);
+
+                                }
+
+                            }
+                        }
+                        else
+                        {
+
+                            IntPtr hParent = GetRealParent(msg.hwnd);
+                            //if(NativeWindow.TryGetWindow(hParent, out NativeWindow n))
+                            //{
+                            //    Debug.Print("TEST");
+                            //}
+                            if (hParent != IntPtr.Zero)
+                            {
+
+                                if ((User32.TranslateAccelerator(hParent, _mainWindow.Accelerators, ref msg) == 0) && (!User32.IsDialogMessage(hParent, ref msg)))
+                                {
+                                    User32.TranslateMessage(ref msg);
+                                    User32.DispatchMessage(ref msg);
+
+                                }
+
+
+                            }
+                            else
+                            {
+                                IntPtr hWndActive = User32.GetActiveWindow();
+                                if (hWndActive != IntPtr.Zero)
+                                {
+                                    if ((User32.TranslateAccelerator(hWndActive, _mainWindow.Accelerators, ref msg) == 0) && (!User32.IsDialogMessage(hWndActive, ref msg)))
+                                    {
+                                        User32.TranslateMessage(ref msg);
+                                        User32.DispatchMessage(ref msg);
+
+                                    }
+
+                                }
+                                else
+                                {
+                                    if ((User32.TranslateAccelerator(_mainWindow.Handle, _mainWindow.Accelerators, ref msg) == 0) && (!User32.IsDialogMessage(_mainWindow.Handle, ref msg)))
+                                    {
+                                        User32.TranslateMessage(ref msg);
+                                        User32.DispatchMessage(ref msg);
+
+                                    }
+                                }
+                            }
+
+                        }
+
+                        //if (User32.TranslateAccelerator(_mainWindow.Handle, _mainWindow.Accelerators, ref msg) == 0)
+                        //{
+
+                        //        User32.TranslateMessage(ref msg);
+                        //        User32.DispatchMessage(ref msg);
+
+
+                        //}
+                    }
+                }
+            }
+            _ModalDispatchIsRunning = false;
+            _StopModalDispatch = false;
+        }
         private static void Dispatch()
         {
+            
             //IntPtr hAccel = IntPtr.Zero;
             int ret;
             while((ret = User32.GetMessage(out MSG msg, IntPtr.Zero, 0,0)) > 0)
             {
+               
                 if (ret == -1)
                 {
                     //return;

@@ -8,6 +8,7 @@ namespace ConsoleCaller
     {
         //private NativeWebBrowser _WebBrowser;
         private NativeButton _Button;
+        private NativeButton _ShowModal;
         private NativeLink _Link;
         private NativeGroupBox _GroupBox;
         private  int lastLeft = 1;
@@ -56,6 +57,16 @@ namespace ConsoleCaller
             this._Link.Text = "For more information, <A ID=\"TEST\" HREF=\"https://www.microsoft.com\">click here</A> or <A ID=\"idInfo\">here</A>.";
             this._Link.LinkClicked += Link_Clicked;
             this._Link.Font = new Font() {Name = "Arial", Size = 12};
+            this._ShowModal = new NativeButton
+            {
+                Top = 140,
+                Left = 100,
+                Width = 100,
+                Height = 30,
+                Name = "ShowModalButton",
+                Text = "Show Modal"
+            };
+            this._ShowModal.Clicked += ShowModal_Click;
 
             this._GroupBox = new NativeGroupBox();
             this._GroupBox.Left = 100;
@@ -68,8 +79,16 @@ namespace ConsoleCaller
             //this.Controls.Add(this._WebBrowser);
             this.Controls.Add(this._Button);
             this.Controls.Add(this._Link);
+            this.Controls.Add(this._ShowModal);
             this.Controls.Add(this._GroupBox);
 
+        }
+
+        private void ShowModal_Click(object sender, EventArgs e)
+        {
+            Window2 nw = new Window2(this);
+            nw.ShowModal(this);
+            MessageBox.Show("ShowModal ready");
         }
 
         private void Link_Clicked(object sender, NativeLinkClickEventArgs e)

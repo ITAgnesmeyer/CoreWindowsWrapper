@@ -986,6 +986,10 @@ namespace CoreWindowsWrapper.Win32ApiForm
                         {
                             User32.SendMessage(item.Value.Handle, WM_PARENTRESIZE);
                         }
+                        else
+                        {
+                            item.Value.OnParentResize();
+                        }
                     }
                     //handled = false;
                     break;
@@ -1143,6 +1147,10 @@ namespace CoreWindowsWrapper.Win32ApiForm
         private void OnParentResize()
         {
             ParentResize?.Invoke(this, EventArgs.Empty);
+            foreach(var item in this.Controls)
+            {
+                item.Value.OnParentResize();
+            }
         }
         
         public Rect GetCleanClientRect()

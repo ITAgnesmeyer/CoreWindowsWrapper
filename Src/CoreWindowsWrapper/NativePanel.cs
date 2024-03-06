@@ -154,7 +154,7 @@ namespace CoreWindowsWrapper
 
         }
 
-        protected override void OnParentResize()
+        public override void OnParentResize()
         {
             DoDock();
         }

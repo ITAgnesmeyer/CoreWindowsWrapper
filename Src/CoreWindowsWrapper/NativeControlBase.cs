@@ -5,6 +5,12 @@ using CoreWindowsWrapper.Win32ApiForm;
 
 namespace CoreWindowsWrapper
 {
+    //[Flags]
+    //public enum AnchorType:uint
+    //{
+    //    None = 0x0000,
+    //    Left = WindowsMessages.WM_USER + 
+    //}
 
     public class NativeControlBase : IControl
     {
@@ -185,12 +191,23 @@ namespace CoreWindowsWrapper
         }
 
 
-
+        private int _DiffLeft=0;
+        private int _DiffTop=0;
+        private int _DiffRight = 0;
+        private int _DiffBottom = 0;
         public virtual bool Create(IntPtr parentId)
         {
             bool retCreate = this.Control.Create(parentId);
             this.AfterCreate();
             this.Control.WndProc = OnWndProc;
+            if(User32.GetClientRect(parentId, out Rect pRect))
+            {
+                _DiffLeft = this.Left;
+                _DiffTop = this.Top;
+                _DiffRight = pRect.Width - (this.Left + this.Width); 
+                _DiffBottom = pRect.Height - (this.Top + this.Height);
+            }
+
             return retCreate;
         }
 
@@ -315,5 +332,41 @@ namespace CoreWindowsWrapper
 
         public ControlCollection Controls => this._Control.Controls;
 
+        private void DoAnchor()
+        {
+            return;
+            if (this.ParentHandle == IntPtr.Zero)
+                return;
+
+            if(User32.GetClientRect(this.ParentHandle, out var rect))
+            {
+                int currLeft = _DiffLeft;
+                int currTop = _DiffTop;
+                int currRight = _DiffRight;
+                int currBottom = _DiffBottom;
+                if(this.Left != _DiffLeft)
+                {
+                    this.Left = _DiffLeft;
+                }
+                if(this.Top != _DiffTop)
+                {
+                    this.Top = _DiffTop;
+                }
+                int newTop = this.Top;
+                int newLeft = this.Left;
+                int newWidth = rect.Width - _DiffLeft - _DiffRight;
+                int newHeight = rect.Height - _DiffTop - _DiffBottom;
+                this.Left = newLeft;
+                this.Top = newTop;
+                this.Width = newWidth;
+                this.Height = newHeight;
+            }
+
+        }
+
+        public virtual void OnParentResize()
+        {
+            DoAnchor();
+        }
     }
 }

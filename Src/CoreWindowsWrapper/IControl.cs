@@ -30,6 +30,7 @@ namespace CoreWindowsWrapper
         string TypeIdentifyer{get;set;}
         ControlType ControlType{get;set;}
 
+        void OnParentResize();
         
     }
 }

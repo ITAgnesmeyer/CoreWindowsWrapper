@@ -550,19 +550,20 @@ namespace CoreWindowsWrapper
 
             this.OnCreate(e);
         }
-
+        private bool IsDestroyed = false;
         public void ShowModal(NativeWindow parent)
         {
-            
+            ManualResetEvent manualResetEvent = new ManualResetEvent(false);
+
             this.ParentWindow = parent;
             if (this.ParentWindow != null)
                 this.ParentWindow.Enabled = false;
             this._Window.Create();
-            
-            //if (Win32Window.DispatchCounter <= 0)
-            //{
-            //    this._Window.Dispatch();
-            //}
+            this._Window.Destroyed += (o, e) =>
+            {
+                NativeApp.StopModalDispatch();
+            };
+            NativeApp.RunModalDispatch();
             
         }
         public void Show()
@@ -603,7 +604,7 @@ namespace CoreWindowsWrapper
                 this.ParentWindow = null;
                 //this._Window.Close();
             }
-
+            IsDestroyed = true;
             Debug.Write("On Window Destroy");
         }
 
@@ -617,7 +618,7 @@ namespace CoreWindowsWrapper
         {
             Size?.Invoke(this, e);
         }
-        protected virtual void OnParentResize()
+        public virtual void OnParentResize()
         {
 
         }
