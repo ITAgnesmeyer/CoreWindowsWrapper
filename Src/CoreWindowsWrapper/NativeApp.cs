@@ -53,6 +53,27 @@ namespace CoreWindowsWrapper
             //t.RunSynchronously();
             Dispatch();
         }
+        private static IntPtr GetRealParentHp(IntPtr hWnd)
+        {
+            IntPtr hWndOwner;
+            if(IntPtr.Zero != (hWndOwner = User32.GetWindow(hWnd, GetWindowFlag.GW_OWNER)))
+            {
+                return hWndOwner;
+            }
+
+            return User32.GetAncestor(hWnd, 1);
+        }
+        private static IntPtr GetRealParent(IntPtr hWnd)
+        {
+            IntPtr hDesk = User32.GetDesktopWindow();
+            IntPtr hWndOwner = GetRealParentHp(hWnd);
+            if(hDesk == hWndOwner)
+            {
+                return IntPtr.Zero;
+            }
+            return hWndOwner;
+        }
+
         private static void Dispatch()
         {
             //IntPtr hAccel = IntPtr.Zero;
@@ -66,10 +87,72 @@ namespace CoreWindowsWrapper
                 else
                 {
 
-                    if ((User32.TranslateAccelerator(_mainWindow.Handle, _mainWindow.Accelerators, ref msg) == 0) && (!User32.IsDialogMessage(_mainWindow.Handle, ref msg)))
+                    if(NativeWindow.TryGetWindow(msg.hwnd, out NativeWindow nw))
                     {
+                        if (nw.ParentHandle != IntPtr.Zero)
+                        {
+                            if ((User32.TranslateAccelerator(nw.ParentHandle, _mainWindow.Accelerators, ref msg) == 0) && (!User32.IsDialogMessage(nw.ParentHandle, ref msg)))
+                            {
                                 User32.TranslateMessage(ref msg);
                                 User32.DispatchMessage(ref msg);
+
+                            }
+                        }
+                        else
+                        {
+                            // && (!User32.IsDialogMessage(nw.Handle, ref msg)
+                            if ((User32.TranslateAccelerator(nw.Handle, nw.Accelerators, ref msg) == 0))
+                            {
+                                User32.TranslateMessage(ref msg);
+                                User32.DispatchMessage(ref msg);
+
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                       
+                        IntPtr hParent = GetRealParent(msg.hwnd);
+                        //if(NativeWindow.TryGetWindow(hParent, out NativeWindow n))
+                        //{
+                        //    Debug.Print("TEST");
+                        //}
+                        if (hParent != IntPtr.Zero)
+                        {
+
+                            if ((User32.TranslateAccelerator(hParent, _mainWindow.Accelerators, ref msg) == 0) && (!User32.IsDialogMessage(hParent, ref msg)))
+                            {
+                                User32.TranslateMessage(ref msg);
+                                User32.DispatchMessage(ref msg);
+
+                            }
+
+
+                        }
+                        else
+                        {
+                            IntPtr hWndActive = User32.GetActiveWindow();
+                            if(hWndActive != IntPtr.Zero)
+                            {
+                                if ((User32.TranslateAccelerator(hWndActive, _mainWindow.Accelerators, ref msg) == 0) && (!User32.IsDialogMessage(hWndActive, ref msg)))
+                                {
+                                    User32.TranslateMessage(ref msg);
+                                    User32.DispatchMessage(ref msg);
+
+                                }
+
+                            }
+                            else
+                            {
+                                if ((User32.TranslateAccelerator(_mainWindow.Handle, _mainWindow.Accelerators, ref msg) == 0) && (!User32.IsDialogMessage(_mainWindow.Handle, ref msg)))
+                                {
+                                    User32.TranslateMessage(ref msg);
+                                    User32.DispatchMessage(ref msg);
+
+                                }
+                            }
+                        }
 
                     }
 

@@ -426,7 +426,7 @@ namespace ConsoleCaller
             Window2 win2 = new Window2(this);
             //this.Controls.Add(win2);
             win2.StartUpPosition = WindowsStartupPosition.CenterScreen;
-            win2.ShowModal();
+            win2.ShowModal(this);
             MessageBox.Show("Nach Show");
         }
 

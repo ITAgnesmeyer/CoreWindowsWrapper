@@ -20,6 +20,7 @@ namespace ConsoleCaller
         private NativeTextBox _leftTextBox;
         private NativeTextBox _rightTextBox;
         private NativeTextBox _centerTextBox;
+        private NativeTextBox _cneterTextBox1;
         protected override void InitControls()
         {
             this.Text = "Control on Control";
@@ -117,10 +118,18 @@ namespace ConsoleCaller
                 Top = 0,
                 Height = 30,
                 Width = 100,
-                Text = "RIGHT"
+                Text = "CENTER"
+            };
+            this._cneterTextBox1 = new NativeTextBox
+            {
+                Left = 0,
+                Top = 40,
+                Height = 30,
+                Width = 100,
+                Text = "CENTER1"
             };
             this._PanelCenter.Controls.Add(this._centerTextBox);
-
+            this._PanelCenter.Controls.Add(this._cneterTextBox1);
             this._PanelCenter.Controls.Add(this._panelRight);
             this._MainPanel.Controls.Add(this._PanelLeft);
             this._MainPanel.Controls.Add(this._PanelTop);

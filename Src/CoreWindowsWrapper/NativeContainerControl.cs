@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Diga.Core.Api.Win32;
+using System;
 using System.Collections.Generic;
 
 namespace CoreWindowsWrapper
 {
+
     public class NativeContainerControl : NativeNoCreateControlBase
     {
         protected override void Initialize()

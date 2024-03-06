@@ -23,7 +23,7 @@
 		<PackageReleaseNotes>
 			BugFixes
 		</PackageReleaseNotes>
-		<Version>2.0.8.10-prerelease</Version>
+		<Version>2.0.8.11-prerelease</Version>
 		<SignAssembly>True</SignAssembly>
 		<DelaySign>False</DelaySign>
 		<AssemblyOriginatorKeyFile>diga_cert.snk</AssemblyOriginatorKeyFile>

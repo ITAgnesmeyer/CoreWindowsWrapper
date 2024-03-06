@@ -5,16 +5,17 @@ using Diga.Core.Api.Win32;
 
 namespace ConsoleCaller
 {
-    public class ControlTest: NativeWindow 
+  
+    public class ControlTest: NativeUserControl//NativeWindow 
     {
         private NativeTextBox _TextBox;
         private NativeButton _Button;
 
-        protected override void OnBeforeCreate(BeforeWindowCreateEventArgs e)
-        {
-            e.Styles.Style = WindowStylesConst.WS_VISIBLE | WindowStylesConst.WS_CHILD | WindowStylesConst.WS_TABSTOP; 
-            e.Styles.StyleEx =0;
-        }
+        //protected override void OnBeforeCreate(BeforeWindowCreateEventArgs e)
+        //{
+        //    e.Styles.Style = WindowStylesConst.WS_VISIBLE | WindowStylesConst.WS_CHILD | WindowStylesConst.WS_TABSTOP; 
+        //    e.Styles.StyleEx =WindowStylesConst.WS_EX_CONTROL­PARENT;
+        //}
         protected override void InitControls()
         {
             //base.InitControls();

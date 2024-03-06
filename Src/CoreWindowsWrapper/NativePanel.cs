@@ -20,7 +20,7 @@ namespace CoreWindowsWrapper
         {
             this.IsPanel = true;       
             e.Styles.Style = WindowStylesConst.WS_VISIBLE | WindowStylesConst.WS_CHILD | WindowStylesConst.WS_TABSTOP;
-            e.Styles.StyleEx = 0;
+            e.Styles.StyleEx = WindowStylesConst.WS_EX_CONTROLPARENT;
         }
        
         public void DoDock()

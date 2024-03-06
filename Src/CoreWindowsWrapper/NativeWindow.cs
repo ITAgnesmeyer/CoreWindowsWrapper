@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using Diga.Core.Api.Win32;
 using CoreWindowsWrapper.Win32ApiForm;
+using System.Threading;
 
 namespace CoreWindowsWrapper
 {
@@ -550,15 +551,18 @@ namespace CoreWindowsWrapper
             this.OnCreate(e);
         }
 
-        public void ShowModal()
+        public void ShowModal(NativeWindow parent)
         {
+            
+            this.ParentWindow = parent;
             if (this.ParentWindow != null)
                 this.ParentWindow.Enabled = false;
             this._Window.Create();
-            if (Win32Window.DispatchCounter <= 0)
-            {
-                this._Window.Dispatch();
-            }
+            
+            //if (Win32Window.DispatchCounter <= 0)
+            //{
+            //    this._Window.Dispatch();
+            //}
             
         }
         public void Show()
@@ -600,7 +604,7 @@ namespace CoreWindowsWrapper
                 //this._Window.Close();
             }
 
-            Console.Write("On Window Destroy");
+            Debug.Write("On Window Destroy");
         }
 
 
