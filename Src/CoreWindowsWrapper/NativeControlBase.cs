@@ -347,12 +347,12 @@ namespace CoreWindowsWrapper
 
         private void DoAnchor()
         {
-            
+            if (this.Anchor == AnchorType.None)
+                return;
             if (this.ParentHandle == IntPtr.Zero)
                 return;
 
-            if (this.Anchor == AnchorType.None)
-                return;
+           
 
             if(User32.GetClientRect(this.ParentHandle, out var rect))
             {
