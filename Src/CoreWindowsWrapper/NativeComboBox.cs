@@ -14,7 +14,7 @@ namespace CoreWindowsWrapper
             this.ControlType = Win32ApiForm.ControlType.ComboBox;
             this.TypeIdentifier = "combobox";
            
-            this.Style = ComboBoxStyles.CBS_DROPDOWN | ComboBoxStyles.CBS_HASSTRINGS |WindowStylesConst.WS_CHILD | WindowStylesConst.WS_OVERLAPPED | WindowStylesConst.WS_VISIBLE;
+            this.Style = ComboBoxStyles.CBS_DROPDOWN | ComboBoxStyles.CBS_HASSTRINGS |WindowStylesConst.WS_CHILD | WindowStylesConst.WS_OVERLAPPED | WindowStylesConst.WS_VISIBLE | WindowStylesConst.WS_TABSTOP;
         }
 
         protected override bool ControlProc(IntPtr hWndParent, IntPtr hWndControl, int controlId, uint command, IntPtr wParam, IntPtr lParam)

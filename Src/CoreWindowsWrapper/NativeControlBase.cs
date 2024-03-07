@@ -24,7 +24,7 @@ namespace CoreWindowsWrapper
         private AnchorType _Anchor = AnchorType.None;
         public AnchorType Anchor
         {
-            get => this._Anchor; 
+            get => this._Anchor;
             set => this._Anchor = value;
         }
         public NativeControlBase()
@@ -41,7 +41,7 @@ namespace CoreWindowsWrapper
         }
         protected virtual void Initialize()
         {
-            this.Control = new Win32Control {Font = this._Font, BackColor = 0xF0F0F0};
+            this.Control = new Win32Control { Font = this._Font, BackColor = 0xF0F0F0 };
 
         }
 
@@ -195,8 +195,8 @@ namespace CoreWindowsWrapper
         }
 
 
-        private int _DiffLeft=0;
-        private int _DiffTop=0;
+        private int _DiffLeft = 0;
+        private int _DiffTop = 0;
         private int _DiffRight = 0;
         private int _DiffBottom = 0;
         public virtual bool Create(IntPtr parentId)
@@ -204,11 +204,11 @@ namespace CoreWindowsWrapper
             bool retCreate = this.Control.Create(parentId);
             this.AfterCreate();
             this.Control.WndProc = OnWndProc;
-            if(User32.GetClientRect(parentId, out Rect pRect))
+            if (User32.GetClientRect(parentId, out Rect pRect))
             {
                 _DiffLeft = this.Left;
                 _DiffTop = this.Top;
-                _DiffRight = pRect.Width - (this.Left + this.Width); 
+                _DiffRight = pRect.Width - (this.Left + this.Width);
                 _DiffBottom = pRect.Height - (this.Top + this.Height);
             }
 
@@ -217,7 +217,7 @@ namespace CoreWindowsWrapper
 
         private IntPtr OnWndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
         {
-            switch(msg)
+            switch (msg)
             {
                 case WindowsMessages.WM_KEYDOWN:
                     {
@@ -225,11 +225,11 @@ namespace CoreWindowsWrapper
                         OnKeyDown(hWnd, kevDown);
                         if (kevDown.Handled)
                         {
-                            if(kevDown.ResturnCode != IntPtr.Zero)
+                            if (kevDown.ResturnCode != IntPtr.Zero)
                                 return kevDown.ResturnCode;
                             return (IntPtr)1;
                         }
-                            
+
 
                     }
                     break;
@@ -242,7 +242,7 @@ namespace CoreWindowsWrapper
                     {
                         var kevUp = new NativeKeyEventArgs(wParam, lParam);
                         OnKeyUp(hWnd, kevUp);
-                        if(kevUp.Handled)
+                        if (kevUp.Handled)
                             return (IntPtr)1;
                     }
                     break;
@@ -250,7 +250,7 @@ namespace CoreWindowsWrapper
                     {
                         var kevDown = new NativeKeyEventArgs(wParam, lParam);
                         OnKeyPress(hWnd, kevDown);
-                        if(kevDown.Handled)
+                        if (kevDown.Handled)
                             return (IntPtr)1;
                     }
                     break;
@@ -260,16 +260,16 @@ namespace CoreWindowsWrapper
         protected virtual void OnMouseMove(MouseMoveEventArgs e)
         {
             SafeInvoke(this.MouseMove, e);
-            
+
         }
         protected virtual void OnKeyPress(IntPtr hWnd, NativeKeyEventArgs keyEventArgs)
         {
             SafeInvoke(this.KeyPress, keyEventArgs);
         }
-        protected  virtual void OnKeyDown(IntPtr hWnd, NativeKeyEventArgs keyEventArgs)
+        protected virtual void OnKeyDown(IntPtr hWnd, NativeKeyEventArgs keyEventArgs)
         {
             //KeyDown?.Invoke(this, keyEventArgs);
-            SafeInvoke(this.KeyDown, keyEventArgs); 
+            SafeInvoke(this.KeyDown, keyEventArgs);
         }
 
         protected virtual void OnKeyUp(IntPtr hWnd, NativeKeyEventArgs keyEventArgs)
@@ -315,9 +315,9 @@ namespace CoreWindowsWrapper
             }
         }
 
-        protected   void SafeInvokeAsync<T>(EventHandler<T> eventHandler, T args) where T:EventArgs
+        protected void SafeInvokeAsync<T>(EventHandler<T> eventHandler, T args) where T : EventArgs
         {
-            this._TaskQueue.Enqueue(()=>Task.Run(()=> eventHandler?.Invoke(this,args)));
+            this._TaskQueue.Enqueue(() => Task.Run(() => eventHandler?.Invoke(this, args)));
         }
 
         public bool Enabled
@@ -336,6 +336,20 @@ namespace CoreWindowsWrapper
 
         public ControlCollection Controls => this._Control.Controls;
 
+        private Rect ScreenRectToParentClientRect(Rect rect)
+        {
+            Point leftTop = rect.Location;
+            Point bottomRight = new Point(rect.Right, rect.Bottom);
+            User32.ScreenToClient(this.ParentHandle, ref leftTop);
+            User32.ScreenToClient(this.ParentHandle, ref bottomRight);
+            return new Rect(leftTop.X, leftTop.Y, bottomRight.X, bottomRight.Y);
+
+        }
+        private Rect GetOuterRect()
+        {
+            User32.GetWindowRect(this.Handle, out Rect thisRect);
+            return ScreenRectToParentClientRect(thisRect);
+        }
         private void DoAnchor()
         {
             if (this.Anchor == AnchorType.None)
@@ -343,30 +357,56 @@ namespace CoreWindowsWrapper
             if (this.ParentHandle == IntPtr.Zero)
                 return;
 
-           
+            bool isLeft = IsAnchorType(this.Anchor, AnchorType.Left);
+            bool isTop = IsAnchorType(this.Anchor, AnchorType.Top);
+            bool isRight = IsAnchorType(this.Anchor, AnchorType.Right);
+            bool isBottom = IsAnchorType(this.Anchor, AnchorType.Bottom);
+            if (isLeft && isTop && !isRight && !isBottom)
+                return;
 
-            if(User32.GetClientRect(this.ParentHandle, out var rect))
+            if (User32.GetClientRect(this.ParentHandle, out var parentRect))
             {
-                int currLeft = _DiffLeft;
-                int currTop = _DiffTop;
-                int currRight = _DiffRight;
-                int currBottom = _DiffBottom;
-                if(this.Left != _DiffLeft)
-                {
-                    this.Left = _DiffLeft;
-                }
-                if(this.Top != _DiffTop)
-                {
-                    this.Top = _DiffTop;
-                }
-                int newTop = this.Top;
-                int newLeft = this.Left;
-                int newWidth = rect.Width - _DiffLeft - _DiffRight;
-                int newHeight = rect.Height - _DiffTop - _DiffBottom;
-                this.Left = newLeft;
-                this.Top = newTop;
-                this.Width = newWidth;
-                this.Height = newHeight;
+
+                Rect thisRect = GetOuterRect();
+
+                Rect LeftTopRightTopLeftBottomRichtBottom = new Rect(_DiffLeft, _DiffTop, parentRect.Width - _DiffRight, parentRect.Height - _DiffBottom);
+                Rect LeftTop = new Rect(_DiffLeft, _DiffTop, _DiffLeft + thisRect.Width, _DiffTop + thisRect.Height);
+                Rect RightTop = new Rect(parentRect.Width - _DiffRight - thisRect.Width, _DiffTop, parentRect.Width - _DiffRight, _DiffTop + thisRect.Height);
+                Rect LeftTopRightTop = new Rect(LeftTop.X, LeftTop.Y, RightTop.Right, RightTop.Bottom);
+                Rect LeftBottom = new Rect(_DiffLeft, parentRect.Height - _DiffBottom - thisRect.Height, _DiffLeft + thisRect.Width, parentRect.Height - _DiffBottom);
+                Rect RightBottom = new Rect(RightTop.X, LeftBottom.Y, parentRect.Width - _DiffRight, parentRect.Height - _DiffBottom);
+                Rect LeftBottomRightBottom = new Rect(LeftBottom.X, LeftBottom.Y, RightBottom.Right, RightBottom.Bottom);
+                Rect LeftTopLeftBottom = new Rect(LeftTop.X, LeftTop.Y, LeftBottom.Right, LeftBottom.Bottom);
+                Rect RigthTopRightBottom = new Rect(RightTop.X, RightTop.Y, RightBottom.Right, RightBottom.Bottom);
+                Rect newRect = LeftTop;
+                if (isLeft && isTop && !isRight && !isBottom)
+                    newRect = LeftTop;
+                if (!isLeft && isTop && isRight && !isBottom)
+                    newRect = RightTop;
+
+                if (isLeft && isTop && isRight && !isBottom)
+                    newRect = LeftTopRightTop;
+                if (isLeft && isTop && !isRight && isBottom)
+                    newRect = LeftTopLeftBottom;
+
+                if(!isLeft && isTop && isRight && isBottom)
+                    newRect = RigthTopRightBottom;
+
+                if (isLeft && !isTop && !isRight && isBottom)
+                    newRect = LeftBottom;
+                if (!isLeft && !isTop && isRight && isBottom)
+                    newRect = RightBottom;
+
+                if (isLeft && !isTop && isRight && isBottom)
+                    newRect = LeftBottomRightBottom;
+
+                if (isLeft && isTop && isRight && isBottom)
+                    newRect = LeftTopRightTopLeftBottomRichtBottom;
+
+
+                this.Control.SetNewPos(newRect);
+
+
             }
 
         }

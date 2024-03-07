@@ -89,6 +89,7 @@ namespace ConsoleCaller
 
             this._Button3 = new NativeButton
             {
+                //Anchor =  AnchorType.Left | AnchorType.Top | AnchorType.Bottom,
                 Location = new Point(300, 10),
                 Size = new Size(20, 30),
                 Name = "SelectFolder",
@@ -98,6 +99,7 @@ namespace ConsoleCaller
             this._Button3.Clicked += Button3_Click;
             this._ComboBox = new NativeComboBox
             {
+                //Anchor = AnchorType.Left | AnchorType.Right | AnchorType.Top | AnchorType.Bottom,
                 Location = new Point(350, 10),
                 Size = new Size(200, 30),
                 Name = "cbbTest",
@@ -171,6 +173,7 @@ namespace ConsoleCaller
 
             this._ListBox = new NativeListBox
             {
+                Anchor = AnchorType.Left | AnchorType.Top | AnchorType.Right | AnchorType.Bottom,
                 Left = 300,
                 Top = 200,
                 Width = 400,

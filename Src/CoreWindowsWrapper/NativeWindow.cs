@@ -452,7 +452,7 @@ namespace CoreWindowsWrapper
         private void OnPaintIntern(object sender, PaintEventArgs e)
         {
             //Do some paint
-            Debug.Print("OnPaint in window=>" + this.Name);
+            //Debug.Print("OnPaint in window=>" + this.Name);
             OnPaint(e);
         }
 
@@ -550,7 +550,7 @@ namespace CoreWindowsWrapper
 
             this.OnCreate(e);
         }
-        private bool IsDestroyed = false;
+        //private bool IsDestroyed = false;
         public void ShowModal(NativeWindow parent)
         {
             ManualResetEvent manualResetEvent = new ManualResetEvent(false);
@@ -604,7 +604,7 @@ namespace CoreWindowsWrapper
                 this.ParentWindow = null;
                 //this._Window.Close();
             }
-            IsDestroyed = true;
+            //IsDestroyed = true;
             Debug.Write("On Window Destroy");
         }
 

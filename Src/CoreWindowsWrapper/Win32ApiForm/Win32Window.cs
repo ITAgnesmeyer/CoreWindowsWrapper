@@ -61,7 +61,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
             {
                 if (keyValuePair.Value.IsMainWindow)
                 {
-                    
+
                     mainHwnd = keyValuePair.Key;
                     break;
                 }
@@ -71,7 +71,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
         }
         public void LoadAccelrators(int id)
         {
-         
+
             ResourceLoader loader = new ResourceLoader();
             this.AcceleratorTableHandle = loader.LoadAccelerator(id);
         }
@@ -94,7 +94,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
             }
         }
 
-       
+
 
         public int Left
         {
@@ -495,10 +495,10 @@ namespace CoreWindowsWrapper.Win32ApiForm
             {
                 FlattenControlItems(controlControl);
             }
-           
+
             control.Controls.Clear();
-           
-            
+
+
         }
 
 
@@ -529,61 +529,61 @@ namespace CoreWindowsWrapper.Win32ApiForm
             DispatchCounter++;
             //lock (this)
             //{
-                int br = 0;
-                ApiHandleRef mainWindowHandle = TryGetMainWindow();
-                while ((br = User32.GetMessage(out var msg, IntPtr.Zero, 0, 0)) != 0)
-                {
-                    if (!mainWindowHandle.IsValid)
-                        mainWindowHandle = TryGetMainWindow();
+            int br = 0;
+            ApiHandleRef mainWindowHandle = TryGetMainWindow();
+            while ((br = User32.GetMessage(out var msg, IntPtr.Zero, 0, 0)) != 0)
+            {
+                if (!mainWindowHandle.IsValid)
+                    mainWindowHandle = TryGetMainWindow();
 
-                    try
+                try
+                {
+                    if (br == -1)
                     {
-                        if (br == -1)
+                        // handle the error and possibly exit
+                        Debug.Print("GetMessage returns -1");
+                    }
+                    else
+                    {
+                        if (mainWindowHandle.IsValid)
                         {
-                            // handle the error and possibly exit
-                            Debug.Print("GetMessage returns -1");
+
+                            if (!User32.IsDialogMessage(mainWindowHandle, ref msg))
+                            {
+
+                                User32.TranslateMessage(ref msg);
+                                if (msg.hwnd != IntPtr.Zero)
+                                {
+                                    User32.DispatchMessage(ref msg);
+                                }
+                            }
                         }
                         else
                         {
-                            if (mainWindowHandle.IsValid)
-                            {
+                            User32.TranslateMessage(ref msg);
+                            User32.DispatchMessage(ref msg);
 
-                                if (!User32.IsDialogMessage(mainWindowHandle, ref msg))
-                                {
-
-                                    User32.TranslateMessage(ref msg);
-                                    if (msg.hwnd != IntPtr.Zero)
-                                    {
-                                        User32.DispatchMessage(ref msg);
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                User32.TranslateMessage(ref msg);
-                                User32.DispatchMessage(ref msg);
-
-                            }
                         }
+                    }
 
-                    }
-                    catch (AccessViolationException vex)
-                    {
-                        Debug.Print(vex.ToString());
-                        Console.WriteLine("AccessViolationException=>" + vex.StackTrace);
-                    }
-#pragma warning disable 618
-                    catch (ExecutionEngineException e)
-#pragma warning restore 618
-                    {
-                        Console.WriteLine("ExecutionEngineException=>" + e.StackTrace);
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine("Exception=>" + e.Message + "--Stack:" + e.StackTrace);
-                    }
-                    if (WindowList.Count == 0) break;
                 }
+                catch (AccessViolationException vex)
+                {
+
+                    Debug.Print("AccessViolationException=>" + vex.StackTrace);
+                }
+#pragma warning disable 618
+                catch (ExecutionEngineException e)
+#pragma warning restore 618
+                {
+                    Debug.Print("ExecutionEngineException=>" + e.StackTrace);
+                }
+                catch (Exception e)
+                {
+                    Debug.Print("Exception=>" + e.Message + "--Stack:" + e.StackTrace);
+                }
+                if (WindowList.Count == 0) break;
+            }
             //}
 
             DispatchCounter--;
@@ -617,7 +617,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
             switch (msg)
             {
-               
+
 
                 case WindowsMessages.WM_CLOSE:
                     InvokeEvent(msg, hWnd, wParam, lParam);
@@ -643,8 +643,8 @@ namespace CoreWindowsWrapper.Win32ApiForm
                     break;
 
                 default:
-                    if (msg == WindowsMessages.WM_PAINT)
-                        Debug.Print("Paint");
+                    //if (msg == WindowsMessages.WM_PAINT)
+                    //    Debug.Print("Paint");
                     if (!InvokeEvent(msg, hWnd, wParam, lParam))
                     {
                         if (WindowList.ContainsKey(hWnd))
@@ -657,7 +657,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
                         }
                         else
                         {
-                            if(WindowList.Count > 0)
+                            if (WindowList.Count > 0)
                                 Debug.Print("Window not found!");
                         }
 
@@ -748,7 +748,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
             else
             {
 
-                if (!WindowList.ContainsKey(hWnd)) 
+                if (!WindowList.ContainsKey(hWnd))
                     return false;
                 window = WindowList[hWnd];
             }
@@ -769,9 +769,9 @@ namespace CoreWindowsWrapper.Win32ApiForm
                     {
                         hdr = Marshal.PtrToStructure<NmHdr>(lParam);
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
-                        Debug.Print(e.Message);
+                        //Debug.Print(e.Message);
                     }
 
                     if (hdr != null)
@@ -784,7 +784,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
                         if (window.Controls.ContainsKey(cId))
                         {
                             IControl cControl = window.Controls[cId];
-                            Debug.Print("Control Type=>" + cControl.ControlType + ",ID=>" + cId + ",cmd=>0x" + cCmd.ToString("x4") + "=>" + cCmd);
+                            //Debug.Print("Control Type=>" + cControl.ControlType + ",ID=>" + cId + ",cmd=>0x" + cCmd.ToString("x4") + "=>" + cCmd);
                             handled = cControl.HandleEvents(hWnd, hCWndControl, cId, cCmd, wParam, lParam);
 
                         }
@@ -794,8 +794,8 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 case WindowsMessages.WM_COMMAND:
                     int controlId = Win32Api.LoWord(wParam.ToInt32());
                     int cmdInt = Win32Api.HiWord(wParam.ToInt32());
-                    if (cmdInt <= 0)
-                        Debug.Print($"ControlId({controlId}) command-int({cmdInt})");
+                    //if (cmdInt <= 0)
+                    //    Debug.Print($"ControlId({controlId}) command-int({cmdInt})");
                     uint command = (uint)Win32Api.HiWord(wParam.ToInt32());
                     IntPtr hWndControl = lParam;
                     if (window.Controls.ContainsKey(controlId))
@@ -864,7 +864,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
                 case WindowsMessages.WM_PAINT:
                     //PaintStruct ps;
-                    using(var p = new ApiStructHandleRef<PaintStruct>())
+                    using (var p = new ApiStructHandleRef<PaintStruct>())
                     {
                         IntPtr hdc = User32.BeginPaint(hWnd, p);
                         window.OnPaint(hWnd, p.GetStruct());
@@ -977,12 +977,12 @@ namespace CoreWindowsWrapper.Win32ApiForm
                     {
                         User32.SendMessage(window.ToolBarHandle, WindowsMessages.WM_SIZE);
                     }
-                    
+
                     Rect r = window.GetCleanClientRect();
                     window.OnSize(new SizeEventArgs(r.X, r.Y, r.Right - r.Left, r.Bottom - r.Top));
                     foreach (var item in window.Controls)
                     {
-                        if(item.Value is NativeWindow)
+                        if (item.Value is NativeWindow)
                         {
                             User32.SendMessage(item.Value.Handle, WM_PARENTRESIZE);
                         }
@@ -1007,11 +1007,11 @@ namespace CoreWindowsWrapper.Win32ApiForm
                     break;
                 case WindowsMessages.WM_TIMER:
                     int timerId = Win32Api.LoWord(wParam.ToInt32());
-                    if(window.Controls.ContainsKey(timerId))
+                    if (window.Controls.ContainsKey(timerId))
                     {
                         IControl control = window.Controls[timerId];
                         handled = control.HandleEvents(hWnd, IntPtr.Zero, timerId, WindowsMessages.WM_TIMER, wParam, lParam);
-                        
+
                     }
                     else
                     {
@@ -1147,12 +1147,12 @@ namespace CoreWindowsWrapper.Win32ApiForm
         private void OnParentResize()
         {
             ParentResize?.Invoke(this, EventArgs.Empty);
-            foreach(var item in this.Controls)
+            foreach (var item in this.Controls)
             {
                 item.Value.OnParentResize();
             }
         }
-        
+
         public Rect GetCleanClientRect()
         {
             int sbHeigt = 0;

@@ -132,7 +132,18 @@ namespace CoreWindowsWrapper.Win32ApiForm
             this._DelegateWndProc = delegateWndProc;
             this.Controls = new ControlCollection(this);
         }
+        internal  void SetNewPos(Rect rect)
+        {
+            uint flags = (uint)SetWindowPosFlags.DoNotActivate | (uint)SetWindowPosFlags.DoNotSendChangingEvent | (uint)SetWindowPosFlags.IgnoreZOrder;
+            if (User32.SetWindowPos(this.Handle, IntPtr.Zero, rect.X, rect.Y, rect.Width, rect.Height, flags))
+            {
+                this._Width = rect.Width;
+                this._Height = rect.Height;
+                this._Left = rect.Left;
+                this._Top = rect.Top;
+            }
 
+        }
         private void MoveControlWindow()
         {
             if (!this.Handle.IsValid) return;
