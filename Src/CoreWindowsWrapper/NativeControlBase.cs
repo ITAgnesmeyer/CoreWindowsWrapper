@@ -5,15 +5,20 @@ using CoreWindowsWrapper.Win32ApiForm;
 
 namespace CoreWindowsWrapper
 {
-    //[Flags]
-    //public enum AnchorType:uint
-    //{
-    //    None = 0x0000,
-    //    Left = WindowsMessages.WM_USER + 
-    //}
+    [Flags]
+    public enum AnchorType
+    {
+        Top = 0x01,
+        Bottom = 0x02,
+        Left = 0x04,
+        Right = 0x08,
+        None = 0,
+    }
 
     public class NativeControlBase : IControl
     {
+        private const AnchorType DefaultAnchor = AnchorType.Left | AnchorType.Top;
+
         private Win32Control _Control;
         internal virtual Win32Control Control { get => this._Control; set => this._Control = value; }
         public virtual event EventHandler<EventArgs> Clicked;
@@ -25,7 +30,12 @@ namespace CoreWindowsWrapper
         public event EventHandler<MouseMoveEventArgs> MouseMove;
         private Font _Font;
         private readonly TaskQueue _TaskQueue = new TaskQueue();
-
+        private AnchorType _Anchor = AnchorType.None;
+        public AnchorType Anchor
+        {
+            get => this._Anchor; 
+            set => this._Anchor = value;
+        }
         public NativeControlBase()
         {
             this.Font = new Font();
@@ -34,7 +44,10 @@ namespace CoreWindowsWrapper
             Initialize();
         }
 
-
+        private static bool IsAnchorType(AnchorType anchor, AnchorType testAnchro)
+        {
+            return (anchor & testAnchro) == testAnchro;
+        }
         protected virtual void Initialize()
         {
             this.Control = new Win32Control {Font = this._Font, BackColor = 0xF0F0F0};
@@ -334,8 +347,11 @@ namespace CoreWindowsWrapper
 
         private void DoAnchor()
         {
-            return;
+            
             if (this.ParentHandle == IntPtr.Zero)
+                return;
+
+            if (this.Anchor == AnchorType.None)
                 return;
 
             if(User32.GetClientRect(this.ParentHandle, out var rect))
