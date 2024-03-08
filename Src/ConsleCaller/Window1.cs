@@ -205,7 +205,7 @@ namespace ConsoleCaller
 
             };
 
-
+            this.IconId = 1;
             
             
             this.Controls.Add(this._Button);

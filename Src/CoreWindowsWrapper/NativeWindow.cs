@@ -355,6 +355,11 @@ namespace CoreWindowsWrapper
             get => this._Window.IconFile;
             set => this._Window.IconFile = value;
         }
+        public int IconId
+        {
+            get => this._Window.IconResourceId;
+            set => this._Window.IconResourceId = value;
+        }
         public int ForeColor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public Font Font { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 

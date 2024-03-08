@@ -30,7 +30,7 @@ namespace ConsoleCaller
             this.Top = 100;
             this.Width = 600;
             this.Height = 400;
-           
+            //this.IconId = 102;
             this.Click += Window2_Click;
             this.DoubleClick += Window2_DblClick;
             this.Create += Window2_Create;

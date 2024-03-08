@@ -135,7 +135,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 MoveMyWindow();
             }
         }
-
+        public int IconResourceId { get; set; }
         public string IconFile { get; set; }
         public bool CenterForm { get; set; }
         public bool MaximizeForm { get; set; }
@@ -274,7 +274,18 @@ namespace CoreWindowsWrapper.Win32ApiForm
         {
             User32.SendMessage(this.Handle, WindowsMessages.WM_CLOSE);
         }
-
+        internal IntPtr GetIcon()
+        {
+            if(!string.IsNullOrEmpty(this.IconFile))
+            {
+                return Tools.ImageTool.SafeLoadIconFromFile(this.IconFile);
+            }
+            if(this.IconResourceId > 0)
+            {
+                return Tools.ImageTool.SafeLoadIconFromResource(this.IconResourceId);
+            }
+            return Tools.ImageTool.LoadAppIcon();
+        }
         internal bool Create(bool asControl = false)
         {
             this.WindowClassName = this.Name + "_" + WindowList.Count;
@@ -286,7 +297,9 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 cbClsExtra = 0,
                 cbWndExtra = 0,
                 hInstance = Process.GetCurrentProcess().Handle,
-                hIcon = string.IsNullOrEmpty(this.IconFile) ? Tools.ImageTool.LoadAppIcon() : Tools.ImageTool.SafeLoadIconFromFile(this.IconFile),
+
+                hIcon = GetIcon(),//string.IsNullOrEmpty(this.IconFile) ? Tools.ImageTool.LoadAppIcon() : Tools.ImageTool.SafeLoadIconFromFile(this.IconFile),
+
                 hCursor = User32.LoadCursor(IntPtr.Zero, (int)Win32ApiCursors.IDC_ARROW),
                 lpszMenuName = null,
                 lpszClassName = this.WindowClassName,
@@ -294,6 +307,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 lpfnWndProc = this._DelegateWndProc,
                 hIconSm = IntPtr.Zero
             };
+            
             //Doubleclicks are active
             //Black background, +1 is necessary
             // alternative: Process.GetCurrentProcess().Handle;

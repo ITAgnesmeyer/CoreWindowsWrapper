@@ -32,19 +32,65 @@ namespace CoreWindowsWrapper.Tools
 
         public static IntPtr LoadAppIcon()
         {
-            return LoadIcon(IntPtr.Zero, Win32Api.MakeInterSource(32512));
+            //return ResourceLoader.Loader.LoadIcon(32512);
+            IntPtr hIcon = LoadIcon(IntPtr.Zero, Win32Api.MakeInterSource((int)StdIcons.IDI_APPLICATION));
+            return hIcon;
         }
 
+      
+
+        public static IntPtr LoadHandIcon()
+        {
+            return LoadIcon(IntPtr.Zero, Win32Api.MakeInterSource((int)StdIcons.IDI_HAND));
+        }
+
+        public static IntPtr LoadQuestionIcon()
+        {
+            return LoadIcon(IntPtr.Zero, Win32Api.MakeInterSource((int)StdIcons.IDI_QUESTION));
+        }
+
+        public static IntPtr LoadExclamationIcon()
+        {
+            return LoadIcon(IntPtr.Zero, Win32Api.MakeInterSource((int)StdIcons.IDI_EXCLAMATION));
+        }
+        public static IntPtr LoadAsteriskIcon()
+        {
+            return LoadIcon(IntPtr.Zero, Win32Api.MakeInterSource((int)StdIcons.IDI_ASTERISK));
+        }
+
+        public static IntPtr LoadWinLogoIcon()
+        {
+            return LoadIcon(IntPtr.Zero, Win32Api.MakeInterSource((int)StdIcons.IDI_WINLOGO));
+        }
+
+        public static IntPtr LoadShieldIcon()
+        {
+            IntPtr hIcon = LoadIcon(IntPtr.Zero, Win32Api.MakeInterSource((int)StdIcons.IDI_SHIELD));
+            return hIcon;
+        }
+        public static IntPtr LoadWarningIcon()
+        {
+            return LoadIcon(IntPtr.Zero, Win32Api.MakeInterSource((int)StdIcons.IDI_WARNING));
+        }
+
+        public static IntPtr LoadErrorIcon()
+        {
+            return LoadIcon(IntPtr.Zero, Win32Api.MakeInterSource((int)StdIcons.IDI_ERROR));
+        }
+        public static IntPtr LoadInformationIcon()
+        {
+            return LoadIcon(IntPtr.Zero, Win32Api.MakeInterSource((int)StdIcons.IDI_INFORMATION));
+        }
         public static IntPtr SafeLoadIconFromResource(int resId)
         {
-            return SafeLoadIconFromResource(IntPtr.Zero, resId);
+            return SafeLoadIconFromResource(Kernel32.GetModuleHandle(null), resId);
         }
         public static IntPtr SafeLoadIconFromResource(IntPtr instance,int resId)
         {
             IntPtr hIcon = User32.LoadImage(instance, Win32Api.MakeInterSource(resId), ImageTypeConst.IMAGE_ICON,
                 User32.GetSystemMetrics(SystemMetric.SM_CXSMICON),
                 User32.GetSystemMetrics(SystemMetric.SM_CYSMICON), 0);
-
+            
             if (hIcon == IntPtr.Zero)
             {
                 Win32Exception ex = new Win32Exception(Marshal.GetLastWin32Error());
@@ -56,7 +102,7 @@ namespace CoreWindowsWrapper.Tools
 
         public static IntPtr SafeLoadBitmapFromResource(int resId)
         {
-            return SafeLoadBitmapFromResource(IntPtr.Zero, resId);
+            return SafeLoadBitmapFromResource(Kernel32.GetModuleHandle(null), resId);
         }
         public static IntPtr SafeLoadBitmapFromResource(IntPtr instance, int resId)
         {
