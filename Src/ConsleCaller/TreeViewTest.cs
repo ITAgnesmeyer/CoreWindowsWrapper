@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using CoreWindowsWrapper;
 using CoreWindowsWrapper.Tools;
+using Diga.Core.Api.Win32;
 
 namespace ConsoleCaller
 {
@@ -37,11 +39,31 @@ namespace ConsoleCaller
                 Height = 400
 
             };
-            
+            this._TreeView.Changed += TreeView_Changed;
             this.Controls.Add(this._Button);
             this.Controls.Add(this._ImageList);
             this.Controls.Add(this._TreeView);
 
+        }
+
+        private void TreeView_Changed(object sender, TreeViewChagneEventArgs e)
+        {
+            
+           
+            var nItem = new TVITEMEXW();
+            nItem.mask = TreeViewConst.TVIF_TEXT | TreeViewConst.TVIF_IMAGE | TreeViewConst.TVIF_EXPANDEDIMAGE | TreeViewConst.TVIF_SELECTEDIMAGE | TreeViewConst.TVIF_CHILDREN | TreeViewConst.TVIF_PARAM;
+            nItem.pszText = new string('\0', 1000);
+            nItem.hItem = e.NewItem.hItem;
+            nItem.cchTextMax = 1000;
+            nItem.hwnd = this._TreeView.Handle;
+            
+
+            if (TreeViewMacros.TreeView_GetItem(this._TreeView.Handle, ref nItem))
+            {
+                Debug.Print(nItem.pszText);
+            }
+
+            
         }
 
         protected override void OnCreate(CreateEventArgs e)
@@ -67,6 +89,8 @@ namespace ConsoleCaller
             IntPtr firstChild = this._TreeView.AddItem(root, "FirstChild",1);
             IntPtr secondChild = this._TreeView.AddItemAfter(root, firstChild, "SecondChild",2,-1,-1);
             IntPtr thirdChild = this._TreeView.AddItemAfter(root, firstChild, "ThirdChild", 3,-1,-1);
+            IntPtr forthChild = this._TreeView.AddItemToRoot("ForthChild", 1);
+            IntPtr fifthChild = this._TreeView.AddItem(forthChild, "FifthChild", 2);
             this._TreeView.Expand(root);
         }
 

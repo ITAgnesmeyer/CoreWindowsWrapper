@@ -23,7 +23,7 @@ namespace CoreWindowsWrapper
         private const int UOI_FLAGS = 1;
         private const int UOI_TIMERPROC_EXCEPTION_SUPPRESSION = 7;
 
-
+       
         public static void Run(NativeWindow window)
         {
             //User32.EnableVisualStyles();
@@ -45,7 +45,7 @@ namespace CoreWindowsWrapper
             //    Debug.Print(ex.Message);
 
             //}
-
+            NativeTheaming.InitTheaming();
             _mainWindow = window;
             _mainWindow.IsMainWindow = true;
             _mainWindow.Show();

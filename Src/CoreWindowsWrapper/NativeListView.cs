@@ -415,32 +415,35 @@ namespace CoreWindowsWrapper
     }
     public class NativeListView : NativeControlBase
     {
-        private const uint HDM_GETITEMRECT = (0x1200 + 7);
-        private const uint LVS_ICON = 0x0000;
-        private const uint LVS_REPORT = 0x0001;
-        private const uint LVS_SMALLICON = 0x0002;
-        private const uint LVS_LIST = 0x0003;
-        private const uint LVS_TYPEMASK = 0x0003;
-        private const uint LVS_SINGLESEL = 0x0004;
-        private const uint LVS_SHOWSELALWAYS = 0x0008;
-        private const uint LVS_SORTASCENDING = 0x0010;
-        private const uint LVS_SORTDESCENDING = 0x0020;
-        private const uint LVS_SHAREIMAGELISTS = 0x0040;
-        private const uint LVS_NOLABELWRAP = 0x0080;
-        private const uint LVS_AUTOARRANGE = 0x0100;
-        private const uint LVS_EDITLABELS = 0x0200;
-        private const uint LVS_OWNERDATA = 0x1000;
-        private const uint LVS_NOSCROLL = 0x2000;
-        private const uint LVS_TYPESTYLEMASK = 0xfc00;
-        private const uint LVS_ALIGNTOP = 0x0000;
-        private const uint LVS_ALIGNLEFT = 0x0800;
-        private const uint LVS_ALIGNMASK = 0x0c00;
-        private const uint LVS_OWNERDRAWFIXED = 0x0400;
-        private const uint LVS_NOCOLUMNHEADER = 0x4000;
-        private const uint LVS_NOSORTHEADER = 0x8000;
+        //private const uint HDM_GETITEMRECT = (0x1200 + 7);
+        //private const uint LVS_ICON = 0x0000;
+        //private const uint LVS_REPORT = 0x0001;
+        //private const uint LVS_SMALLICON = 0x0002;
+        //private const uint LVS_LIST = 0x0003;
+        //private const uint LVS_TYPEMASK = 0x0003;
+        //private const uint LVS_SINGLESEL = 0x0004;
+        //private const uint LVS_SHOWSELALWAYS = 0x0008;
+        //private const uint LVS_SORTASCENDING = 0x0010;
+        //private const uint LVS_SORTDESCENDING = 0x0020;
+        //private const uint LVS_SHAREIMAGELISTS = 0x0040;
+        //private const uint LVS_NOLABELWRAP = 0x0080;
+        //private const uint LVS_AUTOARRANGE = 0x0100;
+        //private const uint LVS_EDITLABELS = 0x0200;
+        //private const uint LVS_OWNERDATA = 0x1000;
+        //private const uint LVS_NOSCROLL = 0x2000;
+        //private const uint LVS_TYPESTYLEMASK = 0xfc00;
+        //private const uint LVS_ALIGNTOP = 0x0000;
+        //private const uint LVS_ALIGNLEFT = 0x0800;
+        //private const uint LVS_ALIGNMASK = 0x0c00;
+        //private const uint LVS_OWNERDRAWFIXED = 0x0400;
+        //private const uint LVS_NOCOLUMNHEADER = 0x4000;
+        //private const uint LVS_NOSORTHEADER = 0x8000;
         private List<ListViewColumn> _Columns = new List<ListViewColumn>();
         public EventHandler<ListViewItemChangeEventArgs> ItemChangeing;
         public EventHandler<ListViewItemChangeEventArgs> ItemChanged;
+
+        public bool AllowEdit { get; set; } = true;
+
         protected virtual void OnItemChangeing(ListViewItemChangeEventArgs e)
         {
             SafeInvoke(ItemChangeing, e);
@@ -457,7 +460,7 @@ namespace CoreWindowsWrapper
             this.CommonControlType = CommonControls.ICC_LISTVIEW_CLASSES;
             this.TypeIdentifier = "SysListView32";
             
-            this.Style =  LVS_SINGLESEL| LVS_REPORT | LVS_SHOWSELALWAYS | LVS_EDITLABELS | LVS_ALIGNLEFT | (uint)WindowStyles.WS_CHILD | (uint)WindowStyles.WS_VISIBLE | (uint)WindowStyles.WS_BORDER | (uint)WindowStyles.WS_TABSTOP;
+            this.Style =  (uint)ListViewStyles. LVS_SINGLESEL| (uint)ListViewStyles.LVS_REPORT | (uint)ListViewStyles.LVS_SHOWSELALWAYS | (uint)ListViewStyles.LVS_EDITLABELS |(uint) ListViewStyles.LVS_ALIGNLEFT | (uint)WindowStyles.WS_CHILD | (uint)WindowStyles.WS_VISIBLE | (uint)WindowStyles.WS_BORDER | (uint)WindowStyles.WS_TABSTOP;
 
 
 
@@ -467,7 +470,7 @@ namespace CoreWindowsWrapper
 
             base.AfterCreate();
             //Old_EditProc = User32.SetWindowLongPtr(this.Handle, GWL.GWL_WNDPROC, Marshal.GetFunctionPointerForDelegate((WndProc)EditProc));
-
+            NativeTheaming.SetThemaing(this.Handle);
         }
         public void DeleteItem(int index)
         {
@@ -611,6 +614,7 @@ namespace CoreWindowsWrapper
                     try
                     {
                         tagNMLISTVIEW item = Marshal.PtrToStructure<tagNMLISTVIEW>(lParam);
+                        
                         OnItemChangeing(new ListViewItemChangeEventArgs(item));
                         result = true;
                     }
@@ -666,7 +670,7 @@ namespace CoreWindowsWrapper
                     try
                     {
                         tagNMITEMACTIVATE track = Marshal.PtrToStructure<tagNMITEMACTIVATE>(lParam);
-                        if(track.iItem > -1)
+                        if(track.iItem > -1 && AllowEdit)
                         {
 
                             if(Last_EditControl != IntPtr.Zero)
@@ -684,7 +688,7 @@ namespace CoreWindowsWrapper
                                 {
                                     using(var p = new ApiStructHandleRef<Rect>())
                                     {
-                                        var r = User32.SendMessage(header, (int)HDM_GETITEMRECT, 0, p);
+                                        var r = User32.SendMessage(header, (int)HeaderMessageConst.HDM_GETITEMRECT, 0, p);
                                         if((ApiBool)r.ToInt32())
                                         {
                                             var rr = p.GetStruct();

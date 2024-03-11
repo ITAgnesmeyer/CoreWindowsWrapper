@@ -274,6 +274,32 @@ namespace CoreWindowsWrapper.Win32ApiForm
         {
             User32.SendMessage(this.Handle, WindowsMessages.WM_CLOSE);
         }
+
+        internal bool TryGetMainWinIcon(out IntPtr icon )
+        {
+            Win32Window mainWin = null;
+
+            foreach (KeyValuePair<IntPtr, Win32Window> keyValuePair in WindowList)
+            {
+                if (keyValuePair.Value.IsMainWindow)
+                {
+
+                    mainWin = keyValuePair.Value;
+                    break;
+                }
+            }
+
+            if(mainWin == null)
+            {
+                icon = IntPtr.Zero;
+                return false;
+            }
+
+            icon = mainWin.WindowClass.hIcon;
+            return true;
+
+
+        }
         internal IntPtr GetIcon()
         {
             if(!string.IsNullOrEmpty(this.IconFile))
@@ -284,6 +310,12 @@ namespace CoreWindowsWrapper.Win32ApiForm
             {
                 return Tools.ImageTool.SafeLoadIconFromResource(this.IconResourceId);
             }
+
+            if(TryGetMainWinIcon(out IntPtr icon))
+            {
+                return icon;    
+            }
+
             return Tools.ImageTool.LoadAppIcon();
         }
         internal bool Create(bool asControl = false)

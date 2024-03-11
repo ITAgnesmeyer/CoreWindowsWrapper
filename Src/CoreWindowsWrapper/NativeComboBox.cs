@@ -16,7 +16,11 @@ namespace CoreWindowsWrapper
            
             this.Style = ComboBoxStyles.CBS_DROPDOWN | ComboBoxStyles.CBS_HASSTRINGS |WindowStylesConst.WS_CHILD | WindowStylesConst.WS_OVERLAPPED | WindowStylesConst.WS_VISIBLE | WindowStylesConst.WS_TABSTOP;
         }
-
+        //protected override void AfterCreate()
+        //{
+        //    base.AfterCreate();
+        //    NativeTheaming.SetThemaing(this.Handle);
+        //}
         protected override bool ControlProc(IntPtr hWndParent, IntPtr hWndControl, int controlId, uint command, IntPtr wParam, IntPtr lParam)
         {
 

@@ -11,6 +11,7 @@ namespace ConsoleCaller
         private NativeButton _Button;
         private NativeLabel _Label;
         private NativeListView _ListView;
+       
         protected override void InitControls()
         {
             this.Text = "List View Test";
@@ -36,6 +37,7 @@ namespace ConsoleCaller
             
             this._ListView = new NativeListView
             {
+                AllowEdit = false,
                 Left = 0,
                 Top = 40,
                 Width = 100,

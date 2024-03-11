@@ -23,6 +23,11 @@ namespace CoreWindowsWrapper
            
 
         }
+        //protected override void AfterCreate()
+        //{
+        //    base.AfterCreate();
+        //    NativeTheaming.SetThemaing(this.Handle);
+        //}
         public override bool Create(IntPtr parentId)
         {
             if (this.MultiSelect)

@@ -5,32 +5,51 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace CoreWindowsWrapper
 {
+    public class TreeViewChagneEventArgs : EventArgs
+    {
+        public uint Action { get; }
+        public TVITEMW OldItem { get; } 
+        public TVITEMW NewItem { get; }
+        public TreeViewChagneEventArgs(uint action , TVITEMW oldItem, TVITEMW newItem)
+        {
+            this.Action = action;
+            this.OldItem = oldItem;
+            this.NewItem = newItem;
+        }
+    }
     public class NativeTreeView : NativeControlBase
     {
         public event EventHandler<EventArgs> SetFocus;
         public event EventHandler<EventArgs> KillFocus;
-
+        public event EventHandler<TreeViewChagneEventArgs> Changed;
+        public event EventHandler<TreeViewChagneEventArgs> Changeing;
         protected override void Initialize()
         {
             base.Initialize();
             this.ControlType = Win32ApiForm.ControlType.TreeView;
             this.CommonControlType = CommonControls.ICC_TREEVIEW_CLASSES;
             this.TypeIdentifier = "SysTreeView32";
-            this.Style |= WindowStylesConst.WS_BORDER | WindowStylesConst.WS_HSCROLL | WindowStylesConst.WS_TABSTOP;//| TreeViewConst.TVS_HASLINES;
+            this.Style |= WindowStylesConst.WS_BORDER | WindowStylesConst.WS_HSCROLL | WindowStylesConst.WS_TABSTOP | TreeViewConst.TVS_HASLINES | TreeViewConst.TVS_EDITLABELS | TreeViewConst.TVS_HASBUTTONS | TreeViewConst.TVS_LINESATROOT;
         }
-
+        protected override void AfterCreate()
+        {
+            base.AfterCreate();
+            NativeTheaming.SetThemaing(this.Handle);
+        }
         public void SetImageList(NativeImageList imageList)
         {
             TreeViewMacros.TreeView_SetImageList(this.Handle, imageList.Handle);
         }
         public IntPtr AddItem(IntPtr parent, string text, int imageIndex = 0, int expandImage = -1, int selectImage = -1)
         {
+            var count = TreeViewMacros.TreeView_GetCount(this.Handle)+1;
             TVITEMEXW tvi = new TVITEMEXW();
             TVINSERTSTRUCTEXW tvins = new TVINSERTSTRUCTEXW();
-            tvi.mask = TreeViewConst.TVIF_TEXT | TreeViewConst.TVIF_IMAGE | TreeViewConst.TVIF_EXPANDEDIMAGE | TreeViewConst.TVIF_SELECTEDIMAGE;
+            tvi.mask = TreeViewConst.TVIF_TEXT | TreeViewConst.TVIF_IMAGE | TreeViewConst.TVIF_EXPANDEDIMAGE | TreeViewConst.TVIF_SELECTEDIMAGE | TreeViewConst.TVIF_PARAM;
             tvi.pszText = text;
             tvi.cchTextMax = text.Length;
             tvi.iImage = imageIndex;
+            tvi.lParam = new IntPtr(count);
             if (selectImage > -1)
             {
                 tvi.iSelectedImage = selectImage;
@@ -60,12 +79,15 @@ namespace CoreWindowsWrapper
 
         public IntPtr AddItemAfter(IntPtr parent, IntPtr after, string text, int imageIndex = 0, int expandImage = -1, int selectImage = -1)
         {
+            var count = TreeViewMacros.TreeView_GetCount(this.Handle);
+
             TVITEMEXW tvi = new TVITEMEXW();
             TVINSERTSTRUCTEXW tvins = new TVINSERTSTRUCTEXW();
-            tvi.mask = TreeViewConst.TVIF_TEXT | TreeViewConst.TVIF_IMAGE | TreeViewConst.TVIF_EXPANDEDIMAGE | TreeViewConst.TVIF_SELECTEDIMAGE;
+            tvi.mask = TreeViewConst.TVIF_TEXT | TreeViewConst.TVIF_IMAGE | TreeViewConst.TVIF_EXPANDEDIMAGE | TreeViewConst.TVIF_SELECTEDIMAGE | TreeViewConst.TVIF_PARAM;
             tvi.pszText = text;
             tvi.cchTextMax = text.Length;
             tvi.iImage = imageIndex;
+            tvi.lParam = new IntPtr(count);
             if (expandImage > -1)
             {
                 tvi.iExpandedImage = expandImage;
@@ -161,6 +183,7 @@ namespace CoreWindowsWrapper
                         NMTREEVIEWW nmTv = Marshal.PtrToStructure<NMTREEVIEWW>(lParam);
                         TVITEMW newItem = nmTv.itemNew;
                         TVITEMW oldItem = nmTv.itemOld;
+                        OnChanged(new TreeViewChagneEventArgs(nmTv.action, oldItem, newItem));
                         switch(nmTv.action)
                         {
                             case TreeViewConst.TVC_BYKEYBOARD:
@@ -184,6 +207,9 @@ namespace CoreWindowsWrapper
                     try
                     {
                         NMTREEVIEWW nmTv = Marshal.PtrToStructure<NMTREEVIEWW>(lParam);
+                        TVITEMW newItem = nmTv.itemNew;
+                        TVITEMW oldItem = nmTv.itemOld;
+                        OnChangeing(new TreeViewChagneEventArgs(nmTv.action, oldItem, newItem));
                         result = true;
                         break;
                     }
@@ -196,6 +222,14 @@ namespace CoreWindowsWrapper
                     break;
             }
             return result;
+        }
+        protected virtual void OnChanged(TreeViewChagneEventArgs e)
+        {
+            SafeInvoke(Changed, e);
+        }
+        protected virtual void OnChangeing(TreeViewChagneEventArgs e)
+        {
+            SafeInvoke(Changeing, e);
         }
         public bool Expand(IntPtr item)
         {
