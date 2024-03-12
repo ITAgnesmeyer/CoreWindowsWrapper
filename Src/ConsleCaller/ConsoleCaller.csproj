@@ -10,7 +10,7 @@
 		<OutputType>WinExe</OutputType>
 		<TargetFramework>net8.0</TargetFramework>
 		<StartupObject />
-		<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+		<!--<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>-->
 		<Win32Resource>app.res</Win32Resource>
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 		<PublishAot>true</PublishAot>

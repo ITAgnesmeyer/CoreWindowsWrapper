@@ -6,11 +6,13 @@ using Diga.Core.Api.Win32;
 
 namespace ConsoleCaller
 {
-    class TreeViewTest :NativeWindow
+    class TreeViewTest : NativeWindow
     {
         private NativeImageList _ImageList;
         private NativeButton _Button;
         private NativeTreeView _TreeView;
+        private NativeTextBox txtOldValue;
+        private NativeTextBox txtNewValue;
         protected override void InitControls()
         {
             this.Text = "TreeView Test";
@@ -33,6 +35,8 @@ namespace ConsoleCaller
             int count = this._ImageList.ImageCount;
             this._TreeView = new NativeTreeView
             {
+
+                Anchor = AnchorType.Left | AnchorType.Right | AnchorType.Top | AnchorType.Bottom,
                 Left = 0,
                 Top = 40,
                 Width = 400,
@@ -40,60 +44,67 @@ namespace ConsoleCaller
 
             };
             this._TreeView.Changed += TreeView_Changed;
+
+            this.txtOldValue = new NativeTextBox
+            {
+                
+                Anchor = AnchorType.Top | AnchorType.Right,
+                Location = new Point(410, 40),
+                Size = new Size(150, 30)
+            };
+            this.txtOldValue.Style |= WindowStylesConst.WS_BORDER;
+            this.txtNewValue = new NativeTextBox
+            {
+                Anchor = AnchorType.Top | AnchorType.Right,
+                Location = new Point(410, 75),
+                Size = new Size(150, 30)
+            };
+            this.txtNewValue.Style |= WindowStylesConst.WS_BORDER;
             this.Controls.Add(this._Button);
             this.Controls.Add(this._ImageList);
             this.Controls.Add(this._TreeView);
+            this.Controls.Add(this.txtOldValue);
+            this.Controls.Add(this.txtNewValue);
 
         }
 
         private void TreeView_Changed(object sender, TreeViewChagneEventArgs e)
         {
-            
-           
-            var nItem = new TVITEMEXW();
-            nItem.mask = TreeViewConst.TVIF_TEXT | TreeViewConst.TVIF_IMAGE | TreeViewConst.TVIF_EXPANDEDIMAGE | TreeViewConst.TVIF_SELECTEDIMAGE | TreeViewConst.TVIF_CHILDREN | TreeViewConst.TVIF_PARAM;
-            nItem.pszText = new string('\0', 1000);
-            nItem.hItem = e.NewItem.hItem;
-            nItem.cchTextMax = 1000;
-            nItem.hwnd = this._TreeView.Handle;
-            
 
-            if (TreeViewMacros.TreeView_GetItem(this._TreeView.Handle, ref nItem))
-            {
-                Debug.Print(nItem.pszText);
-            }
+            this.txtOldValue.Text = $"old key({e.OldKey}):{e.OldItem.pszText}";
+            this.txtNewValue.Text = $"new key({e.NewKey}):{e.NewItem.pszText}";
 
-            
         }
 
         protected override void OnCreate(CreateEventArgs e)
         {
             base.OnCreate(e);
             NativeApp.DoEvents();
-            
+
             this._TreeView.SetImageList(this._ImageList);
 
-            var rect = this.GetClientRect();
-            this._TreeView.Width = rect.Width;
+            //var rect = this.GetClientRect();
+            //this._TreeView.Width = rect.Width;
 
         }
-        
+
         protected override void OnSize(SizeEventArgs e)
         {
-            this._TreeView.Width = e.Width/2;
-            this._TreeView.Height = e.Height - this._TreeView.Top -10;
+            //this._TreeView.Width = e.Width / 2;
+            //this._TreeView.Height = e.Height - this._TreeView.Top - 10;
         }
         private void OnButtonClicked(object sender, EventArgs e)
         {
-            IntPtr root = this._TreeView.AddItemToRoot("RootItem",0, -1, -1);
-            IntPtr firstChild = this._TreeView.AddItem(root, "FirstChild",1);
-            IntPtr secondChild = this._TreeView.AddItemAfter(root, firstChild, "SecondChild",2,-1,-1);
-            IntPtr thirdChild = this._TreeView.AddItemAfter(root, firstChild, "ThirdChild", 3,-1,-1);
+            this._TreeView.Clear();
+            IntPtr root = this._TreeView.AddItemToRoot("RootItem", 0, -1, -1);
+            IntPtr firstChild = this._TreeView.AddItem(root, "FirstChild", 1);
+            IntPtr secondChild = this._TreeView.AddItemAfter(root, firstChild, "SecondChild", 2, -1, -1);
+            IntPtr thirdChild = this._TreeView.AddItemAfter(root, firstChild, "ThirdChild", 3, -1, -1);
             IntPtr forthChild = this._TreeView.AddItemToRoot("ForthChild", 1);
             IntPtr fifthChild = this._TreeView.AddItem(forthChild, "FifthChild", 2);
             this._TreeView.Expand(root);
         }
 
-        
+
     }
 }

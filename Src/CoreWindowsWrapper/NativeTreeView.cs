@@ -1,5 +1,6 @@
 ﻿using Diga.Core.Api.Win32;
 using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -8,9 +9,11 @@ namespace CoreWindowsWrapper
     public class TreeViewChagneEventArgs : EventArgs
     {
         public uint Action { get; }
-        public TVITEMW OldItem { get; } 
-        public TVITEMW NewItem { get; }
-        public TreeViewChagneEventArgs(uint action , TVITEMW oldItem, TVITEMW newItem)
+        public TVITEMEXW OldItem { get; } 
+        public TVITEMEXW NewItem { get; }
+        public int OldKey => this.OldItem.lParam.ToInt32();
+        public int NewKey => this.NewItem.lParam.ToInt32();
+        public TreeViewChagneEventArgs(uint action , TVITEMEXW oldItem, TVITEMEXW newItem)
         {
             this.Action = action;
             this.OldItem = oldItem;
@@ -42,7 +45,7 @@ namespace CoreWindowsWrapper
         }
         public IntPtr AddItem(IntPtr parent, string text, int imageIndex = 0, int expandImage = -1, int selectImage = -1)
         {
-            var count = TreeViewMacros.TreeView_GetCount(this.Handle)+1;
+            var count = TreeViewMacros.TreeView_GetCount(this.Handle);
             TVITEMEXW tvi = new TVITEMEXW();
             TVINSERTSTRUCTEXW tvins = new TVINSERTSTRUCTEXW();
             tvi.mask = TreeViewConst.TVIF_TEXT | TreeViewConst.TVIF_IMAGE | TreeViewConst.TVIF_EXPANDEDIMAGE | TreeViewConst.TVIF_SELECTEDIMAGE | TreeViewConst.TVIF_PARAM;
@@ -109,7 +112,25 @@ namespace CoreWindowsWrapper
             tvins.item = tvi;
             tvins.hParent = parent;
             tvins.hInsertAfter = after;
+            
             return TreeViewMacros.TreeView_InsertItem(this.Handle, tvins);
+        }
+        private TVITEMEXW GetItem(TVITEMW item)
+        {
+            var nItem = new TVITEMEXW();
+            nItem.mask = TreeViewConst.TVIF_TEXT | TreeViewConst.TVIF_IMAGE | TreeViewConst.TVIF_EXPANDEDIMAGE | TreeViewConst.TVIF_SELECTEDIMAGE | TreeViewConst.TVIF_CHILDREN | TreeViewConst.TVIF_PARAM;
+            nItem.pszText = new string('\0', 1000);
+            nItem.hItem =item.hItem;
+            nItem.cchTextMax = 1000;
+            nItem.hwnd = this.Handle;
+
+
+            if (TreeViewMacros.TreeView_GetItem(this.Handle, ref nItem))
+            {
+               return nItem;
+            }
+
+            return new TVITEMEXW {lParam = new IntPtr(-1) };
         }
         protected override bool ControlProc(IntPtr hWndParent, IntPtr hWndControl, int controlId, uint command, IntPtr wParam, IntPtr lParam)
         {
@@ -183,7 +204,7 @@ namespace CoreWindowsWrapper
                         NMTREEVIEWW nmTv = Marshal.PtrToStructure<NMTREEVIEWW>(lParam);
                         TVITEMW newItem = nmTv.itemNew;
                         TVITEMW oldItem = nmTv.itemOld;
-                        OnChanged(new TreeViewChagneEventArgs(nmTv.action, oldItem, newItem));
+                        OnChanged(new TreeViewChagneEventArgs(nmTv.action, GetItem(oldItem), GetItem(newItem)));
                         switch(nmTv.action)
                         {
                             case TreeViewConst.TVC_BYKEYBOARD:
@@ -209,7 +230,7 @@ namespace CoreWindowsWrapper
                         NMTREEVIEWW nmTv = Marshal.PtrToStructure<NMTREEVIEWW>(lParam);
                         TVITEMW newItem = nmTv.itemNew;
                         TVITEMW oldItem = nmTv.itemOld;
-                        OnChangeing(new TreeViewChagneEventArgs(nmTv.action, oldItem, newItem));
+                        OnChangeing(new TreeViewChagneEventArgs(nmTv.action,GetItem( oldItem), GetItem(newItem)));
                         result = true;
                         break;
                     }
@@ -222,6 +243,10 @@ namespace CoreWindowsWrapper
                     break;
             }
             return result;
+        }
+        public void Clear()
+        {
+            TreeViewMacros.TreeView_DeleteAllItems(this.Handle);
         }
         protected virtual void OnChanged(TreeViewChagneEventArgs e)
         {

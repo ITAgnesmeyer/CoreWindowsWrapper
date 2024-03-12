@@ -169,8 +169,10 @@ namespace CoreWindowsWrapper.Win32ApiForm
         }
 
 
-
+#if NET6_0_OR_GREATER
+#else
         [HandleProcessCorruptedStateExceptions]
+#endif
         private void SetClassInfo(string className)
         {
             try
@@ -275,7 +277,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
             User32.SendMessage(this.Handle, WindowsMessages.WM_CLOSE);
         }
 
-        internal bool TryGetMainWinIcon(out IntPtr icon )
+        internal bool TryGetMainWinIcon(out IntPtr icon)
         {
             Win32Window mainWin = null;
 
@@ -289,7 +291,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 }
             }
 
-            if(mainWin == null)
+            if (mainWin == null)
             {
                 icon = IntPtr.Zero;
                 return false;
@@ -302,18 +304,18 @@ namespace CoreWindowsWrapper.Win32ApiForm
         }
         internal IntPtr GetIcon()
         {
-            if(!string.IsNullOrEmpty(this.IconFile))
+            if (!string.IsNullOrEmpty(this.IconFile))
             {
                 return Tools.ImageTool.SafeLoadIconFromFile(this.IconFile);
             }
-            if(this.IconResourceId > 0)
+            if (this.IconResourceId > 0)
             {
                 return Tools.ImageTool.SafeLoadIconFromResource(this.IconResourceId);
             }
 
-            if(TryGetMainWinIcon(out IntPtr icon))
+            if (TryGetMainWinIcon(out IntPtr icon))
             {
-                return icon;    
+                return icon;
             }
 
             return Tools.ImageTool.LoadAppIcon();
@@ -339,7 +341,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
                 lpfnWndProc = this._DelegateWndProc,
                 hIconSm = IntPtr.Zero
             };
-            
+
             //Doubleclicks are active
             //Black background, +1 is necessary
             // alternative: Process.GetCurrentProcess().Handle;
@@ -569,7 +571,10 @@ namespace CoreWindowsWrapper.Win32ApiForm
                     }
             }
         }
+#if NET6_0_OR_GREATER
+#else
         [HandleProcessCorruptedStateExceptions]
+#endif
         public void Dispatch()
         {
             DispatchCounter++;
