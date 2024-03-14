@@ -27,14 +27,20 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\CoreWindowsWrapper\CoreWindowsWrapper.csproj" />
-		<ProjectReference Include="..\Diga.NativeControls.WebBrowser.Core\Diga.NativeControls.WebBrowser.Core.csproj" />
 	</ItemGroup>
 	<ItemGroup>
+		<Folder Include="lib\" />
 		<Folder Include="Properties\PublishProfiles\" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Update="Browser.ico">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\Diga.WebView2.Native.dll">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="lib\Diga.WebView2.Native.lib">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="Skype.bmp">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -125,6 +131,9 @@
 		</None>
 	</ItemGroup>
 	<ItemGroup>
+		<PackageReference Include="Diga.WebView2.Interop.AOT" Version="1.0.1-preview" />
+		<PackageReference Include="Diga.WebView2.Wrapper.AOT" Version="1.0.1-preview" />
+		<PackageReference Include="Diga.NativeControls.WebBrowser.AOT" Version="1.0.1-preview" />
 		<PackageReference Include="System.Drawing.Common" Version="8.0.2" />
 	</ItemGroup>
 </Project>

@@ -26,16 +26,16 @@ namespace ConsoleCaller
             {
                 Width = this.Width,
                 Height = this.Height,
-                Url = "https://vscode.dev",
-                IsStatusBarEnabled = true,
-                DefaultContextMenusEnabled = false,
-                DevToolsEnabled = false,
-                EnableMonitoring = false,
+                Url = "http://localhost:1",
+                //IsStatusBarEnabled = true,
+                //DefaultContextMenusEnabled = false,
+                //DevToolsEnabled = false,
+                EnableMonitoring = true,
                 //BrowserExecutableFolder = ".\\edge",
-                BrowserUserDataFolder = "C:\\tmp\\diga",
+                //BrowserUserDataFolder = "C:\\tmp\\diga",
                 MonitoringFolder = ".\\wwwroot",
                 MonitoringUrl = "http://localhost:1/",
-                AutoDock = true
+                //AutoDock = true
             };
             this._Browser.DocumentTitleChanged += OnDocumentTitleChanged;
             this._Browser.NavigationStart += OnNavigationStart;
@@ -55,7 +55,7 @@ namespace ConsoleCaller
         {
             uint currentStyle = this.GetWindowStyle();
             uint currentExStyle = this.GetWindowExStyle();
-            if (e.KeyVentType == KeyEventType.KeyDown && e.VirtualKey == Diga.Core.Api.Win32.VirtualKeys.VK_F11)
+            if (e.KeyEventKind == Diga.WebView2.Interop.COREWEBVIEW2_KEY_EVENT_KIND.COREWEBVIEW2_KEY_EVENT_KIND_KEY_DOWN && e.VirtualKey == Diga.Core.Api.Win32.VirtualKeys.VK_F11)
             {
                 if (currentStyle == NoneStyle && currentExStyle == NoneExStyle)
                 {
@@ -88,7 +88,7 @@ namespace ConsoleCaller
         private void OnNavigationCompleted(object sender, NavigationCompletedEventArgs e)
         {
             if (e.IsSuccess)
-                this.Text = e.IsSuccess + "->" + this._Browser.DocumentTitle;
+                this.Text = e.IsSuccess + "->" + this._Browser.Url;
             else
                 this.Text = "Navigation-Error=>" + e.GetErrorText();
          
@@ -99,7 +99,7 @@ namespace ConsoleCaller
         }
         private void OnDocumentTitleChanged(object sender, WebView2EventArgs e)
         {
-            this.Text = this._Browser.DocumentTitle;
+            this.Text = this._Browser.Url;
         }
         
         //protected override void OnSize(SizeEventArgs e)
