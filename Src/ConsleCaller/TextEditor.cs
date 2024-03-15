@@ -19,20 +19,20 @@ namespace ConsoleCaller
             this.Text = "Little Editor";
             this.Name = "MainWindow";
             this.StatusBar = true;
-            Rect r = new Rect(0,0,480,380);
-            this._TextBox = new NativeRichTextBox {Left = r.Left, Top = r.Top, Width = r.Width, Height = r.Height};
-            
+            Rect r = new Rect(0, 0, 480, 380);
+            this._TextBox = new NativeRichTextBox { Left = r.Left, Top = r.Top, Width = r.Width, Height = r.Height };
+
             this.StartUpPosition = WindowsStartupPosition.CenterScreen;
-           
+
 
             //Creating the File Menu
             NativeMenu menuFile = new NativeMenu("mnuFile", "&File");
-            
+
             //Create Sub-Items for File-Menu
             NativeMenuItem menuFileOpen = new NativeMenuItem("mnuOpen", "&Open");
             NativeMenuItem menuFileClose = new NativeMenuItem("mnuSave", "&Save");
             NativeMenuItem menuFileSaveAs = new NativeMenuItem("mnuSaveAs", "Save &As");
-            NativeMenuItem menuFileSep = new NativeMenuItem("mnuFileSep") {IsSeparator = true};
+            NativeMenuItem menuFileSep = new NativeMenuItem("mnuFileSep") { IsSeparator = true };
             NativeMenuItem menFileExit = new NativeMenuItem("mnuExit", "E&xit");
 
             //Add Menu Event Handlers
@@ -49,12 +49,12 @@ namespace ConsoleCaller
 
             //Create Help-Menu
             NativeMenu menuHelp = new NativeMenu("&Help");
-            
+
             //Add Sub-Item to Help-Menu
             NativeMenuItem menuInfo = new NativeMenuItem("&Info\tAlt+Ctrl+Shift+F1");
             //IMenuItem im = menuInfo;
-           
-            
+
+
             //Add Event-Handler
             menuInfo.Click += MenuInfo_Click;
             //Add the Sub-Item to the Help-Menu
@@ -69,23 +69,23 @@ namespace ConsoleCaller
 
         private async void FileSaveAs_Click(object sender, MouseClickEventArgs e)
         {
-           
-                SaveFileDialog sfd = new SaveFileDialog
-                {
-                    Title = "Save file as...",
-                    Filter = "All Files(*.*)\0*.*\0Text(*.txt)\0*.txt\0",
-                    DefaultFilterIndex = 2
-                };
-                if (sfd.Show(this))
-                {
-                    this._CurrentFileName = sfd.File;
-                    string text = this._TextBox.GetRTF();
 
-                    await File.WriteAllTextAsync(this._CurrentFileName, text);
-                    this.Text = "Little Edit:" + this._CurrentFileName;
-                }
-            
-           
+            SaveFileDialog sfd = new SaveFileDialog
+            {
+                Title = "Save file as...",
+                Filter = "All Files(*.*)\0*.*\0Text(*.txt)\0*.txt\0",
+                DefaultFilterIndex = 2
+            };
+            if (sfd.Show(this))
+            {
+                this._CurrentFileName = sfd.File;
+                string text = this._TextBox.GetRTF();
+
+                await File.WriteAllTextAsync(this._CurrentFileName, text);
+                this.Text = "Little Edit:" + this._CurrentFileName;
+            }
+
+
         }
 
         public override void OnKeyDown(NativeKeyEventArgs e)
@@ -113,7 +113,7 @@ namespace ConsoleCaller
                 {
                     this._CurrentFileName = sfd.File;
                     string text = this._TextBox.Text;
-                   
+
                     await File.WriteAllTextAsync(this._CurrentFileName, text);
                     this.Text = "Little Edit:" + this._CurrentFileName;
                 }
@@ -130,7 +130,7 @@ namespace ConsoleCaller
 
         private async void FileOpen_Click(object sender, MouseClickEventArgs e)
         {
-            
+
             OpenFileDialog ofd = new OpenFileDialog
             {
                 Title = "Open a Text File...",

@@ -394,6 +394,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
             //Win32Api.GetWindowRect(hWnd, out rect);
             if (this.CenterForm)
             {
+
                 int xPos = (User32.GetSystemMetrics(SystemMetric.SM_CXSCREEN) - this.Width) / 2;
                 int yPos = (User32.GetSystemMetrics(SystemMetric.SM_CYSCREEN) - this.Height) / 2;
                 this.Left = xPos;
