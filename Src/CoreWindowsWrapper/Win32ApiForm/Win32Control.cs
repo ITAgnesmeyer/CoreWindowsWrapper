@@ -256,6 +256,36 @@ namespace CoreWindowsWrapper.Win32ApiForm
 
             return true;
         }
+
+        public void UpdateStyle(uint style)
+        {
+            IntPtr p = new IntPtr(style);
+            //this.Style = style;
+            User32.SetWindowLongPtr(this.Handle, GWL.GWL_STYLE, p);
+
+        }
+        public void UpdateExStyle(uint exStyle)
+        {
+            IntPtr p = new IntPtr(exStyle);
+            //this.StyleEx = exStyle;
+            User32.SetWindowLongPtr(this.Handle, GWL.GWL_EXSTYLE, p);
+
+        }
+
+        public uint GetStyle()
+        {
+            IntPtr style = User32.GetWindowLongPtr(this.Handle, GWL.GWL_STYLE);
+            uint s = unchecked((uint)style.ToInt64());
+            return s;
+        }
+
+        public uint GetExStyle()
+        {
+            IntPtr exStyle = User32.GetWindowLongPtr(this.Handle, GWL.GWL_EXSTYLE);
+            uint s = unchecked((uint)exStyle.ToInt64());
+            return s;
+        }
+
         public void Destroy()
         {
             if(this.Handle.IsValid)

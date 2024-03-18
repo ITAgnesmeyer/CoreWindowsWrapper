@@ -319,7 +319,11 @@ namespace CoreWindowsWrapper
         {
             this._TaskQueue.Enqueue(() => Task.Run(() => eventHandler?.Invoke(this, args)));
         }
-
+        public bool Focus()
+        {
+            IntPtr result = User32.SetFocus(this.Handle);
+            return result != IntPtr.Zero;
+        }
         public bool Enabled
         {
             get => this.Control.Enabled;
@@ -389,7 +393,7 @@ namespace CoreWindowsWrapper
                 if (isLeft && isTop && !isRight && isBottom)
                     newRect = LeftTopLeftBottom;
 
-                if(!isLeft && isTop && isRight && isBottom)
+                if (!isLeft && isTop && isRight && isBottom)
                     newRect = RigthTopRightBottom;
 
                 if (isLeft && !isTop && !isRight && isBottom)
@@ -414,6 +418,26 @@ namespace CoreWindowsWrapper
         public virtual void OnParentResize()
         {
             DoAnchor();
+        }
+
+        public uint GetWindowStyle()
+        {
+            return this._Control.GetStyle();
+        }
+
+        public uint GetWindowExStyle()
+        {
+            return this._Control.GetExStyle();
+        }
+
+        public void UpdateStyle(uint style)
+        {
+            this._Control.UpdateStyle(style);
+        }
+
+        public void UpdateExStyle(uint exStyle)
+        {
+            this._Control.UpdateExStyle(exStyle);
         }
     }
 }

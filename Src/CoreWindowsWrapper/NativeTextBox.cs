@@ -23,7 +23,7 @@ namespace CoreWindowsWrapper
             base.Initialize();
             this.ControlType = Win32ApiForm.ControlType.Edit;
             this.TypeIdentifier = "edit";
-            this.Style |= EditBoxStyles.ES_AUTOHSCROLL | EditBoxStyles.ES_WANTRETURN  ;
+            this.Style |= EditBoxStyles.ES_AUTOHSCROLL | EditBoxStyles.ES_WANTRETURN | WindowStylesConst.WS_BORDER  ;
             
             this.BackColor = Tools.ColorTool.White;
             this.ForeColor = Tools.ColorTool.Black;
@@ -48,7 +48,27 @@ namespace CoreWindowsWrapper
 
             }
         }
+       
+        public bool IsReadOnly => (this.GetWindowStyle() & EditBoxStyles.ES_READONLY) == EditBoxStyles.ES_READONLY;
 
+        public bool ReadOnly { 
+            get 
+            { 
+                return this.IsReadOnly;  
+            }
+            set
+            {
+                if(value == true )
+                {
+                    User32.SendMessage(this.Handle, EditBoxMessages.EM_SETREADONLY, 1, 0);
+                }
+                else
+                {
+                    User32.SendMessage(this.Handle, EditBoxMessages.EM_SETREADONLY, 0, 0);
+                }
+
+            } 
+        }
 
         protected override bool ControlProc(IntPtr hWndParent, IntPtr hWndControl, int controlId, uint command, IntPtr wParam, IntPtr lParam)
         {
