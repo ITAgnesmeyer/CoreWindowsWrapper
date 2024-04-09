@@ -134,6 +134,6 @@
 		<PackageReference Include="Diga.WebView2.Interop.AOT" Version="1.0.1-preview" />
 		<PackageReference Include="Diga.WebView2.Wrapper.AOT" Version="1.0.1-preview" />
 		<PackageReference Include="Diga.NativeControls.WebBrowser.AOT" Version="1.0.1-preview" />
-		<PackageReference Include="System.Drawing.Common" Version="8.0.2" />
+		<PackageReference Include="System.Drawing.Common" Version="8.0.4" />
 	</ItemGroup>
 </Project>
