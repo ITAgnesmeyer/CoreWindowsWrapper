@@ -29,13 +29,13 @@ namespace CoreWindowsWrapper
             this.ForeColor = Tools.ColorTool.Black;
 
         }
-        //protected override void AfterCreate()
-        //{
-        //    uint exStyle = ES_EX_ALLOWEOL_CR | ES_EX_ALLOWEOL_ALL;
-        //    IntPtr result = User32.SendMessage(this.Handle, EM_SETEXTENDEDSTYLE, exStyle, exStyle);
-        //    int r = result.ToInt32();
+        protected override void AfterCreate()
+        {
+            base.AfterCreate();
 
-        //}
+            NativeTheaming.SetThemaing(this.Handle);
+
+        }
         public override string Text
         {
             get => User32.GetWindowTextRaw(this.Handle);

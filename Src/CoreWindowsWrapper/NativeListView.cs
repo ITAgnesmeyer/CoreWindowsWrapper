@@ -443,6 +443,7 @@ namespace CoreWindowsWrapper
         public EventHandler<ListViewItemChangeEventArgs> ItemChanged;
 
         public bool AllowEdit { get; set; } = true;
+        public bool UseTheaming {  get; set; } = true;  
 
         protected virtual void OnItemChangeing(ListViewItemChangeEventArgs e)
         {
@@ -470,7 +471,8 @@ namespace CoreWindowsWrapper
 
             base.AfterCreate();
             //Old_EditProc = User32.SetWindowLongPtr(this.Handle, GWL.GWL_WNDPROC, Marshal.GetFunctionPointerForDelegate((WndProc)EditProc));
-            NativeTheaming.SetThemaing(this.Handle);
+            if(this.UseTheaming)
+                NativeTheaming.SetThemaing(this.Handle);
         }
         public void DeleteItem(int index)
         {

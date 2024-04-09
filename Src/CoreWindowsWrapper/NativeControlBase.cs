@@ -204,6 +204,7 @@ namespace CoreWindowsWrapper
             bool retCreate = this.Control.Create(parentId);
             this.AfterCreate();
             this.Control.WndProc = OnWndProc;
+            
             if (User32.GetClientRect(parentId, out Rect pRect))
             {
                 _DiffLeft = this.Left;

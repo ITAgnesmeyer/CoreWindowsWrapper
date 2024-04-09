@@ -33,7 +33,7 @@ namespace CoreWindowsWrapper
 
                 fnSetPreferredAppMode del = Marshal.GetDelegateForFunctionPointer<fnSetPreferredAppMode>(hProcAddr);
                 if (del != null)
-                    del(0);
+                    del(1);
             }
             Kernel32.FreeLibrary(hUxTheme);
         }

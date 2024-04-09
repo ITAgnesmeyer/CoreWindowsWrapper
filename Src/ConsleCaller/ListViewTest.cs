@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Security.Cryptography.X509Certificates;
+
 using CoreWindowsWrapper;
 using CoreWindowsWrapper.Tools;
 using Diga.Core.Api.Win32;
@@ -67,14 +67,14 @@ namespace ConsoleCaller
             //(uint)ListViewStylesEx.LVS_EX_BORDERSELECT |
             this._ListView.SetExStyle( (uint)ListViewStylesEx.LVS_EX_FULLROWSELECT |
                                                (uint)ListViewStylesEx.LVS_EX_DOUBLEBUFFER |
-                                               (uint)ListViewStylesEx.LVS_EX_HEADERDRAGDROP| (uint)ListViewStylesEx.LVS_EX_GRIDLINES  );
+                                               (uint)ListViewStylesEx.LVS_EX_HEADERDRAGDROP| (uint)ListViewStylesEx.LVS_EX_GRIDLINES | (uint)ListViewStylesEx.LVS_EX_BORDERSELECT);
             for (int i = 0;i<100;i++)
             {
                 this._ListView.InsertColumn(new ListViewColumn { SubItemIndex = i, Text = $"Column{i}" });
 
             }
             this._ListView.SetBkColor((uint)ColorTool.Rgb(240, 240, 240));//Schnelltaste: Alt+X
-            this._ListView.SetOutlinedColor((uint)ColorTool.Rgb(0,240,240));
+            this._ListView.SetOutlinedColor((uint)ColorTool.Rgb(255,0,0));
             //this._ListView.InsertColumn(new ListViewColumn { SubItemIndex = 0, Text = "Column1" });
             //this._ListView.InsertColumn(new ListViewColumn { SubItemIndex = 1, Text = "Column2" });
             //this._ListView.InsertColumn(new ListViewColumn { SubItemIndex = 2, Text = "Column3" });

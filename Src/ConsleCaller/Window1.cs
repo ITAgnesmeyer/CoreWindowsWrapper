@@ -121,6 +121,8 @@ namespace ConsoleCaller
                 ForeColor = ColorTool.Read
                 //ControlId = 502
             };
+
+            this._TextBox.KeyUp += TextBox_KeyUp;
             
             this._TextBox.Change += TextBox_Change;
             this._TextBox.Clicked += TextBox_Click;
@@ -228,6 +230,15 @@ namespace ConsoleCaller
             SysKeyDown += Window1_SysKeyDown;
             KeyDown += Window1_KeyDown;
             this.MouseMove += Window1_MoseMove;
+        }
+
+        private void TextBox_KeyUp(object sender, NativeKeyEventArgs e)
+        {
+            if(e.Key == (uint)VirtualKeys.VK_RETURN)
+            {
+                MessageBox.Show(this.Handle, "Return Pressed", "Return");
+                e.Handled = true;
+            }
         }
 
         private void TextBox_KeyPress(object sender, NativeKeyEventArgs e)
