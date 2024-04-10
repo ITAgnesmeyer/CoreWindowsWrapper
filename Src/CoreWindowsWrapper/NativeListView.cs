@@ -1,6 +1,7 @@
 ﻿using Diga.Core.Api.Win32;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Security.Policy;
@@ -784,7 +785,17 @@ namespace CoreWindowsWrapper
             User32.SendMessage(this.Handle, ListViewMessageConst.LVM_SETOUTLINECOLOR, 0, color);    
         }
 
-        
+        public uint GetHeaderStyle()
+        {
+            IntPtr hHeader = ListViewMacros.ListView_GetHeader(this.Handle);
+            IntPtr stylePtr = User32.GetWindowLongPtr(hHeader, GWL.GWL_STYLE);
+            return (uint)stylePtr.ToInt64();
+        }
 
+        public void SetHeaderStyle(uint  style)
+        {
+            IntPtr hHeader = ListViewMacros.ListView_GetHeader(this.Handle);
+            User32.SetWindowLongPtr(hHeader,GWL.GWL_STYLE ,(IntPtr)style);
+        }
     }
 }

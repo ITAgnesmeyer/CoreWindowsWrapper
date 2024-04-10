@@ -22,7 +22,7 @@ namespace CoreWindowsWrapper
         {
             base.Initialize();
             this.ControlType = Win32ApiForm.ControlType.Edit;
-            this.TypeIdentifier = "edit";
+            this.TypeIdentifier = "Edit";
             this.Style |= EditBoxStyles.ES_AUTOHSCROLL | EditBoxStyles.ES_WANTRETURN | WindowStylesConst.WS_BORDER  ;
             
             this.BackColor = Tools.ColorTool.White;
