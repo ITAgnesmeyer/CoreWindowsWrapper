@@ -33,7 +33,7 @@ namespace CoreWindowsWrapper
         {
             base.AfterCreate();
 
-            NativeTheaming.SetThemaing(this.Handle);
+            //NativeTheaming.SetThemaing(this.Handle);
 
         }
         public override string Text

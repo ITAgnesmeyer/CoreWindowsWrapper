@@ -144,10 +144,10 @@ namespace ConsoleCaller
             {
                 Location = new Point(10, 200),
                 Size = new Size(100, 30),
-                Text = "Dies ist ein Label"//,
-                                           //BackColor=ColorTool.Read,
-                                           //ForeColor = ColorTool.Green,
-                                           //ControlId = 504
+                Text = "Dies ist ein Label",
+                BackColor = ColorTool.Black,
+                ForeColor = ColorTool.White,
+                
 
             };
             this._Label1.Clicked += Label1_Click;

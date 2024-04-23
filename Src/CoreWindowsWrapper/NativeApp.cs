@@ -23,6 +23,7 @@ namespace CoreWindowsWrapper
         private const int UOI_FLAGS = 1;
         private const int UOI_TIMERPROC_EXCEPTION_SUPPRESSION = 7;
 
+        public static bool ExceptInEvents = false;
        
         public static void Run(NativeWindow window)
         {

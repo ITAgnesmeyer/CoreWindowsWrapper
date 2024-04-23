@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup Label="Globals">
-		<SccProjectName>SAK</SccProjectName>
+		<!--<SccProjectName>SAK</SccProjectName>
 		<SccProvider>SAK</SccProvider>
 		<SccAuxPath>SAK</SccAuxPath>
-		<SccLocalPath>SAK</SccLocalPath>
+		<SccLocalPath>SAK</SccLocalPath>-->
 		<Platforms>AnyCPU</Platforms>
 	</PropertyGroup>
 
@@ -23,7 +23,7 @@
 		<PackageReleaseNotes>
 			BugFixes
 		</PackageReleaseNotes>
-		<Version>2.0.8.18-prerelease</Version>
+		<Version>2.0.8.19-prerelease</Version>
 		<SignAssembly>True</SignAssembly>
 		<DelaySign>False</DelaySign>
 		<AssemblyOriginatorKeyFile>diga_cert.snk</AssemblyOriginatorKeyFile>
@@ -44,21 +44,7 @@
 		<PlatformTarget>AnyCPU</PlatformTarget>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp3.1|AnyCPU'">
-		<NoWarn>1701;1702;SYSLIB0032</NoWarn>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp3.1|AnyCPU'">
-		<NoWarn>1701;1702;SYSLIB0032</NoWarn>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net5.0|AnyCPU'">
-		<NoWarn>1701;1702;SYSLIB0032</NoWarn>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net5.0|AnyCPU'">
-		<NoWarn>1701;1702;SYSLIB0032</NoWarn>
-	</PropertyGroup>
+	
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'">
 		<NoWarn>1701;1702;SYSLIB0032</NoWarn>
@@ -102,7 +88,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Diga.Core.Api.Win32" Version="2.0.24-prerelease" />
+		<PackageReference Include="Diga.Core.Api.Win32" Version="2.0.25-prerelease" />
 	</ItemGroup>
 
 	<ItemGroup>

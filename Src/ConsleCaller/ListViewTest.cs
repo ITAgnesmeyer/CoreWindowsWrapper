@@ -75,7 +75,7 @@ namespace ConsoleCaller
             }
             this._ListView.SetBkColor((uint)ColorTool.Rgb(240, 240, 240));//Schnelltaste: Alt+X
             this._ListView.SetOutlinedColor((uint)ColorTool.Rgb(255,0,0));
-            uint hStyle= this._ListView.GetHeaderStype();
+            uint hStyle= this._ListView.GetHeaderStyle();
             hStyle |= HeaderStylesConst.HDS_NOSIZING;
             this._ListView.SetHeaderStyle(hStyle);
             //this._ListView.InsertColumn(new ListViewColumn { SubItemIndex = 0, Text = "Column1" });

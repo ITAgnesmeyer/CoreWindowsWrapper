@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Diga.Core.Api.Win32;
 using CoreWindowsWrapper.Win32ApiForm;
+using System.Diagnostics;
 
 namespace CoreWindowsWrapper
 {
@@ -301,7 +302,7 @@ namespace CoreWindowsWrapper
 
         public virtual void Destroy()
         {
-            Console.Write("on Destroy");
+            Debug.WriteLine("on Destroy");
         }
 
         protected void SafeInvoke<T>(EventHandler<T> eventHandler, T args) where T : EventArgs
@@ -312,7 +313,10 @@ namespace CoreWindowsWrapper
             }
             catch (Exception e)
             {
-                MessageBox.Show("Event Error:" + e.Message);
+                if (NativeApp.ExceptInEvents)
+                    throw;
+
+                MessageBox.Show(this.Handle,"Event Error:" + e.Message,"EventError", MessageBoxOptions.OkOnly | MessageBoxOptions.IconError);
             }
         }
 
