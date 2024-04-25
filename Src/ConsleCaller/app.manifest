@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
-	<assemblyIdentity name="Diga.Core.Shell.DigaSetup" version="1.0.0.0" type="win32"></assemblyIdentity>
+	<assemblyIdentity name="YourAppName" version="1.0.0.0" type="win32"></assemblyIdentity>
 	<description>Diga Shell</description>
 	<dependency>
 		<dependentAssembly>
