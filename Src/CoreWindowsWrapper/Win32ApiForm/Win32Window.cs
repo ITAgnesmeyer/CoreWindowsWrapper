@@ -878,6 +878,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
                         window.StatusBarHandle = User32.CreateWindowEx(0, "msctls_statusbar32", null,
                             (uint)(WindowStyles.WS_VISIBLE | WindowStyles.WS_CHILD), 0, 0, 0, 0, hWnd, sbId,
                             Win32Window.InstanceHandle, IntPtr.Zero);
+                        NativeTheaming.SetThemaing(window.StatusBarHandle);
                         User32.ShowWindow(window.StatusBarHandle, (int)ShowWindowCommands.Show);
                     }
 
@@ -888,7 +889,7 @@ namespace CoreWindowsWrapper.Win32ApiForm
                         window.ToolBarHandle = User32.CreateWindowEx(0, "ToolbarWindow32", null,
                             WindowStylesConst.WS_CHILD | 512, 0,
                             0, 0, 0, hWnd, IntPtr.Zero, Win32Window.InstanceHandle, IntPtr.Zero);
-
+                        
                         User32.AddTbButton(window.ToolBarHandle, "Test", 50);
                         //Win32Api.AddTbButton(window.ToolBarHandle, "Test2", 51);
                         User32.ShowWindow(window.ToolBarHandle, (int)ShowWindowCommands.Show);

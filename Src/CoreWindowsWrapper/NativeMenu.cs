@@ -63,7 +63,7 @@ namespace CoreWindowsWrapper
 
 
             }
-
+            NativeTheaming.SetThemaing(this.Handle);
         }
         protected virtual bool ControlProc(IntPtr hWndParent, IntPtr hWndControl, int controlId, uint command,
             IntPtr wParam, IntPtr lParam)

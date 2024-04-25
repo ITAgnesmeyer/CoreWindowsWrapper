@@ -9,7 +9,7 @@ namespace ConsoleCaller
         public static int Main(string[] args)
         {
             NativeApp.ExceptInEvents = true;
-            Window1   nw = new Window1();
+            TextEditor   nw = new TextEditor();
             NativeApp.Run(nw);
             return 0;
         }
