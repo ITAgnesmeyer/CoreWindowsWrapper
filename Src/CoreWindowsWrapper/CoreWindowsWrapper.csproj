@@ -9,7 +9,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<TargetFrameworks>net8.0;net7.0;net6.0;net461;net472</TargetFrameworks>
+		<TargetFrameworks>net8.0;net461;net472</TargetFrameworks>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<Authors>Dipl.-Ing.(FH) Guido Agnesmeyer</Authors>
@@ -23,12 +23,12 @@
 		<PackageReleaseNotes>
 			BugFixes
 		</PackageReleaseNotes>
-		<Version>2.0.8.20-prerelease</Version>
+		<Version>2.0.8.20</Version>
 		<SignAssembly>True</SignAssembly>
 		<DelaySign>False</DelaySign>
 		<AssemblyOriginatorKeyFile>diga_cert.snk</AssemblyOriginatorKeyFile>
-		<AssemblyVersion>2.0.8</AssemblyVersion>
-		<FileVersion>2.0.8</FileVersion>
+		<AssemblyVersion>2.0.8.20</AssemblyVersion>
+		<FileVersion>2.0.8.20</FileVersion>
 		<ApplicationIcon />
 		<Win32Resource></Win32Resource>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -88,7 +88,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Diga.Core.Api.Win32" Version="2.0.25-prerelease" />
+		<PackageReference Include="Diga.Core.Api.Win32" Version="2.0.25" />
 	</ItemGroup>
 
 	<ItemGroup>
